@@ -1,0 +1,339 @@
+# First SYNW tickets for the engine (mock brain only, no model calls).
+# Smallest and most foundational first. Each is half a day or less.
+# Paths follow source-docs/03-world-spec.md §9.
+
+- key: SYNW-001
+  name: "Package skeleton and test runner"
+  unit: infra
+  objective: "Create pyproject.toml (Python 3.11, deps: PyYAML, jsonschema, pytest), synw/__init__.py with __version__, .gitignore ignoring runs/, and tests/test_smoke.py that imports synw and checks __version__."
+  allowed_paths: [pyproject.toml, .gitignore, synw/__init__.py, tests/test_smoke.py]
+  acceptance:
+    requirements: ["NO-STEP: repository bootstrap; no product behaviour yet"]
+    extra: ["pip install -e . && pytest tests/test_smoke.py -q passes", "git ls-files contains no licence file and no licence header"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: []
+
+- key: SYNW-002
+  name: "Named random streams"
+  unit: engine
+  objective: "synw/rng.py derives an independent PRNG per (seed, stream name) by hashing, per 03 §8, and tests/test_rng.py shows same seed and name give the same sequence and different names give different sequences."
+  allowed_paths: [synw/rng.py, tests/test_rng.py]
+  acceptance:
+    requirements: ["NO-STEP: determinism foundation for 06 step M0"]
+    extra: ["pytest tests/test_rng.py -q passes", "drawing from stream 'order' does not change the next value of stream 'world' (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-001]
+
+- key: SYNW-003
+  name: "Append-only event log with canonical JSON"
+  unit: engine
+  objective: "synw/events.py writes a JSON Lines run log (header, events {tick, seq, type, actor, payload}, footer with state hash) using canonical JSON with sorted keys and integers only, and exposes log_hash(path); tests/test_events.py covers round-trip and rejects floats."
+  allowed_paths: [synw/events.py, tests/test_events.py]
+  acceptance:
+    requirements: ["NO-STEP: event log contract from 03 §7"]
+    extra: ["pytest tests/test_events.py -q passes", "writing the same events twice yields the same log_hash"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-001]
+
+- key: SYNW-004
+  name: "World config schema and base parameters"
+  unit: worlds
+  objective: "schemas/world.schema.json and synw/config.py load and validate worlds/base.yaml, which holds every starting value of 03 §10.1 in integer milli-units, and tests/test_config.py rejects a config with a missing or out-of-range field."
+  allowed_paths: [schemas/world.schema.json, synw/config.py, worlds/base.yaml, tests/test_config.py]
+  acceptance:
+    requirements: ["NO-STEP: parameters from 03 §10.1"]
+    extra: ["pytest tests/test_config.py -q passes", "python -c \"import synw.config as c; c.load('worlds/base.yaml')\" exits 0"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-001]
+
+- key: SYNW-005
+  name: "Clock and map"
+  unit: engine
+  objective: "synw/world/clock.py maps a tick to (day, tick of day, cycle) for 16 ticks per day and 3-day cycles, and synw/world/map.py defines the 15 locations with districts and one-tick travel between districts; tests/test_clock_map.py covers tick 1, 16, 17, 48, 49 and 384."
+  allowed_paths: [synw/world/__init__.py, synw/world/clock.py, synw/world/map.py, tests/test_clock_map.py]
+  acceptance:
+    requirements: ["NO-STEP: time and space from 03 §2 and the v0.1 map"]
+    extra: ["pytest tests/test_clock_map.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-001]
+
+- key: SYNW-006
+  name: "River stock dynamics"
+  unit: engine
+  objective: "synw/world/river.py applies the end-of-day logistic update with harvest, sustainable level K/2, collapse threshold 0.2K (halved r) and polluting-mode r cut, in integer milli-units, per 03 §5.3; tests/test_river.py checks no harvest converges to K, harvest above r*K/4 per day drives the stock to collapse, and the stock never goes below 0."
+  allowed_paths: [synw/world/river.py, tests/test_river.py]
+  acceptance:
+    requirements: ["NO-STEP: commons model from 03 §5.3"]
+    extra: ["pytest tests/test_river.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-004]
+
+- key: SYNW-007
+  name: "Citizens, needs and health"
+  unit: engine
+  objective: "synw/world/agents.py holds citizen state and applies end-of-day basket consumption, rent and data fees, health changes, the health<30 productivity halving and incapacitation at 0, per 03 §3.2-3.3; tests/test_agents.py covers a full basket, each missing component, and incapacitation."
+  allowed_paths: [synw/world/agents.py, tests/test_agents.py]
+  acceptance:
+    requirements: ["NO-STEP: needs model from 03 §3"]
+    extra: ["pytest tests/test_agents.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-004]
+
+- key: SYNW-008
+  name: "Daily call auction"
+  unit: engine
+  objective: "synw/world/market.py clears one uniform-price call auction per good from limit orders, breaking ties with the 'market' stream, per 03 §5.4; tests/test_market.py covers no trade, partial fill, tie-break determinism and unfilled-order expiry."
+  allowed_paths: [synw/world/market.py, tests/test_market.py]
+  acceptance:
+    requirements: ["NO-STEP: price formation from 03 §5.4"]
+    extra: ["pytest tests/test_market.py -q passes", "same orders and seed give the same fills twice"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-002]
+
+- key: SYNW-009
+  name: "Production, Gate trade and Treasury"
+  unit: engine
+  objective: "synw/world/economy.py applies work and harvest output with profession multipliers and Gate export/import at fixed prices, and synw/world/treasury.py collects fees, pays the Data Tower payroll up to its cap and never goes below 0 (pro rata cuts logged), per 03 §5.2, §5.4, §5.5; tests/test_economy.py covers each."
+  allowed_paths: [synw/world/economy.py, synw/world/treasury.py, tests/test_economy.py]
+  acceptance:
+    requirements: ["NO-STEP: economy from 03 §5"]
+    extra: ["pytest tests/test_economy.py -q passes", "total credits in a closed test economy change only by Gate trade (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-007]
+
+- key: SYNW-010
+  name: "Brain interface and action schema"
+  unit: engine
+  objective: "synw/brains/base.py defines the Brain interface (act, respond_draw, propose, evaluate, speak, ballot) and the observation and action dataclasses for the closed action set of 03 §4, with a validator that turns invalid output into rest/abstain and logs it; tests/test_brain_base.py covers validation."
+  allowed_paths: [synw/brains/__init__.py, synw/brains/base.py, tests/test_brain_base.py]
+  acceptance:
+    requirements: ["NO-STEP: brain contract from 03 §6.1"]
+    extra: ["pytest tests/test_brain_base.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-005]
+
+- key: SYNW-011
+  name: "Mock brain v0: economic life only"
+  unit: engine
+  objective: "synw/brains/mock.py implements steps 1, 3, 4, 5 and 7 of the per-tick rule in 03 §6.2 using persona numbers from worlds/personas.yaml (the table of 04 §4), with no civic behaviour or theft yet; tests/test_mock_brain.py checks a hungry agent works and a rich agent sells."
+  allowed_paths: [synw/brains/mock.py, worlds/personas.yaml, tests/test_mock_brain.py]
+  acceptance:
+    requirements: ["NO-STEP: mock brain from 03 §6.2, economic part"]
+    extra: ["pytest tests/test_mock_brain.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-009, SYNW-010]
+
+- key: SYNW-012
+  name: "Tick loop and run command"
+  unit: engine
+  objective: "synw/runner.py runs a season (simultaneous moves, resolution order from the 'order' stream, end-of-day steps, Sam's arrival on day 4) and synw/cli.py exposes 'synw run <world.yaml> --seed N --out runs/'; tests/test_determinism.py runs world A twice with the same seed and asserts identical log hashes."
+  allowed_paths: [synw/runner.py, synw/cli.py, worlds/a.yaml, tests/test_determinism.py, pyproject.toml]
+  acceptance:
+    requirements: ["NO-STEP: 06 step M0, economic world only"]
+    extra: ["synw run worlds/a.yaml --seed 1 --out runs/ twice gives the same sha256 of the log", "one 384-tick run finishes in under 10 seconds"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-003, SYNW-006, SYNW-011]
+
+- key: SYNW-013
+  name: "Economic metrics from the event log"
+  unit: metrics
+  objective: "synw/metrics/economy.py computes P2 (window wealth Gini in reference units), S1 (basket floor), S2 (window output) and S3 (commons health) from a run log, per 05 §2-4; tests/test_metrics_economy.py checks each against a hand-built log."
+  allowed_paths: [synw/metrics/__init__.py, synw/metrics/economy.py, tests/test_metrics_economy.py]
+  acceptance:
+    requirements: ["NO-STEP: metric definitions from 05"]
+    extra: ["pytest tests/test_metrics_economy.py -q passes", "Gini of equal wealth is 0 and of all wealth on one citizen is (n-1)/n (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-012]
+
+- key: SYNW-014
+  name: "Calibration report for the null world"
+  unit: worlds
+  objective: "synw/analysis/calibrate.py runs world A with the null mock and no shocks over a seed range and prints each 03 §10.2 target with its value and pass/fail; tests/test_calibrate.py runs it on 3 seeds and checks the report format."
+  allowed_paths: [synw/analysis/__init__.py, synw/analysis/calibrate.py, tests/test_calibrate.py]
+  acceptance:
+    requirements: ["NO-STEP: 06 step M1 tooling; tuning itself is a later ticket"]
+    extra: ["python -m synw.analysis.calibrate --world worlds/a.yaml --seeds 1-20 prints one line per target"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-013]
+
+- key: SYNW-015
+  name: "Theft, detection and the founding norm"
+  unit: engine
+  objective: "Add steal to synw/world/agents.py and synw/brains/mock.py with the compliance formula of 03 §6.4 (null: lambda=0), detection from the 'world' stream, automatic restitution, and ground-truth breach events; the founding ban(steal) is in force from tick 1 in every world; tests/test_theft.py covers detected and undetected theft."
+  allowed_paths: [synw/world/agents.py, synw/brains/mock.py, tests/test_theft.py]
+  acceptance:
+    requirements: ["NO-STEP: 02 §3.3 and 03 §5.6"]
+    extra: ["pytest tests/test_theft.py -q passes", "every steal produces a breach event whether detected or not (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-012]
+
+- key: SYNW-016
+  name: "Typed decision effects and rule registry"
+  unit: engine
+  objective: "schemas/effect.schema.json and synw/governance/effects.py define the closed effect list of 02 §3.1 with legal ranges, and synw/governance/rules.py tracks rules in force, applies enforced effects and computes exposures for normative ones; tests/test_effects.py covers set_tax, set_dividend, harvest_cap exposure and ban exposure."
+  allowed_paths: [schemas/effect.schema.json, synw/governance/__init__.py, synw/governance/effects.py, synw/governance/rules.py, tests/test_effects.py]
+  acceptance:
+    requirements: ["NO-STEP: decision effects from 02 §3"]
+    extra: ["pytest tests/test_effects.py -q passes", "an effect outside its legal range is rejected at examination (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-015]
+
+- key: SYNW-017
+  name: "Projection function"
+  unit: engine
+  objective: "synw/governance/project.py returns the deterministic one-cycle and three-cycle forecast of an effect (per-citizen wealth change, River stock, basket floor, Treasury) without touching live state or any random stream, per 02 §3.4; tests/test_project.py checks a harvest cap raises projected River stock and a dividend lowers projected Treasury."
+  allowed_paths: [synw/governance/project.py, tests/test_project.py]
+  acceptance:
+    requirements: ["NO-STEP: projection from 02 §3.4"]
+    extra: ["pytest tests/test_project.py -q passes", "calling project() does not change the run's log hash (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-016]
+
+- key: SYNW-018
+  name: "Bootstrap plenary block (World A)"
+  unit: engine
+  objective: "synw/governance/blocks.py loads blocks validated by schemas/procedural-block.schema.json and runs the bootstrap-v1 block of 02 §8 (examination, plenary vote at the Hall, majority of votes cast, quorum 0.5, FIFO agenda cap 3), with mock propose/evaluate/ballot from 03 §6.2; worlds/a.yaml uses it; tests/test_bootstrap.py shows a proposal passing and one failing quorum."
+  allowed_paths: [synw/governance/blocks.py, schemas/procedural-block.schema.json, worlds/a.yaml, worlds/blocks/bootstrap-v1.yaml, synw/brains/mock.py, tests/test_bootstrap.py]
+  acceptance:
+    requirements: ["NO-STEP: World A from 02 §8"]
+    extra: ["pytest tests/test_bootstrap.py -q passes", "synw run worlds/a.yaml --seed 1 logs at least one sitting per cycle"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-017]
+
+- key: SYNW-019
+  name: "Wealth-weighted variant (World C)"
+  unit: worlds
+  objective: "worlds/c.yaml and worlds/blocks/bootstrap-wealth-v1.yaml differ from World A only in vote weights (wealth in reference units at the start of the sitting) and quorum (half of total wealth); tests/test_world_c.py checks a diff of the resolved configs shows only those two fields."
+  allowed_paths: [worlds/c.yaml, worlds/blocks/bootstrap-wealth-v1.yaml, synw/governance/blocks.py, tests/test_world_c.py]
+  acceptance:
+    requirements: ["NO-STEP: World C from 02 §8"]
+    extra: ["pytest tests/test_world_c.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.25d
+  budget: {tokens: 120k, wall_clock: 1.5h}
+  blocked_by: [SYNW-018]
+
+- key: SYNW-020
+  name: "Kleroterion"
+  unit: engine
+  objective: "synw/governance/kleroterion.py draws panels from an eligible pool with weights (halved for recent service), optional wealth-tercile strata and replacement draws on decline, using only the 'kleroterion' stream, and archives pool, weights and result, per 02 §7; tests/test_kleroterion.py checks determinism and that over 10,000 draws selection frequencies match weights within 2%."
+  allowed_paths: [synw/governance/kleroterion.py, tests/test_kleroterion.py]
+  acceptance:
+    requirements: ["NO-STEP: sortition service from 02 §7"]
+    extra: ["pytest tests/test_kleroterion.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-002]
+
+- key: SYNW-021
+  name: "Mechanical deliberation step"
+  unit: engine
+  objective: "synw/governance/deliberation.py runs information, debate (round-robin with facilitator rule), dialogue (median amendment) and presence gating at the Hall per 02 §2 and 03 §6.2, logging every turn; tests/test_deliberation.py checks an absent panelist cannot vote and a spread panel amends toward its median."
+  allowed_paths: [synw/governance/deliberation.py, synw/brains/mock.py, tests/test_deliberation.py]
+  acceptance:
+    requirements: ["NO-STEP: deliberation protocol from 02 §2"]
+    extra: ["pytest tests/test_deliberation.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-018]
+
+- key: SYNW-022
+  name: "Rule-based Advocates and Suspensive Objection"
+  unit: engine
+  objective: "synw/governance/advocates.py implements the River and Unborn briefs and objection triggers of 02 §6 from project(), at most one objection per Advocate per proposal, reopening one dialogue tick and re-aggregation; tests/test_advocates.py covers an objection, no objection, and the once-only limit."
+  allowed_paths: [synw/governance/advocates.py, synw/governance/blocks.py, tests/test_advocates.py]
+  acceptance:
+    requirements: ["NO-STEP: Advocates from 02 §6"]
+    extra: ["pytest tests/test_advocates.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-017, SYNW-021]
+
+- key: SYNW-023
+  name: "World B small-town configuration"
+  unit: worlds
+  objective: "worlds/b.yaml and worlds/blocks/ (ordinary-law-v1, budget-v1, constitutional-v1, review-v1) configure the Cycle Assembly and Review Bench of 02 §4 with lottery agenda, dividend from surplus capped at one Sawa, and stipends per 01 Article 5; tests/test_world_b.py runs one seed and checks draws each cycle, 8 distinct members, and dividend never above the cap."
+  allowed_paths: [worlds/b.yaml, worlds/blocks/, synw/governance/blocks.py, synw/world/treasury.py, tests/test_world_b.py]
+  acceptance:
+    requirements: ["NO-STEP: World B from 01 and 02 §4"]
+    extra: ["pytest tests/test_world_b.py -q passes", "synw run worlds/b.yaml --seed 1 is deterministic (same hash twice)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-020, SYNW-022]
+
+- key: SYNW-024
+  name: "Paired comparison statistics"
+  unit: metrics
+  objective: "synw/analysis/compare.py computes, from a table of run-level outcomes, paired differences by seed, 95% percentile bootstrap intervals, sign-flip permutation p-values (exact up to 20 seeds), Holm correction and the verdict rule of 06 §7.2; tests/test_compare.py checks the exact minimum p for 8 seeds is 2/256 and Holm on known p-values."
+  allowed_paths: [synw/analysis/compare.py, tests/test_compare.py]
+  acceptance:
+    requirements: ["NO-STEP: statistics from 06 §7"]
+    extra: ["pytest tests/test_compare.py -q passes", "results are identical across two calls with the same resampling seed"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-001]
