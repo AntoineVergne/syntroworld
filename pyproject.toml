@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "synw"
+version = "0.1.0"
+description = "Syntroworld engine: a deterministic town simulation where the constitution is the experimental variable"
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6", "jsonschema>=4"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+synw = "synw.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["synw*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

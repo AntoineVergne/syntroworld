@@ -1,0 +1,19 @@
+# Worlds A and C start here (02 §8): a plenary that may amend itself.
+id: bootstrap-v1
+decision_class: legislative
+classes: [legislative, budgetary, constitutional, emergency, adjudication]  # covers every class, including amending itself
+body: plenary
+steps:
+  - type: examination
+    criteria: [within_legal_range, not_duplicate]
+  - type: vote
+    location: assembly_hall
+    weights: one_citizen_one_vote
+    rule: majority_of_votes_cast
+    quorum: {share: 500, of: citizens}
+  - type: publication
+agenda: {cap: 3, order: first_registered}
+sitting: {day_of_cycle: 2, ticks: [9, 14]}
+narrative:
+  self_rule: S9
+fairness_level: 500

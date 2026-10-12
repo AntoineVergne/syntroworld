@@ -1,0 +1,9 @@
+# World A, Emergent (02 §8, 06 §3.1): a simple-majority plenary that citizens may rewrite.
+extends: base.yaml
+world: A
+description: "Bootstrap block: open proposals, plenary vote, simple majority of votes cast, amendable by itself"
+personas: personas.yaml
+brain: {type: mock, lambda: 0}
+governance:
+  blocks: [blocks/bootstrap-v1.yaml]
+  agenda: {cap: 3, order: first_registered}

@@ -1,0 +1,22 @@
+# World B (01 Art. 2.3, 5): taxes, dividend, stipends and allocations, by the Cycle Assembly.
+id: budget-v1
+decision_class: budgetary
+body: cycle_assembly
+steps:
+  - type: examination
+    criteria: [within_legal_range, within_compact, not_duplicate]
+  - type: deliberation
+    phases: {information: 1, debate: 2, dialogue: 2}
+    location: assembly_hall
+  - type: advocate_hearing
+    advocates: [river, unborn]
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, yes: 3, of: 5}
+    quorum: {count: 4}
+  - type: publication
+narrative:
+  capture_resistance: S6
+  intergenerational_care: S14
+fairness_level: 800

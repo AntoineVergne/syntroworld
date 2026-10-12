@@ -1,0 +1,7 @@
+# World C, Plutocracy (06 §3.1): World A with votes weighted by wealth.
+# Resolved, it differs from World A only in the bootstrap block's vote weights and quorum.
+extends: a.yaml
+world: C
+description: "Bootstrap block as A, votes weighted by wealth"
+governance:
+  blocks: [blocks/bootstrap-wealth-v1.yaml]
