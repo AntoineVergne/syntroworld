@@ -13,6 +13,9 @@ def wpath(name):
     return os.path.join(ROOT, "worlds", name)
 
 
+START = load(wpath("base.yaml"))["start"]["founder"]["credits"]   # founders' starting credits
+
+
 class StubBrain(Brain):
     """A predictable brain for governance tests: attends every sitting it is due at."""
 

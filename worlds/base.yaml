@@ -22,7 +22,7 @@ basket:                # consumed per citizen per day at end-of-day
   energy: 2000
 
 start:
-  founder: {credits: 60000, food: 4000, energy: 4000}
+  founder: {credits: 45000, food: 4000, energy: 4000}   # calibrated from 60 (calibration-log.md)
   newcomer: {credits: 0, food: 2000, energy: 2000}
   health: 100
   relationship: 500
@@ -55,8 +55,8 @@ production:            # per work tick, before multipliers
 
 river:
   K: 1000000
-  r: 250               # per day, per-mille
-  S0: 800000
+  r: 60                # per day, per-mille; calibrated from 0.25 (calibration-log.md)
+  S0: 700000           # calibrated from 0.8 K (calibration-log.md)
   sustainable: 500     # share of K
   collapse: 200        # share of K; below it r and Fields output are halved
   polluting_cut: 200   # r is cut by this share while the Plant pollutes

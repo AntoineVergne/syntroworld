@@ -1,7 +1,7 @@
 from synw.brains.base import Action
 from synw.world import agents as A
 
-from conftest import run_until
+from conftest import START, run_until
 
 
 def _starve(c):
@@ -58,7 +58,7 @@ def test_exit_takes_holdings(make_world):
     assert not A.leave(w, c)
     c.location = "gate"
     assert A.leave(w, c)
-    assert c.status == "exited" and c.credits == 60000
+    assert c.status == "exited" and c.credits == START
     assert c.idx not in w.active_ids()
 
 

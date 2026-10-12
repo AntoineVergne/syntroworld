@@ -3,7 +3,7 @@ import pytest
 from synw.runner import run
 from synw.world import economy as ECO
 
-from conftest import wpath
+from conftest import START, wpath
 
 
 def test_fields_and_multipliers(make_world):
@@ -40,7 +40,7 @@ def test_gate_trade(make_world):
     w = make_world()
     c = w.citizens[0]
     r = ECO.sell_out(w, c, "food", 2000)
-    assert r["credits"] == 3000 and c.credits == 63000 and c.inv["food"] == 2000
+    assert r["credits"] == 3000 and c.credits == START + 3000 and c.inv["food"] == 2000
     r = ECO.buy_in(w, c, "energy", 1000)
     assert r["credits"] == -4000 and c.inv["energy"] == 5000
     c.credits = 2000
@@ -76,7 +76,7 @@ def test_credits_change_only_by_gate_trade(world):
     """Closed economy: citizens' credits plus the Treasury move only through the Gate
     (and allocations spent outside the town)."""
     w = run(wpath(world), 2)
-    start = 10 * 60000  # founders; Sam arrives with 0
+    start = 10 * START  # founders; Sam arrives with 0
     end = sum(c.credits for c in w.citizens.values()) + w.treasury.balance + w.care_pool
     gate = sum(e["payload"]["credits"] for e in w.log.events if e["type"] == "gate_trade")
     sinks = sum(e["payload"]["paid"] for e in w.log.events

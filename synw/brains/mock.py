@@ -253,26 +253,43 @@ class MockBrain(Brain):
             if surplus >= 100:
                 lim = max(obs.gate["export"].get(g, 1), last * (1000 - 100 + margin) // 1000)
                 return Action("order", {"good": g, "side": "sell", "qty": surplus, "limit": max(1, lim)})
-            need = obs.basket.get(g, 0) - obs.inventory[g]
+            need = keep - obs.inventory[g]          # shortfall against the same two-day holding
             if need > 0 and budget > 0:
                 cap = obs.gate["import"].get(g, last * 2)
                 lim = min(cap, last * (1000 + 100 - margin // 2) // 1000)
                 qty = min(need, budget * 1000 // max(1, lim))
                 if qty > 0:
                     return Action("order", {"good": g, "side": "buy", "qty": qty, "limit": max(1, lim)})
-        return self._leisure(obs)
+        # orders placed: stay at the Exchange until the auction (the crowd is an opportunity, §6.4)
+        return self._harm(obs) or REST
 
     # Gate: buy in the morning what the auction could not supply; sell large surpluses after work
     def _gate(self, obs, selling=False):
         if obs.tick_of_day > 12:
             return None
         sells = []
+        if not selling:
+            # distress sale: credits cannot cover tonight's fees and missing basket
+            need_cost = obs.fees.get("rent", 0) + obs.fees.get("data", 0) + sum(
+                max(0, obs.basket[g] - obs.inventory[g]) * obs.gate["import"][g] // 1000
+                for g in ("food", "energy"))
+            if obs.credits < need_cost:
+                for g in ("artifact", "food", "energy"):
+                    keep = obs.basket.get(g, 0)
+                    q = obs.inventory[g] - keep
+                    if q >= 100 and g in obs.gate["export"]:
+                        sells.append((g, q))
+                        break
         if selling:
             for g in GOODS:
                 keep = 2 * obs.basket.get(g, 0) if g != "artifact" else 0
                 surplus = obs.inventory[g] - keep
                 big = 2 * obs.basket.get(g, 0) if g != "artifact" else 1000
-                if g in obs.gate["export"] and (surplus >= big or (obs.location == "gate" and surplus >= 1000)):
+                exp = obs.gate["export"].get(g)
+                last = obs.prices.get(g, obs.prices_ref[g])
+                if exp is None or exp * 1000 < last * (1000 - self.p["trade_margin"] - 50):
+                    continue        # the Exchange pays better: keep the surplus for the auction
+                if surplus >= big or (obs.location == "gate" and surplus >= 1000):
                     sells.append((g, surplus))
         buys = []
         if not selling and obs.health < 80:

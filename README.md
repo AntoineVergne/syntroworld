@@ -38,21 +38,12 @@ tests/         one file per ticket
 Units are integers everywhere: credits and goods in milli-units, shares and
 probabilities in per-mille, health 0 to 100.
 
-## Calibration status (null world A, seeds 1-20)
+## Calibration status
 
-The report runs; tuning the parameters is a separate step (06 M1). Five of eight
-targets pass out of the box:
-
-| Target | Value | |
-|---|---|---|
-| Gini rise day 1 to 24 ≥ 0.10 | 0.21 | pass |
-| River below K/2 in 30–70% of runs | 0% | **fail**: the mock fishes too little |
-| Basket floor S1 in 70–95% | 71% | pass (barely) |
-| Founding-norm compliance S4 in 85–98% | 98.6% | **fail**: slightly too honest |
-| A death or exit in 10–50% of runs | 0% | **fail** |
-| Harm rate S18 > 0 in ≥ 80% of runs | 100% | pass |
-| Drought cuts days 7–8 output ≥ 10% | 10.5% | pass |
-| One run under 10 s | 0.7 s | pass |
+All eight null-world targets of 03 §10.2 hold on 200 seeds after calibration. Three
+world parameters changed: River r 0.25 → 0.06, S0 0.8 K → 0.7 K, founders' credits
+60 → 45. Five mock-brain fixes were also made. See `calibration-log.md` for the
+values, the reasons and what to watch.
 
 ## Where the specs left room: choices made in code
 
@@ -66,18 +57,21 @@ changed there.
 - **Deals** (`world/deals.py`): `accept` is an action (the "other side accepts or not"
   of 03 §4). An unaccepted offer expires after one day. If neither side settles, the deal
   expires without a default.
-- **Prices with no trade** (`runner.py`): the last price moves toward the best unfilled
-  bid (or ask), within the Gate's import and export prices. This lets shortages show up
-  in prices.
+- **Prices with no trade** (`runner.py`): with bids only, the last price rises toward the
+  best unfilled bid, up to the import price; with asks only, it falls 10% a day toward
+  the export price. This lets shortages and gluts show up in prices.
 - **Beliefs** (`world/claims.py`): posts are read at the start of each day by citizens
   who paid the data fee; messages are read at the start of the next tick. Belief rolls
   use a separate `belief/<agent>` stream, so the brains' own streams are untouched.
   Claim types: River level (high ≥ 0.7 K, ok ≥ 0.5 K, low), "X stole" (true if X
   stole in the last cycle), and "price above".
 - **Mock brain** (`brains/mock.py`) follows 03 §6.2 and adds: morning Gate purchases for
-  needs the auction left unmet; selling large surpluses at the Gate after work; heading
-  to the Exchange at tick 13; Clinic care by carers; occasional Observatory queries (more
-  often for low-credulity personas); a harmful-act check at most once per act per day.
+  needs the auction left unmet; selling large surpluses at the Gate after work, but
+  only when the Gate pays about as well as the Exchange; distress sales at the Gate;
+  heading to the Exchange at tick 13 and staying there until the auction; Clinic care
+  by carers; occasional Observatory queries (more often for low-credulity personas); a
+  harmful-act check at most once per act per day. "Buy shortfall" is measured against
+  the same two-day holding as "sell surplus".
   Evaluations add a small honesty-based term for bans, fines and sanctions, which the
   projection alone scores as zero.
 - **Suspensive Objection** (`governance/blocks.py`): the first vote after an objection is

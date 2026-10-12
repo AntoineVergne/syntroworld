@@ -1,6 +1,8 @@
 from synw.brains.base import Action, check_action
 from synw.world import agents as A
 
+from conftest import START
+
 
 def _c(w, idx=0):
     return w.citizens[idx]
@@ -15,7 +17,7 @@ def test_full_basket(make_world):
     assert res["full"]
     assert c.health == 60
     assert c.inv["food"] == 2000 and c.inv["energy"] == 2000
-    assert c.credits == 60000 - 3000 - 1000
+    assert c.credits == START - 3000 - 1000
     assert w.treasury.balance == t0 + 4000
     c.health = 95
     A.consume_basket(w, c)

@@ -1,6 +1,6 @@
 from synw.world import deals as D
 
-from conftest import run_until
+from conftest import START, run_until
 
 GIVE = {"item": "credits", "qty": 5000}
 GET = {"item": "food", "qty": 2000}
@@ -19,7 +19,7 @@ def test_settled_deal_conserves(make_world):
     assert D.settle(w, a, d["id"]) and D.settle(w, b, d["id"])
     assert d["status"] == "settled"
     assert _totals(a, b) == before
-    assert a.credits == 55000 and a.inv["food"] == 6000 and b.credits == 65000 and b.inv["food"] == 2000
+    assert a.credits == START - 5000 and a.inv["food"] == 6000 and b.credits == START + 5000 and b.inv["food"] == 2000
 
 
 def test_default_visible_to_victim(make_world):

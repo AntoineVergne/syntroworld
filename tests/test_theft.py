@@ -3,7 +3,7 @@ from synw.metrics.legitimacy import s4_founding_compliance
 from synw.runner import run
 from synw.world import agents as A
 
-from conftest import wpath
+from conftest import START, wpath
 
 
 def detection(p):
@@ -21,9 +21,10 @@ def _pair(w):
 def test_detected_theft_is_reversed(make_world):
     w = make_world(cfg_patch=detection(1000))
     thief, target = _pair(w)
+    target.credits = 60000
     amount, detected = A.steal(w, thief, target)
     assert amount == 10000 and detected     # min(20% of 60, cap 10)
-    assert thief.credits == 60000 and target.credits == 60000
+    assert thief.credits == START and target.credits == 60000
     types = [e["type"] for e in w.log.events]
     assert "theft" in types and "breach" in types and "restitution" in types and "detected" in types
 
@@ -34,7 +35,7 @@ def test_undetected_theft_stands(make_world):
     target.credits = 20000
     amount, detected = A.steal(w, thief, target)
     assert amount == 4000 and not detected
-    assert thief.credits == 64000 and target.credits == 16000
+    assert thief.credits == START + 4000 and target.credits == 16000
     breach = [e for e in w.log.events if e["type"] == "breach"]
     assert breach and breach[0]["payload"]["rule"] == "R0-steal" and breach[0]["payload"]["detected"] == 0
 

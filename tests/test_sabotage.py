@@ -1,6 +1,8 @@
 from synw.world import agents as A
 from synw.world import economy as ECO
 
+from conftest import START
+
 
 def det(p):
     def patch(cfg):
@@ -35,13 +37,13 @@ def test_detected_saboteur_pays_capped_by_credits(make_world):
     s.credits = 1500
     dmg, detected = A.sabotage(w, s, v)
     assert detected and dmg == 4000
-    assert s.credits == 0 and v.credits == 60000 + 1500
+    assert s.credits == 0 and v.credits == START + 1500
     w2 = make_world(cfg_patch=det(1000))
     s2 = w2.citizens[5]
     s2.location = "plant"
     t0 = w2.treasury.balance
     dmg, _ = A.sabotage(w2, s2, "plant")
-    assert w2.treasury.balance - t0 == min(dmg, 60000)
+    assert w2.treasury.balance - t0 == min(dmg, START)
 
 
 def test_breach_events_ground_truth(make_world):

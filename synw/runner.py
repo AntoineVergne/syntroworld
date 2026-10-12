@@ -586,8 +586,8 @@ class World:
                 exp = self.cfg["gate"]["export"].get(g, 0)
                 if bids and not asks:
                     self.last_price[g] = min(imp, max(self.last_price[g], max(bids)))
-                elif asks and not bids:
-                    self.last_price[g] = max(exp, min(self.last_price[g], min(asks)))
+                elif asks and not bids:   # unsold supply: the price falls toward the Gate's export price
+                    self.last_price[g] = max(exp, min(self.last_price[g], min(asks)) * 900 // 1000)
             self.log.emit(self.tick, "auction", "exchange",
                           {"good": g, "price": price, "volume": sum(f["qty"] for f in fills if f["side"] == "buy"),
                            "orders": len(orders), "fills": [[f["agent"], f["side"], f["qty"]] for f in fills],
