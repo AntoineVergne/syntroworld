@@ -74,7 +74,7 @@ counted in any metric.
 | `allocate` | amount, purpose (`river_restoration`, `care_wage`, `monitoring`, `public_art`, `plant_upgrade`) | enforced |
 | `set_plant_mode` | `clean` or `polluting` | enforced |
 | `harvest_cap` | max food per citizen per day | normative |
-| `ban` | action (`steal`, `post`, `harvest`, `sell_out`), optional scope | normative |
+| `ban` | act (`steal`, `sabotage`, `false_claim`, `default`, `post`, `message`, `harvest`, `sell_out`), optional scope | normative |
 | `set_fine` | target action, amount | enforced (applied on detection) |
 | `suspend` | agent, list of actions, duration (max 1 cycle) | enforced |
 | `restitution` | from agent, to agent, amount | enforced |
@@ -90,15 +90,20 @@ raises Plant output without pollution.
 - **Enforced** effects are applied by the engine. Nobody can break them.
 - **Normative** effects are rules agents can break. The engine records each breach
   (ground truth) and each detection. Compliance (P1) counts only normative rules.
-- **Exposure** (for P1): for `ban`, the banned action was feasible for the citizen at
-  least once that day; for `harvest_cap`, the citizen harvested at least once that day.
+- **Exposure** (for P1): for `ban` of an action, the action was feasible for the citizen
+  at least once that day; for `ban(false_claim)`, the citizen made at least one claim that
+  day; for `ban(default)`, the citizen had at least one accepted deal due that day; for
+  `harvest_cap`, the citizen harvested at least once that day.
+- **Exit cannot be banned or taxed.** `leave` is outside the effect list, so exits stay a
+  clean signal of legitimacy (05, S17).
 
-### 3.3 The founding theft norm
+### 3.3 The founding norms
 
-In **every world**, `ban(steal)` is in force from tick 1, and detected theft is reversed
-by the world rule (03 §5.6). This gives every world at least one rule to comply with, so
-legitimacy is always defined and cannot be won by deciding nothing. Each world may add
-fines or suspensions through its own procedures.
+In **every world**, `ban(steal)` and `ban(sabotage)` are in force from tick 1. A detected
+theft is reversed and a detected saboteur pays the damage, by world rules (03 §5.6 to
+5.7). This gives every world rules to comply with, so legitimacy is always defined and
+cannot be won by deciding nothing. Deception is not banned at founding; any world may ban
+or sanction it. Each world may add fines or suspensions through its own procedures.
 
 ### 3.4 The projection
 
@@ -227,7 +232,7 @@ narrative:
 | Dividend at start | no | yes | no |
 | Stipends at start | no | yes | no |
 | Lottery | available through `amend_block` | constitutional | available through `amend_block` |
-| Effects, actions, tools, Treasury inflows, theft norm, projection | identical | identical | identical |
+| Effects, actions, tools, Treasury inflows, founding norms, projection | identical | identical | identical |
 
 ## 10. Example blocks (World B)
 

@@ -1,104 +1,46 @@
-# Decisions only Antoine can make
+# Decisions
 
-Each is one question with a recommended answer. The rewritten docs assume the
-recommendation; changing an answer means editing the doc named in brackets.
+Questions only Antoine can make. Questions 2 to 20 were answered in review on 2026-10-12, and
+the docs have been updated to match. Any change of mind means editing the doc named in
+brackets.
 
-## Experiment
+| # | Question | Answer | Where |
+|---|---|---|---|
+| 1 | Are mock-brain results instrument checks only, never findings about AI societies? | Not asked separately; the docs assume yes. Say if you disagree. | 06 §2 |
+| 2 | What is World A? | A simple-majority plenary that citizens may rewrite | 02 §8 |
+| 3 | What is World C? | Same as A, but votes weighted by wealth; kept in the main grid | 06 §3.1 |
+| 4 | Which primary outcomes and smallest effects of interest? | Four, as proposed: compliance (5 points), wealth Gini (0.05), civic breadth (10 points), shock output loss (5 points) | 06 §6 |
+| 5 | Where do the B ablations run? | Phase M only for now; phase L decided from phase M results | 06 §3.3 |
+| 6 | Sermon control (A plus the Compact text) in phase L? | Yes | 06 §3.4 |
+| 7 | No-shock twins in phase L? | Yes, unless the pilot shows they cost too much; then the weaker pre-shock baseline, labelled | 05 P4, 06 §8.2 |
+| 8 | If power asks for more seeds than budget allows? | Raise that outcome's smallest effect of interest in writing before running; never fewer than 12 seeds per world as confirmatory | 06 §7.4 |
+| 9 | Season shape? | 8 cycles of 3 days, 384 ticks | 03 §2, 06 §4 |
+| 10 | Assemblies below 20 citizens? | Small-town setup: Cycle Assembly 5, Review Bench 3, recent service halves draw weight | 01 Art. 2.7, 02 §4 |
+| 11 | Dividend? | Capped at one Sawa per citizen per day, paid only from the surplus | 01 Art. 5 |
+| 12 | Sawa? | Accounting unit indexed to basket cost; no peg in Season 1 | 03 §5.1 |
+| 13 | Arrivals? | World event, the same in every world (Sam on day 4) | 01 Art. 1, 03 §3.5 |
+| 14 | Founding population? | Ten founders (including the new farmer, Ama) plus Sam | 04 §3 |
+| 15 | Advocates? | Rule-based in every phase; a model may write brief prose only | 02 §6 |
+| 16 | Wrongdoing and departures in Season 1? | **All allowed:** sabotage, deception beyond forgery (false claims, defaults on deals), deaths and exits | 03 §3.4, §4, §5.7–5.8; 05 S16–S19 |
+| 17 | Town name? | **Kleros** | 01 |
+| 18 | Engine stack? | Python library and command-line runner writing JSON Lines; no web server or database server | 03 §1, §9 |
+| 19 | README licence section and title? | Removed; renamed Syntroworld; README added | source-docs/README.md |
+| 20 | Publication promises in 06? | Dropped for now; backlog | 06 §10 |
 
-1. **Are mock-brain results instrument checks only, never findings about AI societies?**
-   Recommend: yes. The mock tests the engine, the metrics and the statistics, and gives a
-   mechanical baseline. It says nothing about how AI agents behave. [06 §2]
+## Consequences worth knowing
 
-2. **Is World A "a bootstrap plenary with simple majority, which citizens may rewrite"?**
-   Recommend: yes. An engine cannot run "no constitution"; something must say how a
-   proposal binds. Naming the bootstrap makes A honest and reproducible. [02 §8]
+- **Decision 16** means populations can diverge. To keep worlds comparable: starting
+  populations are identical; dead and departed citizens stay in metric denominators
+  (frozen wealth in the Gini, no civic acts after departure), so a world never looks more
+  equal or engaged because its poorest left; exit cannot be banned or taxed, so it stays a
+  clean legitimacy signal; sabotage joins theft as a founding norm in every world;
+  calibration keeps departures rare in the null world. Five tickets were added
+  (SYNW-025 to SYNW-029).
+- **Decision 17:** "Kleros" is also the Decision Lego name for the lottery step (02 §1.1),
+  and the name of an existing blockchain dispute-resolution project. Neither blocks
+  internal use; worth a check before anything public.
 
-3. **Should C differ from A only in vote weights (wealth instead of one citizen one vote)?**
-   Recommend: yes, and keep C in the main grid. That makes A vs C a clean plutocracy
-   test. It costs nothing in phase M; its phase L cost is decided at L2. [06 §3.1]
+## Still open
 
-4. **Which four primary outcomes, and what smallest effect matters for each?**
-   Recommend: P1 compliance (5 points), P2 wealth Gini (0.05), P3 civic breadth
-   (10 points), P4 shock output loss (5 points). Everything else is secondary. [06 §6]
-
-5. **Do the B ablations (no lottery, no Advocates, no dividend, no stipend) run in phase L,
-   or only in phase M?**
-   Recommend: phase M only, then decide from the mechanical results which one, if any,
-   is worth model spend. [06 §3.3]
-
-6. **Add the sermon control (A institutions plus the Compact text) in phase L?**
-   Recommend: yes. It is the most direct test of "institutions versus instructions",
-   and more useful than v0.1's showcase run. [06 §3.4]
-
-7. **In phase L, run a no-shock twin for every shocked run?**
-   Recommend: yes for the main grid. It roughly doubles phase L cost but gives a clean
-   resilience measure. If the cost is too high after the pilot, fall back to the
-   pre-shock baseline and label P4 as weaker. [05 P4, 06 §8.2]
-
-8. **If the power calculation asks for more seeds than the budget allows, what gives?**
-   Recommend: raise the smallest effect of interest for that outcome, in writing, before
-   running; never run fewer seeds than 12 per world and call it confirmatory. [06 §7.4]
-
-## The polity and the town
-
-9. **Season shape: 8 cycles of 3 days (384 ticks) instead of 3 cycles of 7 days?**
-   Recommend: yes. Same cost, 8 sittings instead of 3, and room after each shock.
-   [03 §2, 06 §4]
-
-10. **Small-town provision: merge Oversight and Adjudication into a 3-seat Review Bench,
-    and replace "no consecutive terms" with halved draw weight, below 20 citizens?**
-    Recommend: yes. With 10 to 11 citizens the v0.2 seats do not fit and the lottery
-    becomes rotation. The cost is that the watchdog and the judge are the same body for
-    now. [01 Article 2.7, 02 §4]
-
-11. **Dividend: capped at one Sawa and paid only from the surplus, rather than guaranteed
-    "sufficient for the basket"?**
-    Recommend: yes. A guaranteed floor makes equality true by construction and the
-    Treasury cannot fund it without taxes. B should have to legislate its way to it.
-    [01 Article 5]
-
-12. **Sawa: an accounting unit indexed to the basket cost, with no peg or reserve
-    operations in Season 1?**
-    Recommend: yes. The peg needs a monetary policy model the mock cannot drive and the
-    metrics do not need. Revisit for Season 2. [03 §5.1]
-
-13. **Citizenship Lottery: replace with arrivals as a world event (Sam on day 4 in every
-    world)?**
-    Recommend: yes. A lottery only in B makes populations differ, which breaks the
-    design. [01 Article 1, 03 §3.5]
-
-14. **Population: ten founders plus Sam (adding a new quiet farmer, Ama), or v0.1's nine
-    founders plus Sam?**
-    Recommend: ten plus Sam. It fills the small-town seats with some slack and adds a
-    citizen with no political agenda. [04 §3]
-
-15. **Advocates: rule-based in every phase, with a model writing only the brief's prose in
-    phase L?**
-    Recommend: yes. A model Advocate would bring model behaviour into B only, and would
-    raise "who aligns the proxy" again. [02 §6]
-
-16. **Scope of wrongdoing in Season 1: theft and forged posts only (no sabotage, no other
-    deception), and no deaths or exits?**
-    Recommend: yes. Each removed item either breaks identical populations or cannot be
-    checked mechanically. [03 §3.4, §4]
-
-17. **What is the town called?** It cannot be Syntropolis, which is the universe.
-    Recommend: Antoine picks a short in-world name; the docs say "the town" until then.
-    [01]
-
-## Build and outputs
-
-18. **Engine stack: a Python library and command-line runner writing JSON Lines files,
-    with no web server or database server until a viewer is asked for?**
-    Recommend: yes. It matches "nothing runs as a service", is enough for thousands of
-    mock runs, and keeps determinism easy to prove. [03 §1, §9]
-
-19. **Remove the README's licence section and its "Syntropolis World" title before the
-    README enters the repository?**
-    Recommend: yes. The licence is decided at the end, and the name belongs to the
-    universe. [review.md]
-
-20. **Drop the publication commitments from 06 (manifesto week deliverables, public
-    viewer at a 3dpolitics subdomain, CC BY dataset)?**
-    Recommend: yes, for now. They imply dates, a licence and public pages, all outside
-    current scope. Keep them in a backlog. [06 §10]
+None of the 20. New questions will come from the phase M results (which ablations
+deserve model spend) and the phase L pilot (twins, seeds per world, cost).

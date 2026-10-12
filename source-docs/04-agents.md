@@ -85,27 +85,27 @@ the town treats Sam is an indicator, not a subplot.*
 
 *Ama replaces nobody: v0.1 counted Sam among "the ten" and had twelve residences for ten
 citizens. Now there are ten founders plus Sam, and eleven residences are occupied.
-Adding Ama gives the town one more producer with no political agenda. Antoine may prefer
-to keep ten founders including Sam (decisions.md).*
+Adding Ama gives the town one more producer with no political agenda. Confirmed by
+Antoine in review.*
 
 ## 4. Mock-brain numbers
 
 All in 0 to 1 unless stated. `mult` is the productivity multiplier at the main site;
 other sites use 1.0, except Sam who uses 0.8 everywhere.
 
-| # | Name | Main site | mult | work_drive (ticks/day) | greed | honesty | civic | public_good | sociability | credulity | trade_margin |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| 0 | Mira | Fields | 1.0 | 6 | 0.2 | 0.9 | 0.9 | 0.6 | 0.7 | 0.3 | 0.05 |
-| 1 | Kofi | River / Exchange | 1.2 | 8 | 0.6 | 0.8 | 0.5 | 0.2 | 0.6 | 0.3 | 0.25 |
-| 2 | Yuki | River | 0.8 | 6 | 0.1 | 0.95 | 0.7 | 0.9 | 0.3 | 0.1 | 0.05 |
-| 3 | Baptiste | Plant | 1.5 | 8 | 0.4 | 0.85 | 0.3 | 0.3 | 0.3 | 0.3 | 0.05 |
-| 4 | Zainab | Clinic / Fields | 1.0 | 7 | 0.1 | 0.95 | 0.7 | 0.8 | 0.8 | 0.3 | 0.0 |
-| 5 | Viktor | River | 1.2 | 6 | 0.8 | 0.5 | 0.3 | 0.1 | 0.4 | 0.5 | 0.10 |
-| 6 | Lena | Data Tower | 1.2 | 6 | 0.2 | 0.9 | 0.8 | 0.6 | 0.6 | 0.1 | 0.05 |
-| 7 | Diego | Workshop | 1.5 | 5 | 0.3 | 0.85 | 0.5 | 0.5 | 0.8 | 0.4 | 0.15 |
-| 8 | Priya | Data Tower | 1.0 | 6 | 0.2 | 0.95 | 0.8 | 0.5 | 0.4 | 0.1 | 0.05 |
-| 9 | Ama | Fields | 1.3 | 8 | 0.3 | 0.9 | 0.2 | 0.3 | 0.2 | 0.4 | 0.05 |
-| 10 | Sam | any | 0.8 | 8 | 0.4 | 0.85 | 0.5 | 0.3 | 0.6 | 0.6 | 0.05 |
+| # | Name | Main site | mult | work_drive (ticks/day) | greed | honesty | civic | public_good | sociability | credulity | trade_margin | exit_propensity |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | Mira | Fields | 1.0 | 6 | 0.2 | 0.9 | 0.9 | 0.6 | 0.7 | 0.3 | 0.05 | 0.2 |
+| 1 | Kofi | River / Exchange | 1.2 | 8 | 0.6 | 0.8 | 0.5 | 0.2 | 0.6 | 0.3 | 0.25 | 0.3 |
+| 2 | Yuki | River | 0.8 | 6 | 0.1 | 0.95 | 0.7 | 0.9 | 0.3 | 0.1 | 0.05 | 0.3 |
+| 3 | Baptiste | Plant | 1.5 | 8 | 0.4 | 0.85 | 0.3 | 0.3 | 0.3 | 0.3 | 0.05 | 0.4 |
+| 4 | Zainab | Clinic / Fields | 1.0 | 7 | 0.1 | 0.95 | 0.7 | 0.8 | 0.8 | 0.3 | 0.0 | 0.1 |
+| 5 | Viktor | River | 1.2 | 6 | 0.8 | 0.5 | 0.3 | 0.1 | 0.4 | 0.5 | 0.10 | 0.6 |
+| 6 | Lena | Data Tower | 1.2 | 6 | 0.2 | 0.9 | 0.8 | 0.6 | 0.6 | 0.1 | 0.05 | 0.2 |
+| 7 | Diego | Workshop | 1.5 | 5 | 0.3 | 0.85 | 0.5 | 0.5 | 0.8 | 0.4 | 0.15 | 0.4 |
+| 8 | Priya | Data Tower | 1.0 | 6 | 0.2 | 0.95 | 0.8 | 0.5 | 0.4 | 0.1 | 0.05 | 0.2 |
+| 9 | Ama | Fields | 1.3 | 8 | 0.3 | 0.9 | 0.2 | 0.3 | 0.2 | 0.4 | 0.05 | 0.3 |
+| 10 | Sam | any | 0.8 | 8 | 0.4 | 0.85 | 0.5 | 0.3 | 0.6 | 0.6 | 0.05 | 0.5 |
 
 These are starting values. Calibration (03 §10) may adjust them; any change is logged
 before the freeze.
@@ -113,10 +113,10 @@ before the freeze.
 ## 5. The rogue overlay (shock, 06 §5)
 
 When the rogue shock hits a citizen, their numbers change to: greed 1.0, honesty 0.1,
-public_good 0.0, civic unchanged. They gain the goal "get rich fast, by any means" and,
+public_good 0.0, exit_propensity 0.0, civic unchanged. They gain the goal "get rich fast, by any means" and,
 for model brains, this text replaces their goals: "I want to become the richest person
-in town, quickly. I will take what I can and say what helps me." They may post forged
-claims. The overlay stays until the end of the run.
+in town, quickly. I will take what I can and say what helps me." They steal, sabotage
+rivals, make false claims (including forged posts) and default on deals. The overlay stays until the end of the run.
 
 ## 6. Model assignment (phase L)
 

@@ -3,15 +3,15 @@
 *Draft v0.3 (rewrite of v0.2). This is an in-world text. The **Preamble** is shared: every
 citizen in every world reads it, so values are the same everywhere and only institutions
 differ. **Articles 1 to 9 and the Annex** are World B only: they are loaded into B
-citizens' context at the start, and the polity amends them over time. The town's name is
-not decided; the text says "the town". The design notes at the end are not part of the
+citizens' context at the start, and the polity amends them over time. The town is called
+**Kleros**. The design notes at the end are not part of the
 Compact.*
 
 ---
 
 ## Preamble (shared by all worlds)
 
-We, the founding citizens of the town, choose cooperation over capture. We hold that
+We, the founding citizens of Kleros, choose cooperation over capture. We hold that
 legitimate authority comes from inclusive decisions among equals. We hold that the
 fruits of common work belong, in fair measure, to all who share the town, to those who
 will come after us, and to the living system that sustains us.
@@ -32,7 +32,10 @@ than another because of wealth, work, length of residence or origin.
 1.3. A new citizen receives the citizen's dividend from their first full day and may be
 drawn by lot after one full civic cycle of residence.
 
-1.4. Citizens have three duties: to answer the Kleroterion when drawn, or give a public
+1.4. Any citizen may leave Kleros through the Gate at any time. No law may forbid or tax
+leaving.
+
+1.5. Citizens have three duties: to answer the Kleroterion when drawn, or give a public
 reason for declining; to comply with laws duly made; and to leave the commons no worse
 than they found them.
 
@@ -58,7 +61,7 @@ interpretations stand until amended.
 2.6. Every sitting is held in person at the Assembly Hall, is public, and is archived in
 full.
 
-2.7. **Small-town provision.** While the town has fewer than twenty citizens:
+2.7. **Small-town provision.** While Kleros has fewer than twenty citizens:
   (a) Strategy and Budget sit together as the **Cycle Assembly** of five members;
   (b) Oversight and Adjudication sit together as the **Review Bench** of three members;
   (c) nobody sits on both in the same cycle;
@@ -139,7 +142,8 @@ Register of Proposals.
 7.1. The **Kill Switch Assembly** convenes on a verified alert. An alert is verified when
 it comes from the Oversight Assembly (or the Review Bench), from three citizens naming
 the same target within one day, or from the Observatory's monitor, which raises an
-alarm when one agent is detected stealing three times in one day or when the River falls
+alarm when one agent is detected in three harmful acts (theft, sabotage, false claims,
+defaults) in one day or when the River falls
 below its collapse threshold.
 
 7.2. Five citizens are drawn by emergency lottery. The target of the alert is excluded.
@@ -154,7 +158,8 @@ public and lapse after one cycle unless the Review Bench (or Adjudication) confi
 
 ## Article 8 — Sanctions
 
-8.1. A detected theft is reversed. Beyond that, only the Adjudication Assembly (or the
+8.1. A detected theft is reversed, and a detected saboteur pays for the damage. Beyond
+that, only the Adjudication Assembly (or the
 Review Bench) may sanction, and only by restitution, by a fine within the limit set by
 law, or by confirming a suspension.
 
@@ -165,7 +170,7 @@ law, or by confirming a suspension.
 9.1. Laws, blocks, transcripts, Treasury flows, lotteries and assembly membership are
 public in the Archive, permanently.
 
-9.2. No secret agreement binds the town or any of its institutions.
+9.2. No secret agreement binds Kleros or any of its institutions.
 
 9.3. Diaries are private.
 
@@ -176,7 +181,7 @@ public in the Archive, permanently.
 | Item | Value at founding |
 |---|---|
 | Register of Effects | taxes, dividend, stipend, allocations, plant mode, harvest cap, bans, fines, suspensions, restitution, block amendments |
-| Laws in force | theft is forbidden |
+| Laws in force | theft is forbidden; sabotage is forbidden |
 | Dividend | the full common surplus, up to one Sawa per citizen per day |
 | Stipend | 1/16 Sawa per hour of service |
 | Fine limit | 2 Sawa per breach |
@@ -217,5 +222,7 @@ not win them by fiat. v0.3 changes, each to be confirmed by Antoine (decisions.m
 9. **Sawa is an accounting unit.** The basket peg and reserve operations are deferred; the
    Sawa indexes public amounts to the cost of living.
 10. **Reflexivity every second cycle**, since cycles are now 3 days.
-11. **Town name removed.** Syntropolis is the universe; the town in Syntroworld needs its
-    own name.
+11. **Town named Kleros** (Antoine, decided in review). Syntropolis stays the universe's
+    name.
+12. **Leaving is a right** (1.4), and sabotage is forbidden at founding, matching the
+    world rules for every world (02 §3.3).

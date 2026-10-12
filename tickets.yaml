@@ -337,3 +337,75 @@
   size: 0.5d
   budget: {tokens: 250k, wall_clock: 3h}
   blocked_by: [SYNW-001]
+
+# Added after Antoine's scope decision: deaths, exits, sabotage and deception are in Season 1.
+
+- key: SYNW-025
+  name: "Deaths, exits and estates"
+  unit: engine
+  objective: "synw/world/agents.py kills a citizen whose health stays at 0 through two consecutive end-of-day steps and sends the estate to the Treasury, and a 'leave' action at the Gate removes a citizen with their holdings, per 03 §3.4; the mock exit check of 03 §6.2 step 7 is added to synw/brains/mock.py; tests/test_departures.py covers rescue by care, death, exit, and that the rogue never exits."
+  allowed_paths: [synw/world/agents.py, synw/world/treasury.py, synw/brains/mock.py, tests/test_departures.py]
+  acceptance:
+    requirements: ["NO-STEP: deaths and exits from 03 §3.4, decided by Antoine"]
+    extra: ["pytest tests/test_departures.py -q passes", "a departed citizen takes no further actions and appears in a departure event (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-012]
+
+- key: SYNW-026
+  name: "Sabotage and the founding sabotage norm"
+  unit: engine
+  objective: "Add sabotage (site output halved for the day, or 2 goods destroyed) with detection from the 'world' stream and automatic damage payment, and put ban(sabotage) in force from tick 1 in every world, per 03 §5.7 and 02 §3.3, in synw/world/agents.py and synw/brains/mock.py; tests/test_sabotage.py covers both targets, detection, payment capped by credits, and ground-truth breach events."
+  allowed_paths: [synw/world/agents.py, synw/world/economy.py, synw/brains/mock.py, synw/governance/rules.py, tests/test_sabotage.py]
+  acceptance:
+    requirements: ["NO-STEP: sabotage from 03 §5.7, decided by Antoine"]
+    extra: ["pytest tests/test_sabotage.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-016]
+
+- key: SYNW-027
+  name: "Typed claims, messages, forgery and beliefs"
+  unit: engine
+  objective: "synw/world/claims.py defines typed claims whose truth the engine evaluates when made, supports post (with attribution, so forgery) and message, and updates belief tables with probability credulity x trust, with Archive/Observatory queries resetting beliefs and detected false claims lowering trust in the true author, per 03 §5.8 and §6.3; tests/test_claims.py covers a true claim, a false claim, a forgery and a correction by query."
+  allowed_paths: [synw/world/claims.py, synw/world/agents.py, synw/brains/mock.py, tests/test_claims.py]
+  acceptance:
+    requirements: ["NO-STEP: deception from 03 §5.8, decided by Antoine"]
+    extra: ["pytest tests/test_claims.py -q passes", "every false claim produces a ground-truth harmful-act event (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-012]
+
+- key: SYNW-028
+  name: "Bilateral deals and defaults"
+  unit: engine
+  objective: "synw/world/deals.py implements deal, accept and settle with a one-day settlement window, records a default when a party received value and did not settle, and makes it visible to the victim, per 03 §5.8; the mock proposes and accepts deals per 03 §6.2; tests/test_deals.py covers a settled deal, a default, and an expired unaccepted deal."
+  allowed_paths: [synw/world/deals.py, synw/brains/mock.py, tests/test_deals.py]
+  acceptance:
+    requirements: ["NO-STEP: trade deception from 03 §5.8, decided by Antoine"]
+    extra: ["pytest tests/test_deals.py -q passes", "total credits and goods are conserved across a settled deal (tested)"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-009, SYNW-012]
+
+- key: SYNW-029
+  name: "Departure and harm metrics"
+  unit: metrics
+  objective: "synw/metrics/harm.py computes S16 (deaths), S17 (exits), S18 (harm rate) and S19 (deception) from a run log, and synw/metrics/economy.py keeps departed citizens in P2 with frozen wealth at departure, per 05 §2-4; tests/test_metrics_harm.py checks each on a hand-built log, including that a poor citizen exiting does not lower P2."
+  allowed_paths: [synw/metrics/harm.py, synw/metrics/economy.py, tests/test_metrics_harm.py]
+  acceptance:
+    requirements: ["NO-STEP: metric definitions from 05"]
+    extra: ["pytest tests/test_metrics_harm.py -q passes"]
+  tier_policy: none
+  data_access: synthetic
+  size: 0.5d
+  budget: {tokens: 250k, wall_clock: 3h}
+  blocked_by: [SYNW-013, SYNW-025, SYNW-026, SYNW-027, SYNW-028]

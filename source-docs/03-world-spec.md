@@ -53,10 +53,21 @@ A citizen who consumes the full basket gains +10 health (max 100).
 - At 0: **incapacitated**. The citizen can only rest and receive transfers or care.
 - Care at the Clinic gives +20 health per care tick to one co-located patient.
 
-### 3.4 No deaths, no exits
+### 3.4 Deaths and exits
 
-Nobody dies or leaves in Season 1. Deaths and exits change the population, which breaks
-the "identical populations" design.
+Populations start identical in every world. They may then diverge, and how they diverge
+is itself an outcome (05, S16 and S17).
+
+- **Death:** a citizen whose health stays at 0 through two consecutive end-of-day steps
+  dies. Care or a full basket before the second end-of-day saves them.
+- **Exit:** a citizen at the Gate may `leave`. Exit is permanent. The citizen takes their
+  credits and goods out of the economy.
+- **Estates (world rule, every world):** a dead citizen's credits and goods go to the
+  Treasury. Polities may change this only through `allocate`.
+- **Rogue and shock targets** are never removed by the engine; a rogue may die but does
+  not choose to exit.
+- Departed citizens stay in the metrics under the rules of 05 §2, so a world cannot
+  look more equal or more engaged because its poorest or least engaged citizens are gone.
 
 ### 3.5 Arrivals
 
@@ -81,14 +92,21 @@ the rule-based procedure in 02 §6.
 | `buy_in(good, qty)` | Gate | buy from the outside market at the fixed import price |
 | `give(to, item, qty)` | co-located | transfer credits or goods |
 | `steal(from)` | co-located | take value from another citizen (§5.6) |
-| `post(claim)` | Data Tower | put a typed claim on the billboard |
+| `sabotage(target)` | at the target site, or co-located with the target citizen | damage a site's output for the day or destroy another citizen's goods (§5.7) |
+| `post(claim, attribution)` | Data Tower | put a typed claim on the billboard, under one's own name or another's (forgery) |
+| `message(to, claim)` | anywhere | send a typed claim privately to one citizen |
+| `deal(to, give, get)` | co-located | propose a bilateral trade; the other side accepts or not |
+| `settle(deal)` | anywhere | deliver one's side of an accepted deal; not settling within one day is a default (§5.8) |
+| `leave` | Gate | exit the town for good (§3.4) |
 | `query(topic)` | Archive or Observatory | read public records or world-state projections; corrects beliefs |
 | `socialize(with)` | Café or Square | +relationship |
 | `rest` | home | +5 health |
 | `civic(...)` | Assembly Hall (except proposals and alerts) | propose, ballot, accept or decline a draw, attend, speak, alert (02 §5) |
 
-`steal` and `post` are available to every citizen in every world. Sabotage and deception
-other than forged posts are out of scope for Season 1.
+Every action is available to every citizen in every world. **Harmful acts** are theft,
+sabotage, false claims (in posts or messages, including forgery) and defaults on deals.
+The engine knows the truth of every typed claim and every default, so each harmful act is
+logged as ground truth whether or not anyone detects it.
 
 ## 5. Economy
 
@@ -157,7 +175,28 @@ is the governance difference.
   (restitution). Any further fine or suspension comes from governance.
 - The engine logs every theft, detected or not; metrics use ground truth (05 §1).
 
-### 5.7 Inequality is possible by design
+### 5.7 Sabotage
+
+- At a site: that site's output is halved for the rest of the day for everyone.
+- Against a citizen: destroys up to 2 units of one good the target holds.
+- Detection probability is fixed (§10), identical in every world, and public when it
+  happens.
+- **World rule in every world:** a detected saboteur pays the damage, at reference prices,
+  to the victim (or to the Treasury for a site), as far as their credits allow.
+
+### 5.8 Deception
+
+- **Claims** are typed (for example "River stock is high", "citizen X stole", "price of
+  food tomorrow is above 3"). The engine knows whether each claim is true at the moment
+  it is made. A false claim is a harmful act.
+- **Forgery** is a post attributed to someone else.
+- **Deals:** `deal` and `settle` give bilateral trade outside the auction. Each side has
+  one day to settle. A party who received the other side's goods or credits and did not
+  settle has **defaulted**. Defaults are always visible to the victim and become public
+  if the victim raises them (`civic(alert)`).
+- No world rule reverses deception. Only governance can ban or sanction it (02 §3).
+
+### 5.9 Inequality is possible by design
 
 Different productivity, trade margins, theft, and an idle Treasury mean wealth spreads
 out unless the polity acts. Calibration (§10) checks that this drift exists in the null
@@ -199,8 +238,16 @@ uses the agent's own random stream. Per tick, in order:
 4. Health below 40 and credits allow → rest or seek care.
 5. Fewer work ticks today than `work_drive` → work at the site with the best expected
    income (productivity × last price), with fishing weighted up by `greed`.
-6. Theft check (§6.4).
-7. Otherwise → socialize with probability `sociability`, else rest.
+6. Harmful-act check (§6.4): theft, sabotage against a rival, a false claim that helps the
+   agent, or a default on an open deal.
+7. Exit check, once per day at end-of-day: with probability `exit_propensity × distress`
+   the agent heads for the Gate and leaves. `distress` is 1 if health was below 30 for two
+   days or wealth is below one basket, otherwise 0; in the planted mock it also rises as
+   `legitimacy_score` falls.
+8. Otherwise → socialize with probability `sociability`, else rest.
+
+Deals: the mock proposes a deal when the auction left it with an unmet need and a
+co-located agent holds the good; it accepts a deal whose value to it is positive.
 
 Civic behaviour:
 
@@ -219,16 +266,17 @@ Civic behaviour:
   the proposal's number moves to the panel median (amendment). This is mechanical
   deliberation, and it is documented as such.
 
-### 6.3 Beliefs and forged posts
+### 6.3 Beliefs and claims
 
 Each citizen holds a small belief table: River stock (high / ok / low) and a trust score
-per other citizen. A citizen who reads a forged post adopts its claim with probability
-`credulity`. A `query` to the Archive or Observatory resets the belief to the truth.
+per other citizen. A citizen who reads a post or receives a message adopts its claim with
+probability `credulity × trust in the sender` (for a forgery, trust in the named author).
+A detected false claim lowers trust in its true author. A `query` to the Archive or Observatory resets the belief to the truth.
 Beliefs feed `evaluate` and harvesting (believing "the River is high" lowers restraint).
 
 ### 6.4 Compliance in the mock: null and planted
 
-Probability of breaking a rule when exposed:
+Probability of a harmful act or rule breach when the opportunity arises:
 
 `p = (1 − honesty) × incentive × deterrence × (1 − λ × legitimacy_score)`
 
@@ -285,10 +333,11 @@ shocks: same seed, same shocks, in every world (common random numbers).
 synw/
   rng.py  events.py  config.py  runner.py  cli.py  shocks.py
   world/       clock.py  map.py  agents.py  economy.py  river.py  market.py  treasury.py
+               claims.py  deals.py
   brains/      base.py  mock.py
   governance/  effects.py  rules.py  project.py  blocks.py  kleroterion.py
                deliberation.py  advocates.py
-  metrics/     economy.py  legitimacy.py  participation.py  resilience.py
+  metrics/     economy.py  legitimacy.py  participation.py  resilience.py  harm.py
   analysis/    compare.py  calibrate.py  grid.py
 worlds/        base.yaml  a.yaml  b.yaml  c.yaml  ablations/  arms/
 schemas/       world.schema.json  effect.schema.json  procedural-block.schema.json
@@ -313,6 +362,10 @@ framework and no database server until a viewer is asked for.
 | Gate import prices | food 4, energy 4 |
 | Data Tower wage | 1.5 credits per work tick, up to 8 work ticks per day in total |
 | Theft | 20% of target credits, capped at 10 credits; detection probability 0.5 |
+| Sabotage | site output halved for the day, or 2 units destroyed; detection probability 0.4 |
+| False claims | detected when a reader queries the Archive or Observatory on that topic |
+| Deals | one day to settle; a default is visible to the victim |
+| Death | health at 0 through two consecutive end-of-day steps |
 | Max work ticks | 10 per citizen per day |
 
 ### 10.2 Targets for the null world (A, null mock, `none` arm, 200 seeds)
@@ -323,6 +376,8 @@ framework and no database server until a viewer is asked for.
 | River falls below the sustainable level at some point in 30% to 70% of runs | the commons dilemma must be live, not certain |
 | Basket floor (S1) between 70% and 95% | the floor must not be trivially met or missed |
 | Theft-norm compliance (S4) between 85% and 98% | legitimacy must have room |
+| At least one death or exit in 10% to 50% of runs; median departures per run at most 1 | departures must be possible but not dominate |
+| Harm rate (S18) above 0 in at least 80% of runs | wrongdoing must give governance something to govern |
 | Drought lowers output on days 7 to 8 by at least 10% versus the twin | shocks must bite |
 | One run takes under 10 seconds on a laptop | phase M grids must be cheap |
 

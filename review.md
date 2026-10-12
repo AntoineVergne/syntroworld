@@ -25,7 +25,7 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
    works everywhere; the rest became mechanism diagnostics. (05 §1, §5)
 5. **Legitimacy could be won by deciding nothing.** "Share of decisions followed" is
    perfect in a world with no decisions. Now: exposure-weighted compliance, plus a
-   founding theft norm in every world. (05 P1, 02 §3.3)
+   founding norms (theft, sabotage) in every world. (05 P1, 02 §3.3)
 6. **Laws were free text, so compliance could not be computed.** Decisions now produce
    typed effects from a closed list; free text is archived but binds nothing. (02 §3)
 7. **Populations were not identical.** The Citizenship Lottery existed only in B, and
@@ -46,7 +46,7 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
 | low | Repository is named `syntrotech/syntroworld`; this work lives in `AntoineVergne/syntroworld`. | Confirm the canonical repository. |
 | low | The ticket block here (acceptance as a flat list) differs from the format in the session brief (requirements/extra, tier_policy, budget). | Align on one format; `tickets.yaml` uses the brief's. |
 
-## source-docs/README.md (not rewritten; must change before it enters the repository)
+## source-docs/README.md (rewritten after Antoine's decision 19)
 
 | Severity | Challenge | Suggestion |
 |---|---|---|
@@ -71,7 +71,7 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
 | medium | Supermajority, concentration threshold and stipend are unspecified. | Annex with founding values. |
 | medium | Laws can say anything, so compliance cannot be checked. | 3.5: decisions can only do what the Register of Effects allows. |
 | low | Basket revision (5.1) changes the unit of account mid-run. | Kept in-world; metrics use fixed reference prices (05 §2). |
-| low | The town is called Syntropolis, which is the universe's name. | "The town" until Antoine names it. |
+| low | The town is called Syntropolis, which is the universe's name. | Renamed Kleros (Antoine's decision). |
 | low | Reflexivity every cycle would be every 3 days under the new clock. | Every second cycle. |
 
 ## 02 — Governance Spec (rewritten to v0.2)
@@ -101,10 +101,10 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
 | medium | Season of "~340 ticks" vs 3 × 112 = 336; 3 long cycles give too few sittings. | 8 cycles of 3 days, 384 ticks. |
 | medium | Money and prices undefined: where money enters, how prices form, what the Treasury does in A and C. | Daily call auction, an outside Gate market bounding prices, a Treasury with identical inflows and a public payroll in every world. |
 | medium | The commons dilemma was not guaranteed: 10 citizens eating 2 food a day never threaten the River. | Fishing pays more than fields and the Gate buys fish without limit. Calibration checks the dilemma is live. |
-| medium | Deaths, inheritance and arrivals would change populations. | No deaths, no exits; one scripted arrival in all worlds. |
+| medium | Deaths, inheritance and arrivals would change populations, and nothing said how metrics handle that. | One scripted arrival in all worlds. Deaths and exits allowed (Antoine's decision); estates go to the Treasury; departed citizens stay in metric denominators so losing the poor never looks like equality. |
 | medium | Cost model assumes Haiku/Sonnet pricing; spend is Kimi only. | Per-tick tokens measured in L0; prices read from LiteLLM at estimate time; no prices written down. |
 | medium | Model replies cannot be reproduced. | Every request and reply stored; replay reads them back. |
-| low | ~25 tools including sabotage and deception: more than the experiment can check. | Closed set of 14 actions; theft and forged posts only. |
+| low | ~25 tools, several of which the engine could not check. | Closed set of 19 actions. Sabotage and deception kept (Antoine's decision) but made checkable: typed claims the engine can verify, bilateral deals with visible defaults. |
 | low | Viewer deployment at a public subdomain using the Syntropolis name. | Removed; public pages are out of scope. |
 
 ## 04 — The Founding Citizens (rewritten to v0.2)
@@ -113,7 +113,7 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
 |---|---|---|
 | high | Persona text leaks B-only concepts: Kofi's "concentration threshold", Zainab's "basket", Priya's "the Compact", Sam's "Citizenship Lottery" and "dividend". | All persona text is world-neutral. |
 | high | No numbers for the mock brain. | Parameter table (§4). |
-| medium | Count is inconsistent: "ten citizens" includes Sam who arrives later; twelve residences for ten. | Ten founders plus Sam (adds Ama, a quiet farmer). Open for Antoine (decisions.md 14). |
+| medium | Count is inconsistent: "ten citizens" includes Sam who arrives later; twelve residences for ten. | Ten founders plus Sam (adds Ama, a quiet farmer). Confirmed by Antoine (decisions.md 14). |
 | medium | Rogue shock on a random citizen: with few seeds, one persona's quirks dominate. | Rogue and forged-post targets rotate across seeds (06 §5). |
 | medium | Advocates were model agents with personas. | Moved to 02 §6, rule-based. |
 | low | Mira "earns a living hosting dialogues", but there is no market for that. | Mira works the Fields. |
@@ -123,7 +123,7 @@ in `source-docs/`; open questions are in `decisions.md`; first engine tickets ar
 
 | Severity | Challenge | What changed |
 |---|---|---|
-| high | Legitimacy as "share of decisions followed" is perfect if nothing is decided, and needs machine-checkable laws. | Exposure-weighted compliance on normative rules plus the founding theft norm; uses ground truth, not detection. |
+| high | Legitimacy as "share of decisions followed" is perfect if nothing is decided, and needs machine-checkable laws. | Exposure-weighted compliance on normative rules plus the founding norms; uses ground truth, not detection. |
 | high | Power dispersion via seat Herfindahl is guaranteed low by sortition. | Capture index: correlation between wealth and getting your way (S6), plus influence equality (S7). |
 | high | Participation built on sortition acceptance only exists in B. | Civic breadth: share of citizen-cycles with any voluntary civic act, comparable everywhere. |
 | high | Wealth in Sawa (B) vs raw credits (A, C) is not comparable. | Wealth in fixed reference prices in every world. |

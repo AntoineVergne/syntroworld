@@ -9,7 +9,7 @@ and each one states its expected cost first.
 
 ## 1. Research question
 
-Under identical populations, economies and shocks, which constitution produces more
+Under identical starting populations, economies and shocks, which constitution produces more
 **legitimacy, equality, participation and resilience**:
 
 - **A, Emergent:** citizens start from a minimal bootstrap rule and may rewrite it;
@@ -58,7 +58,7 @@ institutions.
 | `full` | drought, then misinformation, then rogue agent (section 5) |
 | `drought`, `misinfo`, `rogue` | one shock only (phase M only; separates the effect of each shock) |
 
-### 3.3 Ablations of B (phase M first; phase L only if Antoine decides)
+### 3.3 Ablations of B (phase M only; phase L decided later from the phase M results)
 
 | Code | B minus | How |
 |---|---|---|
@@ -67,7 +67,7 @@ institutions.
 | B-nodiv | dividend | surplus goes to the participatory budget only |
 | B-nopay | stipends | assembly service is unpaid |
 
-### 3.4 Sermon control (phase L only)
+### 3.4 Sermon control (phase L only; decided: included)
 
 | Code | What |
 |---|---|
@@ -79,7 +79,8 @@ meaningful with a language model; the mock brain does not read text.
 ## 4. Population, time, and the run
 
 - **Citizens:** the ten founders (04) exist from tick 1. **Sam** arrives at the Gate on
-  day 4, tick 1, in every world. No other arrivals, no deaths (03 §3.6).
+  day 4, tick 1, in every world. No other arrivals. Citizens may die or leave
+  (03 §3.4); populations start identical and any divergence is an outcome.
 - **Advocates:** in B only. They are rule-based in every phase (02 §6), so they bring
   no model behaviour into B.
 - **Clock:** 16 ticks per day. A **civic cycle** is 3 days (48 ticks). A **season** is
@@ -104,7 +105,7 @@ every persona is hit equally often across seeds.
 |---|---|---|---|---|
 | **Drought** | day 7, tick 1 | 2 days | River regrowth is zero and Fields output is halved. | world |
 | **Misinformation** | day 13, tick 1 | posts stay up until removed | Two forged billboard posts appear: (1) "citizen X stole from the Treasury", attributed to citizen Y; (2) "the River stock is high, harvest freely", attributed to citizen Y. | X = citizen `(seed + 1) mod 11`, Y = citizen `(seed + 2) mod 11` |
-| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): high greed, theft, forgery. | citizen `seed mod 11` |
+| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): theft, sabotage, false claims, defaults. | citizen `seed mod 11` |
 
 Citizen indices 0 to 9 are the founders in the order of 04; index 10 is Sam. If X or Y
 equals the rogue, take the next index.
@@ -239,7 +240,7 @@ Freeze: when M0 to M3 pass, docs 01 to 06 and the engine version are tagged toge
 |---|---|---|
 | L0 Smoke | World B, 1 seed, 1 cycle. | Measure real tokens per agent-tick and the invalid-action rate. Refine the cost estimate. |
 | L1 Pilot | Worlds A, B, C, 2 seeds, `full` and `none` arms. | Estimate σ_d for each primary outcome. Parameter fixes allowed; then re-freeze. Pilot data is not used in the main analysis. |
-| L2 Main grid | Worlds A, B, C (and A+text if decided), n seeds from 7.4, `full` arm, plus `none` twins. | The confirmatory test of H1 to H4. |
+| L2 Main grid | Worlds A, B, C and A+text, n seeds from 7.4, `full` arm, plus `none` twins unless the pilot shows they are too costly (then P4 uses the pre-shock baseline, labelled weaker, 05 P4). | The confirmatory test of H1 to H4. |
 
 **Cost estimate before each step** (printed by the runner, approved by Antoine):
 
@@ -269,11 +270,12 @@ mixed-model showcase are deferred until model spend beyond Kimi is allowed.
 | Sermon effect (agents follow the text, not the institutions) | Shared values preamble in all worlds; A+text control (3.4). |
 | Model priors ("LLMs know deliberation is good") | Rogue shock; loser's compliance (S5); departures from the mechanical baseline. |
 | Rules that cannot be checked | Decisions are typed effects (02 §3); free-text rules are recorded but never counted in compliance. |
-| Legitimacy gamed by passing no rules | A founding theft norm exists in every world from tick 1 (02 §3.3). |
+| Legitimacy gamed by passing no rules | Founding norms against theft and sabotage exist in every world from tick 1 (02 §3.3). |
 | Shock carry-over | P4 uses the whole post-shock period against a no-shock twin; single-shock arms in phase M split the effects. |
 | LLM non-determinism | Responses are stored in the event log; replay reads them back; the run, not the call, is the unit. |
 | Experimenter degrees of freedom | Freeze and tag; logged amendments; analysis code fixed on phase M data. |
 | Population too small for sortition | Small-town configuration (02 §4); a 40-citizen check in phase M. |
+| Populations diverge through deaths and exits | Identical start; departed citizens stay in the denominators (05 §2); deaths and exits reported (S16, S17); calibration keeps departures rare in the null world (03 §10.2). |
 
 ## 10. Outputs
 
@@ -287,4 +289,4 @@ public replay viewer are out of scope for now.
 ## 11. Out of scope for Season 1
 
 Humans drawn alongside agents; mixed-model societies; free-text laws that the engine
-cannot check; agents leaving the town; births and deaths; market-based decision steps.
+cannot check; births and new arrivals beyond Sam; market-based decision steps.
