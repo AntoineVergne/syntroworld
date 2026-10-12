@@ -10,7 +10,8 @@ requires-python = ">=3.11"
 dependencies = ["PyYAML>=6", "jsonschema>=4"]
 
 [project.optional-dependencies]
-test = ["pytest>=7"]
+test = ["pytest>=7", "numpy>=1.24"]
+analysis = ["numpy>=1.24"]   # phase M error-rate and power checks only
 
 [project.scripts]
 synw = "synw.cli:main"

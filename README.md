@@ -14,6 +14,13 @@ python -m synw.analysis.calibrate --world worlds/a.yaml --seeds 1-20
 pytest -q
 ```
 
+Phase M checks over many seeds (numpy needed for these only: `pip install -e ".[analysis]"`):
+
+```
+python -m synw.analysis.grid --world worlds/b.yaml --arm full --seeds 1-2000 --out results/m2/grid-b-full-2000.jsonl
+python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl     # 06 step M2
+```
+
 Each run writes one JSON Lines event log (`runs/<world>-<arm>-s<seed>.jsonl`): a header
 (engine version, config hash, seed, brain, full config), the events, and a footer with
 the final state hash. Same config and seed give a byte-identical log, in any process.
@@ -30,6 +37,7 @@ synw/
   metrics/     economy (P2 S1 S2 S3)  harm (S16-S19)  legitimacy (P1 S4 S5)
                participation (P3)  resilience (P4)
   analysis/    compare (paired statistics, 06 §7)  calibrate (06 step M1)
+               grid (seed grids, run-level outcomes)  false_positive (06 step M2)
 worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml blocks/
 schemas/       world.schema.json effect.schema.json procedural-block.schema.json
 tests/         one file per ticket
@@ -102,5 +110,6 @@ changed there.
 
 ## Not built yet
 
-The model brain and replay (phase L), ablation and arm configs, `analysis/grid.py`, and
-secondary outcomes S5–S15 beyond the compliance variants in `metrics/legitimacy.py`.
+The model brain and replay (phase L), ablation configs, the planted-effect check (06 step
+M3), and secondary outcomes S5–S15 beyond the compliance variants in
+`metrics/legitimacy.py`.
