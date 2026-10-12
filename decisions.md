@@ -42,5 +42,12 @@ brackets.
 
 ## Still open
 
-None of the 20. New questions will come from the phase M results (which ablations
+21. **M2 family-wise criterion** (06 §8.1). Step M2 measured a Holm family-wise rate
+    of 5.20% (52 of 1,000 replications; s.e. 0.69%). The expected rate for this design
+    is 4.89%, and the uncorrected rate is 5.09%. As written ("≤ 5%"), the criterion
+    fails a correct procedure about 40% of the time. Should it be restated with its
+    Monte Carlo error, for example "upper 95% bound ≤ 7%"? Details in
+    `results/m2/README.md`.
+
+None of the original 20. New questions will come from the phase M results (which ablations
 deserve model spend) and the phase L pilot (twins, seeds per world, cost).
