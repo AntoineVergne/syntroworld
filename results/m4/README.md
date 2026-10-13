@@ -24,6 +24,49 @@ python -m synw.analysis.baseline report --out results/m4
 
 **Pass condition: report produced, labelled.** Met.
 
+## Latest run (after decisions 25–27)
+
+Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
+
+| | B vs A | B vs C |
+|---|---|---|
+| P1 compliance | +0.51 pts (better) | −0.48 pts (worse) |
+| P2 wealth Gini | −0.047 (better) | −0.094 (better) |
+| P3 civic breadth | +4.61 pts (better) | +5.11 pts (better) |
+| P4 output loss | **+2.36 pts (worse)** | **+2.11 pts (worse)** |
+
+Every P1 and P4 difference is well below its SESOI (5 points). "Better" and "worse" only
+mean Holm-significant with an interval excluding zero (06 §7.2).
+
+- **P4 now has room** (decision 27). The `full` arm costs 18.2% (A), 20.6% (B) and 18.5% (C)
+  of window output. The drought costs about 15%, the rogue 3–4%, and misinformation
+  about 0%.
+- **P3 no longer tracks seats** (decision 26). At 11 citizens B leads A by +4.6 points,
+  through observers. At 40 citizens B40 leads by +18 points, because it holds four public
+  sittings per cycle against A40's one plenary.
+- **Observing is costly, and it now drives B's economic results.** Observing a sitting
+  takes the same working ticks as attending one. Over 8 seeds without shocks:
+
+  | World | Attend ticks | Observe ticks | Work ticks |
+  |---|---|---|---|
+  | A | 317 | 0 | 1,633 |
+  | B | 303 | 252 | 1,492 (−9%) |
+  | A40 | 1,277 | 0 | 5,956 |
+  | B40 | 759 | 2,267 | 4,933 (−17%) |
+
+  B's lower output (S2 2,758 against A's 2,935 without shocks), its worse P4, and the
+  collapse of B40 under shocks (1.44 deaths and 3.36 exits per run, against 0.22 and
+  1.06 in A40) all follow from this. The observing rule (probability `civic` for every
+  public sitting) is my modelling choice for decision 26, not part of the decision.
+  See decisions.md, question 30.
+- **Equality.** B is less unequal than A (−0.047) and C (−0.094). The dividend (−0.024)
+  and stipends (−0.014) are the parts that matter. Removing sortition *lowers* B's Gini
+  (B-nolot −0.021): its deliberating plenary includes everyone.
+- **Commons.** B keeps the River at or above K/2 on 89% of window days (A 50%, C 36%).
+- **Capture.** S6 is +0.35 in C, −0.11 in A and −0.15 in B.
+
+## First run (before decisions 25–27)
+
 ## What the institutions do mechanically
 
 Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
@@ -52,7 +95,7 @@ Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
 - **Continuity and departures.** Under shock, B's sittings reach a decision 94% of the
   time (A 71%, C 44%: wealth quorums fail). Exits per run are B 0.07, A 0.36, C 0.50.
 
-## Two problems for the experiment design
+## Two problems found in the first run (now decisions 26 and 27)
 
 **1. P3 is largely true by construction in B** (05 §1 rule 2). Accepting a draw and
 attending the sitting counts as a voluntary civic act. In one World B run, 39 of the 41

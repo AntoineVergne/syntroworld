@@ -79,5 +79,17 @@ brackets.
     interval includes 5% (lower bound ≤ 5%), which a correct procedure fails about 2.5% of
     the time. Under that wording this run passes. Details in `results/m2/README.md`.
 
+30. **How much do citizens observe?** (05 P3, decision 26). Implementing decision 26, I let
+    the mock observe any public sitting of a body it does not sit on, with probability
+    `civic`, as it attends a plenary. Observing costs working time. B has two public
+    sittings per cycle at 11 citizens and four at 40, against A's one plenary. So B
+    citizens now spend 75% more time at the Hall at 11 citizens and 2.4 times as much at
+    40, with 9% and 17% less work. That alone makes B's output loss (P4) worse than A's,
+    and B40 lose citizens under shocks. Recommended: a citizen observes **at most one
+    public sitting per cycle**. That matches the one plenary chance A and C offer, so
+    participation opportunities and civic time are comparable. Alternatives: observing
+    costs a single tick; or keep the current rule and read it as the real cost of
+    public sittings. Details in `results/m4/README.md`.
+
 New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).
