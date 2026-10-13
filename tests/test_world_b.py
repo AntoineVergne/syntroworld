@@ -46,3 +46,17 @@ def test_sam_eligible_after_a_full_cycle():
         if cyc <= 2:
             assert 10 not in e["payload"]["pool"]
     assert any(10 in e["payload"]["pool"] for e in lots if w.clock.at(e["tick"]).cycle >= 3)
+
+
+def test_concentration_trigger_fires_on_gini_and_logs_integers(make_world):
+    """01 Art. 5.4: richest > 30% or Gini > 0.40 puts a mandatory item on the next sitting.
+    (The Gini was once compared on the wrong scale, so that half of the trigger never fired.)"""
+    w = make_world("b.yaml")
+    for i, c in w.citizens.items():
+        c.inv = {g: 0 for g in c.inv}
+        c.credits = 0 if i < 6 else 25000          # Gini 0.60, richest holds 25%
+    w.governance._concentration_item()
+    ev = [e for e in w.log.events if e["type"] == "concentration_trigger"]
+    assert ev and isinstance(ev[0]["payload"]["gini"], int) and ev[0]["payload"]["gini"] > 400
+    assert ev[0]["payload"]["top_share"] <= 300
+    assert any(p["mandatory"] and p["effect"]["type"] == "set_tax" for p in w.governance.register)

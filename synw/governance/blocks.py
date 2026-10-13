@@ -830,13 +830,13 @@ class Governance:
 
     def _concentration_item(self):
         w = self.w
-        from ..metrics.economy import gini
+        from ..metrics.economy import gini_milli
         wealth = [max(0, w.citizens[i].wealth(w.cfg["prices_ref"])) for i in w.active_ids()]
         total = sum(wealth)
         if total <= 0:
             return
         top = max(wealth) * 1000 // total
-        g = gini(wealth)
+        g = gini_milli(wealth)              # per-mille, like the 0.40 trigger (01 Annex)
         if top > 300 or g > 400:
             eff = {"type": "set_tax", "base": "income", "rate": 100}
             self.log.emit(w.tick, "concentration_trigger", "treasury", {"top_share": top, "gini": g})
