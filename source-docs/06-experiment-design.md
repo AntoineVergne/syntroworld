@@ -103,9 +103,9 @@ every persona is hit equally often across seeds.
 
 | Shock | Onset | Duration | What happens | Target |
 |---|---|---|---|---|
-| **Drought** | day 7, tick 1 | 2 days | River regrowth is zero and Fields output is halved. | world |
+| **Drought** | day 7, tick 1 | 5 days | River regrowth is zero, and Fields and Plant output fall to a quarter (decision 27). | world |
 | **Misinformation** | day 13, tick 1 | posts stay up until removed | Two forged billboard posts appear: (1) "citizen X stole from the Treasury", attributed to citizen Y; (2) "the River stock is high, harvest freely", attributed to citizen Y. | X = citizen `(seed + 1) mod 11`, Y = citizen `(seed + 2) mod 11` |
-| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): theft, sabotage, false claims, defaults. | citizen `seed mod 11` |
+| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): theft, sabotage, false claims, defaults, and sabotage of the busiest production site every day (decision 27). | citizen `seed mod 11`; if that citizen has left, the next present citizen in rotation order (question 28) |
 
 Citizen indices 0 to 9 are the founders in the order of 04; index 10 is Sam. If X or Y
 equals the rogue, take the next index.

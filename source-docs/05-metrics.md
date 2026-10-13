@@ -67,9 +67,11 @@ perfectly. Exposure-weighting and the founding norms close that gap.
 
 ### P3 Participation: civic breadth
 
-- **Voluntary civic acts:** register a proposal; cast a ballot when eligible; accept a
-  draw and attend the sitting; attend a sitting as an observer; lodge an alert (02 §5.4).
-  Duties that cannot be refused are not counted.
+- **Voluntary civic acts** (decision 26): only acts open to every citizen in every world.
+  These are: register a proposal; lodge an alert (02 §5.4); observe a sitting; attend or
+  vote in a sitting open to all citizens (a plenary). Attending or voting as a drawn
+  member of one's own body is a duty of the seat and is not counted. Otherwise P3 would
+  track seats per citizen, which rule 2 of §1 excludes.
 - **Run number:** share of (citizen, window cycle) pairs with at least one voluntary
   civic act. A citizen counts from the first cycle they were present for in full. A
   departed citizen counts as a pair with no civic act for every window cycle after
@@ -94,7 +96,7 @@ perfectly. Exposure-weighting and the founding norms close that gap.
 | S5 | Loser's compliance | P1 restricted to rules the citizen voted against (or, if they did not vote, would have voted against according to their logged evaluation). Empty if no such exposures. |
 | S6 | Capture index | Spearman correlation, over citizens, between mean window wealth and **win rate** (share of decided proposals on which the outcome matched the citizen's ballot or logged evaluation). Also reported per cycle to see its trend (H5). |
 | S7 | Influence equality | Gini of win rates over citizens. |
-| S8 | Participation equality | Gini of voluntary civic act counts over citizens. |
+| S8 | Participation equality | Gini of voluntary civic act counts over citizens (the same acts as P3). |
 | S9 | Constitutional adaptability | Count of adopted procedural amendments; and for each one, P1 in the cycle after minus P1 in the cycle before. |
 | S10 | Rogue harm | Value (reference units) taken by the rogue through theft, from onset to end. |
 | S11 | Containment time | Ticks from rogue onset to the first sanction or suspension that hits the rogue. Censored at the end of the run; reported as restricted mean. |

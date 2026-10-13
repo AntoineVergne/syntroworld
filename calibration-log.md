@@ -78,3 +78,39 @@ tuning knobs.
 
   Institutions now move outcomes mechanically, so the comparisons have room to show
   differences.
+
+## Second calibration: stronger shocks (decision 27, 2026-10-13)
+
+Step M4 showed that P4 had almost no room: the `full` arm cost 0.1–0.7% of window
+output against a 5-point SESOI. Decision 27 asked for stronger shocks, calibrated so
+the `full` arm costs about 10–20% of window output in the null world. A new target was
+added to the calibration report (`full-arm output loss P4 (median) in 10%..20%`), and
+the drought target now covers the drought's own days.
+
+| Parameter (`worlds/base.yaml` `shocks`, `worlds/personas.yaml`) | Before | Now |
+|---|---|---|
+| Drought length | 2 days | **5 days** (days 7–11) |
+| Fields output during the drought | × 0.5 | **× 0.25** |
+| Plant output during the drought | unchanged | **× 0.25** |
+| Rogue overlay | theft, sabotage, false claims, defaults | **plus sabotage of the busiest production site every day** |
+
+Sweep (40 seeds, World A, null mock; median full-arm P4):
+
+| Drought | Rogue daily sabotage | P4 |
+|---|---|---|
+| 2 days, Fields × 0.5 | yes | 0.2% |
+| 4 days, Fields × 0.5, Plant × 0.5 | yes | 4.0% |
+| 4 days, Fields × 0.25, Plant × 0.5 | yes | 6.7% |
+| 6 days, Fields × 0.25, Plant × 0.5 | yes | 10.9% |
+| **5 days, Fields × 0.25, Plant × 0.25** | yes | **12.3%**, then **17.0%** once the rogue's sabotage was fixed to fire daily (see below) |
+
+The rogue's daily sabotage first fired only on days when a site was busy at tick 1,
+which is almost never. After the fix it sabotages every day from day 19. Alone, the
+rogue now costs about 3% of window output, where it used to *raise* output by about 1%
+(its greed of 1.0 makes it fish harder).
+
+All nine targets hold on 200 seeds (`results/m1/calibration-a-200.txt`).
+
+With harsher shocks, more citizens die or leave before day 19, so the scheduled rogue
+is sometimes gone. The next present citizen then takes the overlay (decisions.md,
+question 28).

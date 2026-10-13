@@ -140,14 +140,30 @@ changed there.
   world and seed. That is the P4 formula exactly, and it avoids re-running every twin. Only
   the 8 primary tests (B vs A, B vs C, `full` arm) get Holm and verdicts. Every other
   contrast is reported as an estimate with an interval and an uncorrected p-value.
+- **P3 and S8** (decision 26): only acts open to every citizen count. Those are
+  proposals, alerts, observing, and plenary attendance and ballots. `attend` and
+  `ballot` events carry their body, so a drawn member's duty can be told apart. Sittings
+  are public, and the mock observes a sitting of a body it does not sit on with
+  probability `civic`, as it attends a plenary. Seats first: a member never skips their
+  own sitting to observe another.
+- **Shocks** (decision 27, `shocks` in `base.yaml`): the drought lasts 5 days and cuts
+  Fields and Plant output to a quarter. The rogue overlay (`sabotage_daily`) makes the
+  rogue roll once a day and, on success, sabotage the production site with the most
+  workers once one is busy. If the scheduled rogue has died or left, the next present
+  citizen in rotation order takes the overlay (decisions.md, question 28).
+- **Oversight** (decision 25, `governance.oversight`): Oversight sits on day 3, ticks 6–8.
+  Each item is "refer this breach to Adjudication", as a sanction proposal: restitution of
+  up to 2 Sawa to the Treasury. If adopted, it is registered with Adjudication as a
+  mandatory item. Adjudication then no longer picks up detected breaches by itself.
+  Three or more detected harmful acts by one agent in the cycle trigger a verified alert
+  and the Kill Switch.
 - **Size check** (`worlds/size40/`): 39 founders cycle the ten founder personas ("Mira 2",
   ...), and the newcomer is citizen 39, arriving on day 4. River K and S0 and the Data
   Tower job cap scale by 40/11, so per-capita resources match the 11-citizen town;
   otherwise the check would measure scarcity, not size. World B uses the 20+ configuration
   of 02 §4: Strategy (ordinary law and amendments), Budget, Oversight and Adjudication
-  (sanctions, 3 of 5) assemblies of 5, with no consecutive terms. Oversight is drawn but
-  has no mechanised function yet (decisions.md, question 25). Shock targets rotate over
-  all 40 citizens.
+  (sanctions, 3 of 5) assemblies of 5, with no consecutive terms. Shock targets rotate
+  over all 40 citizens.
 - **Intervals** (`analysis/compare.py`): paired t-intervals with an exact Student-t
   quantile (decision 24). The percentile bootstrap remains available for comparison.
 - **Planted mock**: fairness comes from the procedure, through `brain.fairness` in

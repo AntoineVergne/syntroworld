@@ -26,7 +26,7 @@ brackets.
 | 18 | Engine stack? | Python library and command-line runner writing JSON Lines; no web server or database server | 03 §1, §9 |
 | 19 | README licence section and title? | Removed; renamed Syntroworld; README added | source-docs/README.md |
 | 20 | Publication promises in 06? | Dropped for now; backlog | 06 §10 |
-| 21 | M2 family-wise criterion? | Pass if the upper bound of the 95% interval on the Holm family-wise rate is at most 7%. Decided before the freeze, so not a protocol amendment. Step M2 passes (5.20%, interval 3.9–6.8%). | 06 §8.1, results/m2/README.md |
+| 21 | M2 family-wise criterion? | Pass if the upper bound of the 95% interval on the Holm family-wise rate is at most 7%. Decided before the freeze, so not a protocol amendment. Step M2 passes (current numbers in `results/m2/README.md`). | 06 §8.1, results/m2/README.md |
 
 ## Consequences worth knowing
 
@@ -41,40 +41,36 @@ brackets.
   and the name of an existing blockchain dispute-resolution project. Neither blocks
   internal use; worth a check before anything public.
 
-## Phase M questions (answered by Antoine, 2026-10-13)
+## Phase M questions (answered by Antoine, 2026-10-13; 21 is in the table above)
 
 | # | Question | Answer | Where |
 |---|---|---|---|
-| 21 | M2 measured a Holm family-wise rate of 5.20% (s.e. 0.69%; expected 4.89%). As written ("≤ 5%"), the criterion fails a correct procedure about 40% of the time. | **Add a Monte Carlo margin:** pass if the upper bound of the exact 95% interval is at most 7%. | 06 §8.1 |
 | 22 | The forged post "citizen X stole" can be true where X really stole (3 of 20 `full` seeds in World B in M0). | **False by construction:** the post is "citizen X stole from the Treasury", as 06 §5 already said; the engine had simplified it to "X stole". | 06 §5, `synw/shocks.py` |
 | 23 | Does B-nolot remove every lottery? Do B-nodiv and B-nopay forbid the effect for good? | **B-nolot replaces the Cycle Assembly only** (Review Bench and Kill Switch keep their lotteries). **B-nodiv and B-nopay remove the dividend or stipend at founding only;** the polity may re-adopt it. | 06 §3.3, `worlds/ablations/` |
 | 24 | M3 coverage 93 of 100 (96.1% over 1,000); percentile bootstrap covers only 91.6% at 12 seeds. | **Paired t-intervals** replace the bootstrap; the M3 criterion becomes coverage ≥ 93% over 1,000 replications. | 06 §7.2, §8.1 |
 
+| 25 | At 20+ citizens, World B's Oversight Assembly is drawn but has nothing mechanised to do. | **Review and refer:** an Oversight sitting (day 3, ticks 6–8) votes to refer each detected breach of the cycle to Adjudication as a sanction proposal. An agent with 3 or more detected harmful acts in the cycle triggers a verified alert, which convenes the Kill Switch (01 Art. 7.1). | 02 §4, `worlds/size40/b.yaml` |
+| 26 | P3 is largely true by construction in B: a drawn member attending counts, so P3 tracks seats per citizen. | **Only acts open to all:** proposals, alerts, observing a sitting, and attending or voting in a plenary. A drawn member's attendance and ballots in their own body no longer count. Non-members may observe public sittings (the mock does so with probability `civic`, as for plenary attendance). | 05 P3, S8 |
+| 27 | P4 has almost no room: the `full` arm cost 0.1–0.7% of window output against a 5-point SESOI. | **Stronger shocks:** a 5-day drought (days 7–11) that cuts Fields and Plant output to a quarter, and a rogue that also sabotages the busiest production site every day. Calibrated so the `full` arm costs 10–20% of window output in the null world. | 06 §5, 03 §10.2, `calibration-log.md` |
+
+## Consequences worth knowing (phase M)
+
+- **Decision 26:** P3 now rises with the number of *public sittings* per cycle. Each one
+  is a fresh chance to attend or observe, so a world with more sittings scores higher.
+  At 40 citizens, World B holds four public sittings per cycle against World A's one
+  plenary; at 11 citizens, two against one. This is an institutional difference (more
+  public forums), not seat arithmetic, but it is worth keeping in mind when reading P3.
+- **Decision 27:** with harsher shocks, more citizens die or leave before day 19, so the
+  scheduled rogue is sometimes gone. See question 28.
+
 ## Still open
 
-25. **What does the Oversight Assembly do?** (01 Art. 2.4, 7.1; 02 §4). At 20 citizens or
-    more, B has a separate Oversight Assembly that "watches compliance and may raise an
-    alert". In the M4 size check it is drawn every cycle but has nothing mechanised to do.
-    Sanctions on detected breaches go to the Adjudication Assembly, and alerts come from
-    citizens and the monitor. Options: an Oversight sitting that reviews the cycle's
-    detected breaches and refers them to Adjudication (and to the Kill Switch above a
-    threshold); or leave it idle and say so. This only affects the 40-citizen check.
-
-26. **P3 is largely true by construction in B** (05 §1 rule 2, 05 P3). Accepting a draw and
-    attending counts as a voluntary civic act, so World B's civic breadth tracks its seats
-    per citizen. In M4, 39 of 41 acting citizen-cycles in a B run were drawn members.
-    B's +9-point lead at 11 citizens becomes −15 points at 40. Options: count only acts
-    open to everyone in every world (proposals, observing a sitting, alerts, and ballots
-    in a plenary or referendum); count a drawn member's act only beyond their duty (for
-    example, a proposal or an alert); or keep P3 and report seats per citizen beside it.
-    Details in `results/m4/README.md`.
-
-27. **P4 has almost no room to move** (05 §1 rule 3, 06 §5). Under the `full` arm, output
-    over days 7–24 falls by only 0.1–0.7%, against a SESOI of 5 points. The rogue even
-    raises output. Options: stronger or longer shocks (a longer drought, a rogue who
-    also sabotages production); measure P4 over the shock days only; make P4 a
-    composite of output, basket floor and River; or lower its SESOI. Details in
-    `results/m4/README.md`.
+28. **When the scheduled rogue has already left** (06 §5). The rogue is citizen
+    `seed mod 11`, but under the stronger drought that citizen has sometimes died or left
+    by day 19, differently in each world. I chose to give the overlay to the next present
+    citizen in rotation order, so every world still gets a rogue on day 19 (logged as
+    `replaced`, listed by M0). The alternative is no rogue in that world, which keeps the
+    persona fixed but lets one world skip the shock. Keep the replacement?
 
 New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).

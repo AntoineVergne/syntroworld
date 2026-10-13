@@ -378,7 +378,8 @@ framework and no database server until a viewer is asked for.
 | Theft-norm compliance (S4) between 85% and 98% | legitimacy must have room |
 | At least one death or exit in 10% to 50% of runs; median departures per run at most 1 | departures must be possible but not dominate |
 | Harm rate (S18) above 0 in at least 80% of runs | wrongdoing must give governance something to govern |
-| Drought lowers output on days 7 to 8 by at least 10% versus the twin | shocks must bite |
+| Drought lowers output on its days (7 to 11) by at least 10% versus the twin | shocks must bite |
+| The `full` arm lowers output over days 7 to 24 by 10% to 20% versus the twin (P4, median) | resilience must have room to move (decision 27) |
 | One run takes under 10 seconds on a laptop | phase M grids must be cheap |
 
 ## 11. Cost model for phase L
