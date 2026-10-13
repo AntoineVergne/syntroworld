@@ -34,3 +34,28 @@ By outcome (uncorrected): P1 6.20%, P2 4.55%, P3 5.10%, P4 5.30%. False "better"
 - **P1.** P1's uncorrected rate, 6.20%, is about 2.4 s.e. above 5% (s.e. 0.49% per
   outcome). In the first run it was 4.80%. With four outcomes one this far out is not
   unusual, but it is worth rechecking at the next M2 run.
+The tests behave as designed: the uncorrected rate is at its nominal 5%, and every
+outcome is close to it. The Holm rate is within noise of its expected value:
+
+- Holm on 8 independent tests at α = 0.05 has an expected family-wise rate of
+  1 − (1 − 0.05/8)⁸ = **4.89%**.
+- The 95% exact interval for the observed rate is **3.9% to 6.8%**. It contains both
+  4.89% and 5%.
+- With 1,000 replications, a procedure whose true rate is 4.89% would show more than
+  5.0% about **40%** of the time.
+
+So the "≤ 5%" criterion, applied to a 1,000-replication estimate, fails a correct
+procedure close to half the time. The fail is a property of how the criterion is
+written, not evidence that the statistics are wrong. I did not re-run with other
+seeds: choosing a replication seed after seeing a fail would defeat the check.
+
+**Open question for Antoine (protocol amendment, 06 §8.1):** restate the M2 family-wise
+criterion with its Monte Carlo error, for example "the upper 95% bound of the
+family-wise rate is at most 7%" or "the rate is at most 5% + 2 s.e.". Alternatively,
+keep "≤ 5%" and raise the replication count. Even 10,000 replications (s.e. 0.22%)
+would still fail a procedure sitting exactly at 5% about half the time. Until
+then, M2 is recorded as **failed as written, consistent with nominal**.
+
+**Resolved (decision 21, 2026-10-13):** Antoine restated the criterion as "the upper
+bound of the 95% interval on the family-wise rate is at most 7%", before the freeze.
+The observed interval is 3.9–6.8%, so **M2 passes**. No run was repeated.
