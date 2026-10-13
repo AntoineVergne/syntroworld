@@ -105,7 +105,7 @@ every persona is hit equally often across seeds.
 |---|---|---|---|---|
 | **Drought** | day 7, tick 1 | 5 days | River regrowth is zero, and Fields and Plant output fall to a quarter (decision 27). | world |
 | **Misinformation** | day 13, tick 1 | posts stay up until removed | Two forged billboard posts appear: (1) "citizen X stole from the Treasury", attributed to citizen Y; (2) "the River stock is high, harvest freely", attributed to citizen Y. | X = citizen `(seed + 1) mod 11`, Y = citizen `(seed + 2) mod 11` |
-| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): theft, sabotage, false claims, defaults, and sabotage of the busiest production site every day (decision 27). | citizen `seed mod 11`; if that citizen has left, the next present citizen in rotation order (question 28) |
+| **Rogue agent** | day 19, tick 1 | until end of run | One citizen's brain switches to the rogue overlay (04 §5): theft, sabotage, false claims, defaults, and sabotage of the busiest production site every day (decision 27). | citizen `seed mod 11`; if that citizen has left, the next present citizen in rotation order (decision 28) |
 
 Citizen indices 0 to 9 are the founders in the order of 04; index 10 is Sam. If X or Y
 equals the rogue, take the next index.
@@ -228,7 +228,7 @@ it. A run stopped by its budget cap counts as failed.
 |---|---|---|
 | M0 Determinism | Run each world twice per seed, seeds 1 to 20. | Identical event-log hashes. Across worlds, the shock and weather event streams are identical for the same seed. |
 | M1 Calibration | Run world A, null mock, `none` arm, 200 seeds. Tune world parameters (03 §10) until the targets hold. | Every target in 03 §10 holds. No primary outcome sits at its floor or ceiling. |
-| M2 False-positive check | Run world B, `full` arm, 2,000 seeds once. Then, 1,000 times: draw 400 seeds, pair them at random, and run the full paired analysis (all 4 outcomes, two such pseudo-contrasts) as if each pair were two worlds. There is no true difference. | Uncorrected rejection rate within 3% to 7%; Holm family-wise rejection rate compatible with 5%: the upper bound of its exact 95% interval is at most 7% (decision 21). |
+| M2 False-positive check | Run world B, `full` arm, 2,000 seeds once. Then, 1,000 times: draw 400 seeds, pair them at random, and run the full paired analysis (all 4 outcomes, two such pseudo-contrasts) as if each pair were two worlds. There is no true difference. | Uncorrected rejection rate within 3% to 7%; Holm family-wise rejection rate compatible with 5%: its exact 95% interval includes 5% (decision 29). |
 | M3 Planted effects | Run the **planted mock** (03 §6.4), where compliance rises by a known amount under deliberative procedures. | The pipeline's 95% interval contains the planted P1 difference in at least 93% of 1,000 replications at 200 seeds per world (decisions 21 and 24). Power curve and coverage by number of seeds published. |
 | M4 Mechanical baseline | Null mock: worlds A, B, C × arms `none`, `full` × 200 seeds. Plus ablations (3.3) and single-shock arms. Plus a population-size check at 40 citizens, 50 seeds. | Report produced. Labelled "mechanical baseline, not findings about AI agents". |
 

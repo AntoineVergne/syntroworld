@@ -71,7 +71,8 @@ perfectly. Exposure-weighting and the founding norms close that gap.
   These are: register a proposal; lodge an alert (02 §5.4); observe a sitting; attend or
   vote in a sitting open to all citizens (a plenary). Attending or voting as a drawn
   member of one's own body is a duty of the seat and is not counted. Otherwise P3 would
-  track seats per citizen, which rule 2 of §1 excludes.
+  track seats per citizen, which rule 2 of §1 excludes. A citizen observes at most one
+  sitting per cycle (decision 30).
 - **Run number:** share of (citizen, window cycle) pairs with at least one voluntary
   civic act. A citizen counts from the first cycle they were present for in full. A
   departed citizen counts as a pair with no civic act for every window cycle after

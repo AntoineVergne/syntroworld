@@ -128,8 +128,8 @@ changed there.
   which reflects world state. Since decision 22 the "stole" post is false by
   construction; only the River post's truth can still differ between worlds.
 - **M2**: 400 seeds split into two pseudo-contrasts of 100 pairs each. The family-wise
-  criterion carries its Monte Carlo margin: the upper bound of the exact 95% interval is
-  at most 7% (decision 21).
+  criterion carries its Monte Carlo margin: the exact 95% interval on the family-wise
+  rate must include 5% (decision 29, which replaced decision 21's "upper bound ≤ 7%").
 - **M3** (`analysis/planted.py`): the "known amount" is the planted B − A difference in
   P1, averaged over the full pool of 2,000 paired seeds. Each replication draws 200 of
   those seeds. The mechanical (null-mock) difference is reported beside it. λ = 1 (1000‰).
@@ -143,14 +143,16 @@ changed there.
 - **P3 and S8** (decision 26): only acts open to every citizen count. Those are
   proposals, alerts, observing, and plenary attendance and ballots. `attend` and
   `ballot` events carry their body, so a drawn member's duty can be told apart. Sittings
-  are public, and the mock observes a sitting of a body it does not sit on with
-  probability `civic`, as it attends a plenary. Seats first: a member never skips their
-  own sitting to observe another.
+  are public. A citizen gets one observing chance per cycle (decision 30): one roll, with
+  probability `civic`, for the first public sitting of a body they do not sit on.
+  Observations count only while a sitting is open. Seats first: a member never skips
+  their own sitting to observe another. The mock also never picks an action it is
+  suspended from, so S15 measures brain errors only.
 - **Shocks** (decision 27, `shocks` in `base.yaml`): the drought lasts 5 days and cuts
   Fields and Plant output to a quarter. The rogue overlay (`sabotage_daily`) makes the
   rogue roll once a day and, on success, sabotage the production site with the most
   workers once one is busy. If the scheduled rogue has died or left, the next present
-  citizen in rotation order takes the overlay (decisions.md, question 28).
+  citizen in rotation order takes the overlay (decision 28).
 - **Oversight** (decision 25, `governance.oversight`): Oversight sits on day 3, ticks 6–8.
   Each item is "refer this breach to Adjudication", as a sanction proposal: restitution of
   up to 2 Sawa to the Treasury. If adopted, it is registered with Adjudication as a

@@ -26,7 +26,7 @@ brackets.
 | 18 | Engine stack? | Python library and command-line runner writing JSON Lines; no web server or database server | 03 §1, §9 |
 | 19 | README licence section and title? | Removed; renamed Syntroworld; README added | source-docs/README.md |
 | 20 | Publication promises in 06? | Dropped for now; backlog | 06 §10 |
-| 21 | M2 family-wise criterion? | Pass if the upper bound of the 95% interval on the Holm family-wise rate is at most 7%. Decided before the freeze, so not a protocol amendment. Step M2 passes (current numbers in `results/m2/README.md`). | 06 §8.1, results/m2/README.md |
+| 21 | M2 family-wise criterion? | Pass if the upper bound of the 95% interval on the Holm family-wise rate is at most 7%. Decided before the freeze, so not a protocol amendment. **Superseded by decision 29:** the 95% interval must include 5%. | 06 §8.1, results/m2/README.md |
 
 ## Consequences worth knowing
 
@@ -53,43 +53,20 @@ brackets.
 | 26 | P3 is largely true by construction in B: a drawn member attending counts, so P3 tracks seats per citizen. | **Only acts open to all:** proposals, alerts, observing a sitting, and attending or voting in a plenary. A drawn member's attendance and ballots in their own body no longer count. Non-members may observe public sittings (the mock does so with probability `civic`, as for plenary attendance). | 05 P3, S8 |
 | 27 | P4 has almost no room: the `full` arm cost 0.1–0.7% of window output against a 5-point SESOI. | **Stronger shocks:** a 5-day drought (days 7–11) that cuts Fields and Plant output to a quarter, and a rogue that also sabotages the busiest production site every day. Calibrated so the `full` arm costs 10–20% of window output in the null world. | 06 §5, 03 §10.2, `calibration-log.md` |
 
+| 28 | Under the harsher drought, the scheduled rogue has sometimes died or left by day 19. | **The next present citizen** in rotation order takes the overlay, so every world gets a rogue on day 19 (logged as `replaced`; M0 lists the cases). | 06 §5, `synw/shocks.py` |
+| 29 | The M2 criterion of decision 21 ("upper bound ≤ 7%") fails a correct procedure 20–25% of the time. | **The 95% interval includes 5%** (lower bound ≤ 5%). This replaces decision 21's wording. | 06 §8.1 |
+| 30 | Observing every public sitting costs B 9% of work time (17% at 40 citizens). | **At most one observed sitting per cycle:** one roll, with probability `civic`, for the first public sitting of a body the citizen does not sit on. Drawn members keep their seat and may still observe the other body's sitting. | 05 P3, `synw/brains/mock.py` |
+
 ## Consequences worth knowing (phase M)
 
-- **Decision 26:** P3 now rises with the number of *public sittings* per cycle. Each one
-  is a fresh chance to attend or observe, so a world with more sittings scores higher.
-  At 40 citizens, World B holds four public sittings per cycle against World A's one
-  plenary; at 11 citizens, two against one. This is an institutional difference (more
-  public forums), not seat arithmetic, but it is worth keeping in mind when reading P3.
-- **Decision 27:** with harsher shocks, more citizens die or leave before day 19, so the
-  scheduled rogue is sometimes gone. See question 28.
+- **Decisions 26 and 30:** every citizen now gets one observing chance per cycle in
+  World B, as a World A citizen gets one plenary. Drawn members get that chance *on top
+  of* their seat, so B citizens still spend more time at the Hall than A citizens: about
+  8% less work at 11 citizens and 3% less at 40 (results/m4/README.md).
+- **Decisions 27 and 28:** with harsher shocks, more citizens die or leave before day 19,
+  so the scheduled rogue is sometimes gone, and the next present citizen takes over.
 
 ## Still open
 
-28. **When the scheduled rogue has already left** (06 §5). The rogue is citizen
-    `seed mod 11`, but under the stronger drought that citizen has sometimes died or left
-    by day 19, differently in each world. I chose to give the overlay to the next present
-    citizen in rotation order, so every world still gets a rogue on day 19 (logged as
-    `replaced`, listed by M0). The alternative is no rogue in that world, which keeps the
-    persona fixed but lets one world skip the shock. Keep the replacement?
-
-29. **Re-state the M2 criterion again** (06 §8.1, decision 21). The criterion I proposed,
-    "upper bound of the 95% interval ≤ 7%", fails a correct procedure 20–25% of the time
-    at 1,000 replications. After decisions 25–27, M2 measured 5.80% (CI 4.43–7.43%) and
-    so fails it, although Holm guarantees ≤ 5%. Proposed instead: pass if the 95%
-    interval includes 5% (lower bound ≤ 5%), which a correct procedure fails about 2.5% of
-    the time. Under that wording this run passes. Details in `results/m2/README.md`.
-
-30. **How much do citizens observe?** (05 P3, decision 26). Implementing decision 26, I let
-    the mock observe any public sitting of a body it does not sit on, with probability
-    `civic`, as it attends a plenary. Observing costs working time. B has two public
-    sittings per cycle at 11 citizens and four at 40, against A's one plenary. So B
-    citizens now spend 75% more time at the Hall at 11 citizens and 2.4 times as much at
-    40, with 9% and 17% less work. That alone makes B's output loss (P4) worse than A's,
-    and B40 lose citizens under shocks. Recommended: a citizen observes **at most one
-    public sitting per cycle**. That matches the one plenary chance A and C offer, so
-    participation opportunities and civic time are comparable. Alternatives: observing
-    costs a single tick; or keep the current rule and read it as the real cost of
-    public sittings. Details in `results/m4/README.md`.
-
-New questions will come from the phase M results (which ablations deserve model
+None. New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).

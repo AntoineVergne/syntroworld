@@ -113,4 +113,4 @@ All nine targets hold on 200 seeds (`results/m1/calibration-a-200.txt`).
 
 With harsher shocks, more citizens die or leave before day 19, so the scheduled rogue
 is sometimes gone. The next present citizen then takes the overlay (decisions.md,
-question 28).
+decision 28).
