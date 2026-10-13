@@ -24,7 +24,41 @@ python -m synw.analysis.baseline report --out results/m4
 
 **Pass condition: report produced, labelled.** Met.
 
-## Latest run (after decisions 25–27)
+## Latest run (after decisions 28–30)
+
+Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
+
+| | B vs A | B vs C |
+|---|---|---|
+| P1 compliance | +0.36 pts (better) | −0.63 pts (worse) |
+| P2 wealth Gini | −0.057 (better) | −0.103 (better) |
+| P3 civic breadth | +1.18 pts (no meaningful difference) | +1.68 pts (better) |
+| P4 output loss | **+2.17 pts (worse)** | **+1.92 pts (worse)** |
+
+What changed from the previous run:
+
+- **Observing is capped at one sitting per cycle** (decision 30). B's work time without
+  shocks is now 1,507 ticks against A's 1,633 (−8%), and B40's is 5,778 against A40's
+  5,956 (−3%, was −17%). B40 no longer collapses under shocks: 0.18 deaths and 1.10 exits
+  per run (was 1.44 and 3.36), against 0.22 and 1.06 in A40 and 1.08 and 3.84 in C40.
+  Without shocks B40 now produces slightly more than A40 (S2 11,006 against 10,877).
+- **B's P3 advantage has mostly gone.** At 11 citizens B leads A by only +1.2 points
+  (interval includes zero). At 40 citizens B40 now *trails* A40 by 7.3 points
+  [−8.6, −6.0] and C40 by 4.7 points. In A every citizen can attend each plenary; in B a
+  drawn member's seat does not count as a voluntary act (decision 26), and other
+  citizens can observe only once per cycle. So P3 now measures how often a world offers
+  open plenaries, not how widely power is shared.
+- **P4 is still worse in B** (+2.2 points against A, +1.9 against C), but well below the
+  5-point SESOI. The `full` arm costs 18.2% (A), 20.4% (B) and 18.5% (C). The rogue
+  (decision 28: the next present citizen takes over if the drawn one is absent) costs B
+  0.5 points more than A.
+- **Unchanged:** B is the most equal world (the dividend −0.022 and stipends −0.016 are
+  the parts that matter; B-nolot −0.011). B keeps the River at or above K/2 on 89% of
+  window days (A 50%, C 36%). S6 capture is +0.35 in C. Removing sortition costs B 11.2
+  points of P3 (its Cycle Assembly no longer deliberates in the open). Advocates change
+  nothing mechanically.
+
+## Second run (after decisions 25–27)
 
 Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
 
@@ -58,7 +92,7 @@ mean Holm-significant with an interval excluding zero (06 §7.2).
   collapse of B40 under shocks (1.44 deaths and 3.36 exits per run, against 0.22 and
   1.06 in A40) all follow from this. The observing rule (probability `civic` for every
   public sitting) is my modelling choice for decision 26, not part of the decision.
-  See decisions.md, question 30.
+  See decisions.md, question 30 (since answered: one sitting per cycle).
 - **Equality.** B is less unequal than A (−0.047) and C (−0.094). The dividend (−0.024)
   and stipends (−0.014) are the parts that matter. Removing sortition *lowers* B's Gini
   (B-nolot −0.021): its deliberating plenary includes everyone.
