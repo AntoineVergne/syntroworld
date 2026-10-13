@@ -1,10 +1,10 @@
 planted-effect check on P1: pool of 2000 paired seeds (B vs A, planted mock)
-      truth (pool mean of d): +0.0129  (s.e. 0.0003; sd of d 0.0136)
-      null-mock difference: +0.0051 (s.e. 0.0004); planted increment: +0.0078
-PASS  t-interval contains the truth in >= 93% of 1000 replications (n = 200): 964 of 1000 = 96.4% (95% CI [95.1%, 97.5%])
+      truth (pool mean of d): +0.0131  (s.e. 0.0003; sd of d 0.0136)
+      null-mock difference: +0.0041 (s.e. 0.0004); planted increment: +0.0090
+PASS  t-interval contains the truth in >= 93% of 1000 replications (n = 200): 958 of 1000 = 95.8% (95% CI [94.4%, 97.0%])
       n     power(a=.05)  power(a=.05/8)  coverage  mean estimate
-      12         83.4%          45.5%     96.2%  +0.0128
-      25         99.5%          92.6%     94.8%  +0.0128
-      50        100.0%         100.0%     96.0%  +0.0130
-      100       100.0%         100.0%     96.2%  +0.0129
-      200       100.0%         100.0%     96.8%  +0.0129
+      12         85.1%          50.0%     95.0%  +0.0130
+      25         98.7%          94.4%     95.6%  +0.0130
+      50        100.0%          99.9%     97.0%  +0.0131
+      100       100.0%         100.0%     95.7%  +0.0130
+      200       100.0%         100.0%     96.9%  +0.0131

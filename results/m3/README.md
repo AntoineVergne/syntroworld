@@ -21,43 +21,38 @@ python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl
   --json results/m3/planted.json
 ```
 
-## The known effect (after decisions 25–27)
+## The known effect (after decisions 25–30)
 
 | | P1, B − A |
 |---|---|
-| Null mock (mechanical difference) | +0.51 points (s.e. 0.04) |
-| Planted mock (the truth for this check) | **+1.29 points** (s.e. 0.03) |
-| Increment from the plant | **+0.78 points** |
-
-The truth is the mean paired difference over the whole pool of 2,000 seeds.
+| Null mock (mechanical difference) | +0.41 points (s.e. 0.04) |
+| Planted mock (the truth for this check) | **+1.31 points** (s.e. 0.03) |
+| Increment from the plant | **+0.90 points** |
 
 ## Result: PASS
 
 | Check | Criterion (decisions 21, 24) | Observed |
 |---|---|---|
-| 95% t-interval contains the truth, n = 200 | ≥ 93% of 1,000 replications | **964 of 1,000 = 96.4%** (95% CI 95.1–97.5%) |
-
-Power curve and coverage (1,000 replications each, paired t-intervals):
+| 95% t-interval contains the truth, n = 200 | ≥ 93% of 1,000 replications | **958 of 1,000 = 95.8%** (95% CI 94.4–97.0%) |
 
 | Seeds n | Power, α = 0.05 | Power, α = 0.05/8 (Holm lower bound) | Interval coverage | Mean estimate |
 |---|---|---|---|---|
-| 12 | 83.4% | 45.5% | 96.2% | +1.28 |
-| 25 | 99.5% | 92.6% | 94.8% | +1.28 |
-| 50 | 100% | 100% | 96.0% | +1.30 |
-| 100 | 100% | 100% | 96.2% | +1.29 |
-| 200 | 100% | 100% | 96.8% | +1.29 |
+| 12 | 85.1% | 50.0% | 95.0% | +1.30 |
+| 25 | 98.7% | 94.4% | 95.6% | +1.30 |
+| 50 | 100% | 99.9% | 97.0% | +1.31 |
+| 100 | 100% | 100% | 95.7% | +1.30 |
+| 200 | 100% | 100% | 96.9% | +1.31 |
 
-## Reading
-
-- **The estimate recovers the truth** without bias at every n.
-- **Coverage holds down to 12 seeds** with paired t-intervals.
-- **Power.** A difference of about 1.3 points on P1 is found under Holm about half the
-  time at 12 seeds, and reliably from about 25 seeds per world.
-- **Compared with the previous run** (truth +1.08, null −0.32, plant +1.39), the
-  mechanical difference is now positive and the plant adds less. The new shocks and
-  observing (decisions 26, 27) change what each world's rules face; see M4.
+- **No bias:** the estimate recovers the truth at every n.
+- **Coverage holds down to 12 seeds.**
+- **Power:** a difference of about 1.3 points is found under Holm half the time at 12
+  seeds and reliably from about 25.
 
 ## History
+
+**Third run (decisions 25–27):** truth +1.29 points (null +0.51, plant +0.78); coverage
+96.4% at n = 200. Pass.
+
 
 **Second run (decisions 21, 22, 24):** truth +1.08 points (null −0.32, plant +1.39);
 coverage 95.5% at n = 200 and 96.1% at n = 12. Pass.
