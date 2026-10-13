@@ -72,5 +72,12 @@ brackets.
     `replaced`, listed by M0). The alternative is no rogue in that world, which keeps the
     persona fixed but lets one world skip the shock. Keep the replacement?
 
+29. **Re-state the M2 criterion again** (06 §8.1, decision 21). The criterion I proposed,
+    "upper bound of the 95% interval ≤ 7%", fails a correct procedure 20–25% of the time
+    at 1,000 replications. After decisions 25–27, M2 measured 5.80% (CI 4.43–7.43%) and
+    so fails it, although Holm guarantees ≤ 5%. Proposed instead: pass if the 95%
+    interval includes 5% (lower bound ≤ 5%), which a correct procedure fails about 2.5% of
+    the time. Under that wording this run passes. Details in `results/m2/README.md`.
+
 New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).
