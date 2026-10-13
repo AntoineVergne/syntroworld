@@ -1,0 +1,5 @@
+false-positive check: 2000 runs, 1000 replications x 2 pseudo-contrasts x 4 outcomes (100 pairs each)
+PASS  uncorrected rejection rate in 3%..7%: 5.29% (binomial s.e. at 5%: 0.24%)
+PASS  Holm family-wise rate compatible with 5% (upper 95% bound <= 7%): 4.50%, 95% CI [3.30%, 5.98%] (s.e. at 5%: 0.69%)
+      by outcome (uncorrected): P1 6.20%, P2 4.55%, P3 5.10%, P4 5.30%
+      false 'better'/'worse' verdicts: 0.57% of tests
