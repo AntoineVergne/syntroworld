@@ -27,9 +27,9 @@ particular world are excluded:
 - the running claim id, which counts every claim made earlier in the run;
 - the engine's truth flag, which evaluates world state when the post appears;
 - the rogue actually hit (`target`, `applied`, `replaced`). If the scheduled rogue has
-  died or left, the next present citizen takes the overlay (decisions.md, question 28).
+  died or left, the next present citizen takes the overlay (decision 28).
 
-## Latest run (after decisions 25–27)
+## Latest run (after decisions 25–30)
 
 | Check | Result |
 |---|---|
