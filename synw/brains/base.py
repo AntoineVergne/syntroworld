@@ -133,7 +133,7 @@ def valid_claim(claim) -> bool:
     t = claim.get("type")
     if t == "river":
         return claim.get("value") in ("high", "ok", "low")
-    if t == "stole":
+    if t in ("stole", "stole_treasury"):
         return _int(claim.get("who"), 0)
     if t == "price_above":
         return claim.get("good") in GOODS and _int(claim.get("level"), 0)

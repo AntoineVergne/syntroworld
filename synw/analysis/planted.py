@@ -7,8 +7,10 @@ by a known amount on top of the mechanical difference.
 
 - **Truth:** the mean paired difference ``P1(B, s) − P1(A, s)`` over the whole pool of
   seeds (2,000), which is exact for the population the replications sample from.
-- **Coverage (pass condition):** in at least 95 of 100 replications of ``n`` seeds
-  (default 200, the phase M size), the 95% bootstrap interval contains the truth.
+- **Coverage (pass condition):** over 1,000 replications of ``n`` seeds (default 200,
+  the phase M size), the 95% paired t-interval contains the truth at least 93% of the
+  time (Antoine's decisions 21 and 24: a Monte Carlo margin, and t-intervals instead of
+  the percentile bootstrap). Coverage is reported for every n of the power curve.
 - **Power curve:** for each ``n``, the share of 1,000 replications in which the paired
   sign-flip test rejects at α = 0.05, and at α = 0.05 / 8 (the Bonferroni level, a
   lower bound on the Holm power for one of the 8 primary tests).
@@ -27,7 +29,8 @@ import argparse
 import json
 import sys
 
-from .false_positive import _np, bootstrap_ci, sign_flip_p
+from .compare import binom_ci
+from .false_positive import _np, sign_flip_p, t_ci
 from .grid import read_rows
 
 
@@ -40,8 +43,8 @@ def paired(rows_t, rows_c, outcome="P1"):
 
 
 def check(planted_b, planted_a, null_b=None, null_a=None, outcome="P1", coverage_n=200,
-          coverage_reps=100, ns=(12, 25, 50, 100, 200), power_reps=1000, seed=20261013,
-          n_flips=100000, n_resamples=10000):
+          coverage_reps=1000, ns=(12, 25, 50, 100, 200), power_reps=1000, seed=20261013,
+          n_flips=100000, min_coverage=0.93):
     np = _np()
     rng = np.random.default_rng(seed)
     seeds, d = paired(planted_b, planted_a, outcome)
@@ -59,13 +62,15 @@ def check(planted_b, planted_a, null_b=None, null_a=None, outcome="P1", coverage
         hits = 0
         for _ in range(reps):
             x = d[rng.choice(N, size=n, replace=False)][:, None]
-            lo, hi = bootstrap_ci(x, n_resamples, rng)
+            lo, hi = t_ci(x)
             hits += bool(lo[0] <= truth <= hi[0])
         return hits
 
     hits = covered(coverage_n, coverage_reps)
     res["coverage"] = {"n": coverage_n, "reps": coverage_reps, "covered": hits,
-                       "pass": hits >= int(0.95 * coverage_reps)}
+                       "rate": hits / coverage_reps, "ci": list(binom_ci(hits, coverage_reps)),
+                       "min": min_coverage, "pass": hits / coverage_reps >= min_coverage,
+                       "interval": "paired t"}
     curve = []
     for n in ns:
         rej05 = rej_b = cov = 0
@@ -75,7 +80,7 @@ def check(planted_b, planted_a, null_b=None, null_a=None, outcome="P1", coverage
             p = float(sign_flip_p(x, n_flips, rng)[0])
             rej05 += p <= 0.05
             rej_b += p <= 0.05 / 8
-            lo, hi = bootstrap_ci(x, n_resamples, rng)
+            lo, hi = t_ci(x)
             cov += bool(lo[0] <= truth <= hi[0])
             est.append(float(x.mean()))
         curve.append({"n": n, "reps": power_reps, "power_05": rej05 / power_reps,
@@ -93,8 +98,9 @@ def report(res):
         lines.append(f"      null-mock difference: {res['null_difference']:+.4f} (s.e. {res['null_se']:.4f}); "
                      f"planted increment: {res['planted_increment']:+.4f}")
     c = res["coverage"]
-    lines.append(f"{'PASS' if c['pass'] else 'FAIL'}  interval contains the truth in >= 95% of {c['reps']} "
-                 f"replications (n = {c['n']}): {c['covered']} of {c['reps']}")
+    lines.append(f"{'PASS' if c['pass'] else 'FAIL'}  t-interval contains the truth in >= {c['min']:.0%} of "
+                 f"{c['reps']} replications (n = {c['n']}): {c['covered']} of {c['reps']} = {c['rate']:.1%} "
+                 f"(95% CI [{c['ci'][0]:.1%}, {c['ci'][1]:.1%}])")
     lines.append("      n     power(a=.05)  power(a=.05/8)  coverage  mean estimate")
     for r in res["power_curve"]:
         lines.append(f"      {r['n']:<5d} {r['power_05']:>10.1%}  {r['power_bonferroni']:>13.1%}  "
@@ -110,7 +116,7 @@ def main(argv=None):
     ap.add_argument("--null-a")
     ap.add_argument("--outcome", default="P1")
     ap.add_argument("--n", type=int, default=200)
-    ap.add_argument("--reps", type=int, default=100)
+    ap.add_argument("--reps", type=int, default=1000)
     ap.add_argument("--power-reps", type=int, default=1000)
     ap.add_argument("--ns", default="12,25,50,100,200")
     ap.add_argument("--seed", type=int, default=20261013)

@@ -44,8 +44,8 @@ def _sections(name):
 
 def test_ablation_configs_change_only_their_mechanism():
     assert _sections("ablations/b-noadv.yaml") == {"governance.advocates"}
-    assert _sections("ablations/b-nodiv.yaml") == {"governance.founding_rules", "governance.allow_dividend"}
-    assert _sections("ablations/b-nopay.yaml") == {"governance.founding_rules", "governance.allow_stipend"}
+    assert _sections("ablations/b-nodiv.yaml") == {"governance.founding_rules"}
+    assert _sections("ablations/b-nopay.yaml") == {"governance.founding_rules"}
     assert _sections("ablations/b-nolot.yaml") == {"governance.blocks", "governance.bodies"}
     assert {k for k in _diff("ablations/b-nolot.yaml") if k.startswith("governance.blocks")} == \
         {f"governance.blocks.{i}" for i in range(3)}     # review bench and kill switch kept
@@ -86,22 +86,33 @@ def test_noadv_has_no_hearing():
     assert not any(e["type"] in ("advocate_brief", "objection") for e in ev)
 
 
-def test_nodiv_has_no_dividend_and_none_can_be_adopted(make_world):
-    _, ev = _events("ablations/b-nodiv.yaml")
-    assert not any(e["type"] in ("dividend", "dividend_shortfall") for e in ev)
-    assert not any(e["type"] == "proposal_registered" and e["payload"]["effect"].get("type") == "set_dividend"
-                   for e in ev)                      # the mock does not propose what is forbidden
+def test_nodiv_starts_without_a_dividend_but_may_adopt_one(make_world):
     w = make_world("ablations/b-nodiv.yaml")
-    assert w.governance.register_proposal(0, {"type": "set_dividend", "amount": 1000})["status"] == "rejected"
-    assert any(e["type"] == "treasury_out" and e["payload"]["kind"] == "stipend" for e in ev)
+    assert w.rules.dividend == 0 and w.rules.stipend > 0
+    assert w.governance.register_proposal(0, {"type": "set_dividend", "amount": 1000})["status"] == "admissible"
+    _, ev = _events("ablations/b-nodiv.yaml")
+    first_div = min((e["tick"] for e in ev if e["type"] == "dividend"), default=None)
+    adopted = [e["tick"] for e in ev if e["type"] == "rule_in_force" and e["payload"]["effect"]["type"] == "set_dividend"]
+    assert first_div is None or (adopted and min(adopted) <= first_div)
 
 
-def test_nopay_has_no_stipends(make_world):
-    _, ev = _events("ablations/b-nopay.yaml")
-    assert not any(e["type"] == "treasury_out" and e["payload"]["kind"] == "stipend" for e in ev)
-    assert any(e["type"] == "dividend" for e in ev)
+def test_nopay_starts_unpaid_but_may_adopt_stipends(make_world):
     w = make_world("ablations/b-nopay.yaml")
-    assert w.governance.register_proposal(0, {"type": "set_stipend", "amount": 500})["status"] == "rejected"
+    assert w.rules.stipend == 0 and w.rules.dividend > 0
+    assert w.governance.register_proposal(0, {"type": "set_stipend", "amount": 500})["status"] == "admissible"
+    _, ev = _events("ablations/b-nopay.yaml")
+    first_paid = min((e["tick"] for e in ev if e["type"] == "treasury_out" and e["payload"]["kind"] == "stipend"),
+                     default=None)
+    adopted = [e["tick"] for e in ev if e["type"] == "rule_in_force" and e["payload"]["effect"]["type"] == "set_stipend"]
+    assert first_paid is None or (adopted and min(adopted) <= first_paid)
+
+
+def test_world_flags_can_still_forbid_an_effect(make_world):
+    def patch(cfg):
+        cfg["governance"]["allow_dividend"] = False
+    w = make_world("ablations/b-nodiv.yaml", cfg_patch=patch)
+    assert w.governance.register_proposal(0, {"type": "set_dividend", "amount": 1000})["status"] == "rejected"
+    assert not w.observe(0).legal({"type": "set_dividend", "amount": 1000})
 
 
 @pytest.mark.parametrize("name", ABL)
@@ -111,8 +122,8 @@ def test_ablations_deterministic(tmp_path, name):
     assert log_hash(a.log_path) == log_hash(b.log_path)
 
 
-def test_b_unchanged_by_ablation_support():
-    """The null B run behind the M2 grid is byte-identical."""
+def test_b_matches_the_m2_grid():
+    """The null B run behind the M2 grid reproduces with the current code."""
     import json
     rows = {json.loads(l)["seed"]: json.loads(l) for l in open(wpath("../results/m2/grid-b-full-2000.jsonl"))}
     from synw.analysis.grid import outcomes

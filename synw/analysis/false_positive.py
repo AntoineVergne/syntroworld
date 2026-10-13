@@ -6,13 +6,14 @@ draw 400 seeds without replacement, pair them at random into two pseudo-contrast
 if each pair were two worlds. There is no true difference, so:
 
 - the uncorrected rejection rate (p ≤ 0.05) must lie within 3% to 7%;
-- the Holm family-wise rejection rate (any of the 8 tests rejected) must be ≤ 5%.
+- the Holm family-wise rejection rate (any of the 8 tests rejected) must be compatible
+  with 5%: the upper bound of its exact 95% interval is at most 7% (Antoine's
+  decision 21, which adds the Monte Carlo margin).
 
 The tests are those of ``synw.analysis.compare``: a two-sided sign-flip test, exact up
-to 20 pairs, otherwise 100,000 random flips; Holm across the 8 tests; 95% percentile
-bootstrap intervals (10,000 resamples) for the verdicts. Within one replication, the
-8 tests share the same random flips and bootstrap resamples. This only correlates their
-Monte Carlo noise; each test is still the stated test.
+to 20 pairs, otherwise 100,000 random flips; Holm across the 8 tests; 95% paired
+t-intervals for the verdicts. Within one replication, the 8 tests share the same random
+flips. This only correlates their Monte Carlo noise; each test is still the stated test.
 
 numpy is required here (``pip install -e ".[analysis]"``); the engine itself does not
 use it.
@@ -25,7 +26,7 @@ import itertools
 import json
 import sys
 
-from .compare import ALPHA, BETTER, SESOI, holm, verdict
+from .compare import ALPHA, BETTER, SESOI, binom_ci, holm, t_quantile, verdict
 from .grid import read_rows
 
 OUTCOMES = ("P1", "P2", "P3", "P4")
@@ -80,6 +81,16 @@ def bootstrap_ci(D, n_resamples=10000, rng=None, level=0.95):
     return lo, hi
 
 
+def t_ci(D, level=0.95):
+    """Paired t-interval of the mean, for each column of ``D``."""
+    np = _np()
+    D = np.asarray(D, dtype=float)
+    n = D.shape[0]
+    half = t_quantile(1 - (1 - level) / 2, n - 1) * D.std(axis=0, ddof=1) / n ** 0.5
+    m = D.mean(axis=0)
+    return m - half, m + half
+
+
 def load_outcomes(rows, outcomes=OUTCOMES):
     """Seeds with every outcome present, and their values per outcome."""
     np = _np()
@@ -89,7 +100,7 @@ def load_outcomes(rows, outcomes=OUTCOMES):
 
 
 def check(rows, reps=1000, draw=400, contrasts=2, seed=20261012, n_flips=100000,
-          n_resamples=10000, outcomes=OUTCOMES, alpha=ALPHA):
+          outcomes=OUTCOMES, alpha=ALPHA, fwer_max_upper=0.07):
     np = _np()
     rng = np.random.default_rng(seed)
     seeds, vals = load_outcomes(rows, outcomes)
@@ -115,7 +126,7 @@ def check(rows, reps=1000, draw=400, contrasts=2, seed=20261012, n_flips=100000,
         adj = holm([float(x) for x in p])
         if min(adj) <= alpha:
             fwer += 1
-        lo, hi = bootstrap_ci(D, n_resamples, rng)
+        lo, hi = t_ci(D)
         est = D.mean(axis=0)
         for j, (c, y) in enumerate(labels):
             v = verdict(float(est[j]), (float(lo[j]), float(hi[j])), adj[j], SESOI[y], BETTER[y], alpha)
@@ -124,14 +135,15 @@ def check(rows, reps=1000, draw=400, contrasts=2, seed=20261012, n_flips=100000,
     tests = reps * len(labels)
     unc = float(rej.sum() / tests)
     fw = fwer / reps
+    fw_ci = binom_ci(fwer, reps)
     by_outcome = {y: float(sum(rej[j] for j, (c, yy) in enumerate(labels) if yy == y) / (reps * contrasts))
                   for y in outcomes}
     return {
         "runs": N, "reps": reps, "draw": draw, "pairs_per_contrast": per, "contrasts": contrasts,
         "tests": tests, "uncorrected_rate": unc, "uncorrected_by_outcome": by_outcome,
-        "holm_fwer": fw, "false_verdict_rate": false_verdicts / tests,
-        "pass_uncorrected": 0.03 <= unc <= 0.07, "pass_fwer": fw <= 0.05,
-        "seed": seed, "n_flips": n_flips, "n_resamples": n_resamples,
+        "holm_fwer": fw, "holm_fwer_ci": list(fw_ci), "false_verdict_rate": false_verdicts / tests,
+        "pass_uncorrected": 0.03 <= unc <= 0.07, "pass_fwer": fw_ci[1] <= fwer_max_upper,
+        "fwer_max_upper": fwer_max_upper, "seed": seed, "n_flips": n_flips, "interval": "paired t",
     }
 
 
@@ -144,8 +156,9 @@ def report(res):
         f"({res['pairs_per_contrast']} pairs each)",
         f"{'PASS' if res['pass_uncorrected'] else 'FAIL'}  uncorrected rejection rate in 3%..7%: "
         f"{res['uncorrected_rate']:.2%} (binomial s.e. at 5%: {se_u:.2%})",
-        f"{'PASS' if res['pass_fwer'] else 'FAIL'}  Holm family-wise rejection rate <= 5%: "
-        f"{res['holm_fwer']:.2%} (s.e. at 5%: {se_f:.2%})",
+        f"{'PASS' if res['pass_fwer'] else 'FAIL'}  Holm family-wise rate compatible with 5% "
+        f"(upper 95% bound <= {res['fwer_max_upper']:.0%}): {res['holm_fwer']:.2%}, "
+        f"95% CI [{res['holm_fwer_ci'][0]:.2%}, {res['holm_fwer_ci'][1]:.2%}] (s.e. at 5%: {se_f:.2%})",
         "      by outcome (uncorrected): " + ", ".join(f"{y} {v:.2%}" for y, v in res["uncorrected_by_outcome"].items()),
         f"      false 'better'/'worse' verdicts: {res['false_verdict_rate']:.2%} of tests",
     ]
@@ -159,11 +172,9 @@ def main(argv=None):
     ap.add_argument("--draw", type=int, default=400)
     ap.add_argument("--seed", type=int, default=20261012)
     ap.add_argument("--flips", type=int, default=100000)
-    ap.add_argument("--resamples", type=int, default=10000)
     ap.add_argument("--json", help="also write the result as JSON here")
     args = ap.parse_args(argv)
-    res = check(read_rows(args.grid), args.reps, args.draw, seed=args.seed, n_flips=args.flips,
-                n_resamples=args.resamples)
+    res = check(read_rows(args.grid), args.reps, args.draw, seed=args.seed, n_flips=args.flips)
     for line in report(res):
         print(line)
     if args.json:

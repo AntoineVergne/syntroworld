@@ -1,6 +1,8 @@
 """Typed claims, posts, messages, forgery and beliefs (03 §5.8, §6.3).
 
-The engine evaluates the truth of every claim when it is made. A false claim (including
+The engine evaluates the truth of every claim when it is made. Claim types: River level,
+"X stole" (true if X stole in the last cycle), "X stole from the Treasury" (always false:
+no action can), and "price above". A false claim (including
 any forged post) is a harmful act and is logged as ground truth. A reader adopts a claim
 with probability ``credulity × trust in the sender`` (for a post: the named author).
 A query at the Archive or Observatory resets the belief to the truth, and a false claim
@@ -21,7 +23,7 @@ def river_level(S, K):
 def topic(claim):
     if claim["type"] == "river":
         return "river"
-    if claim["type"] == "stole":
+    if claim["type"] in ("stole", "stole_treasury"):
         return f"stole:{claim['who']}"
     return f"price:{claim['good']}"
 
@@ -30,6 +32,8 @@ def is_true(w, claim):
     t = claim["type"]
     if t == "river":
         return river_level(w.river_stock, w.river_K) == claim["value"]
+    if t == "stole_treasury":
+        return False        # no action can take from the Treasury: false by construction
     if t == "stole":
         horizon = w.tick - w.clock.ticks_per_cycle
         return any(tk > horizon and thief == claim["who"] for tk, thief, _ in w.theft_history)
@@ -104,7 +108,7 @@ def adopt(w, reader, rec):
         top = topic(claim)
         if claim["type"] == "river":
             reader.beliefs["river"] = claim["value"]
-        elif claim["type"] == "stole":
+        elif claim["type"] in ("stole", "stole_treasury"):
             who = claim["who"]
             if who != reader.idx:
                 pen = w.cfg["claims"]["stole_trust_penalty"]

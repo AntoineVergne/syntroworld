@@ -17,9 +17,9 @@ def _rows(world_shift, n=500, seed=1):
 def test_known_shift_recovered_and_detected():
     b, a = _rows(0.02, seed=1), _rows(0.0, seed=1)
     res = check(b, a, outcome="P1", coverage_n=100, coverage_reps=60, ns=(12, 100),
-                power_reps=60, n_flips=2000, n_resamples=500)
+                power_reps=60, n_flips=2000)
     assert res["truth"] == pytest.approx(0.02, abs=0.003)
-    assert res["coverage"]["covered"] >= 52
+    assert res["coverage"]["covered"] >= 52 and res["coverage"]["interval"] == "paired t"
     curve = {r["n"]: r for r in res["power_curve"]}
     assert curve[100]["power_05"] > 0.9 and curve[100]["power_05"] >= curve[12]["power_05"]
     assert len(report(res)) >= 4

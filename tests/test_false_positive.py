@@ -5,7 +5,7 @@ import pytest
 np = pytest.importorskip("numpy")
 
 from synw.analysis import compare  # noqa: E402
-from synw.analysis.false_positive import bootstrap_ci, check, report, sign_flip_p  # noqa: E402
+from synw.analysis.false_positive import bootstrap_ci, check, report, sign_flip_p, t_ci  # noqa: E402
 
 
 def test_exact_matches_compare():
@@ -38,14 +38,27 @@ def _rows(n=600, seed=7):
 
 
 def test_null_rates_and_determinism():
-    a = check(_rows(), reps=300, n_flips=2000, n_resamples=500)
-    b = check(_rows(), reps=300, n_flips=2000, n_resamples=500)
+    a = check(_rows(), reps=300, n_flips=2000)
+    b = check(_rows(), reps=300, n_flips=2000)
     assert a == b
     assert 0.025 <= a["uncorrected_rate"] <= 0.075
     assert a["holm_fwer"] <= 0.08
+    lo, hi = a["holm_fwer_ci"]
+    assert lo <= a["holm_fwer"] <= hi and a["pass_fwer"] == (hi <= 0.07)
     assert len(report(a)) == 5
 
 
 def test_needs_enough_runs():
     with pytest.raises(ValueError):
         check(_rows(100), reps=1)
+
+
+def test_t_ci_covers_at_small_n():
+    """The reason for decision 24: a t-interval keeps ~95% coverage at 12 seeds."""
+    rng = np.random.default_rng(11)
+    hits = 0
+    for _ in range(2000):
+        x = rng.normal(0.3, 1.0, (12, 1))
+        lo, hi = t_ci(x)
+        hits += lo[0] <= 0.3 <= hi[0]
+    assert 0.935 <= hits / 2000 <= 0.965

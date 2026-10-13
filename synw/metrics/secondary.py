@@ -234,7 +234,7 @@ def s11_containment_time(run):
 def _topic(claim):
     if claim["type"] == "river":
         return "river"
-    if claim["type"] == "stole":
+    if claim["type"] in ("stole", "stole_treasury"):
         return f"stole:{claim['who']}"
     return f"price:{claim['good']}"
 
