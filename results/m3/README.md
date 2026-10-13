@@ -32,39 +32,37 @@ python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl
 The truth is the mean paired difference over the whole pool of 2,000 seeds. The
 planted effect is smaller than the P1 SESOI of 5 points.
 
-## Result
+## Result: PASS
 
-| Check | Criterion | Observed | Verdict as written |
-|---|---|---|---|
-| 95% interval contains the truth, n = 200 | ≥ 95 of 100 replications | **93 of 100** | **fail** |
-| Same intervals, n = 200 | (1,000 replications, for stability) | 96.1% | — |
+| Check | Criterion (decisions 21, 24) | Observed |
+|---|---|---|
+| 95% t-interval contains the truth, n = 200 | ≥ 93% of 1,000 replications | **955 of 1,000 = 95.5%** (95% CI 94.0–96.7%) |
 
-Power curve and coverage (1,000 replications each):
+Power curve and coverage (1,000 replications each, paired t-intervals):
 
 | Seeds n | Power, α = 0.05 | Power, α = 0.05/8 (Holm lower bound) | Interval coverage | Mean estimate |
 |---|---|---|---|---|
-| 12 | 70.1% | 31.0% | **91.6%** | +1.08 |
-| 25 | 97.7% | 84.5% | 94.4% | +1.09 |
-| 50 | 100% | 99.6% | 95.1% | +1.07 |
-| 100 | 100% | 100% | 95.7% | +1.08 |
-| 200 | 100% | 100% | 96.1% | +1.07 |
+| 12 | 70.0% | 30.9% | **96.1%** | +1.07 |
+| 25 | 96.3% | 81.6% | 94.8% | +1.07 |
+| 50 | 100% | 99.7% | 93.7% | +1.07 |
+| 100 | 100% | 100% | 94.8% | +1.07 |
+| 200 | 100% | 100% | 95.7% | +1.08 |
 
 ## Reading
 
-- **The estimate recovers the plant.** The mean estimate is +1.07 to +1.09 points at
-  every n, against a truth of +1.08, so there is no bias.
-- **The 93/100 fail is mostly the criterion.** Over 1,000 replications the n = 200
-  interval covers 96.1%, slightly above nominal, as expected when sampling 200 of 2,000
-  seeds without replacement. With 100 replications, an interval with exactly 95%
-  coverage reaches 95 of 100 only 62% of the time; one with 96.1% reaches it 80% of the
-  time. Seeing 93 or fewer has a probability of about 10% at 96.1%. As with M2, I did
-  not re-run with another seed.
-- **Small n is a real problem.** At 12 seeds, the phase L floor (06 §7.4), percentile
-  bootstrap intervals cover only 91.6%. That is far below 95% (p ≈ 4×10⁻⁶ over 1,000
-  replications). Intervals that are too narrow make "no meaningful difference" verdicts
-  too easy. The tests themselves are exact and unaffected; only the intervals are.
+- **The estimate recovers the plant** without bias at every n: +1.07 to +1.08 points
+  against a truth of +1.08.
+- **Small n is fixed.** With paired t-intervals, coverage stays near 95% down to 12 seeds
+  (96.1%), where the percentile bootstrap gave 91.6%. The tests themselves are exact and
+  were never affected.
 - **Power.** A planted effect of about 1 point on P1 needs about 25 seeds per world to be
   found under Holm with reasonable power. At the floor of 12 it is found less than a
   third of the time.
 
-See decisions.md, question 24.
+## History
+
+The first M3 run (before decisions 21, 22 and 24) used percentile bootstrap intervals and
+the criterion "at least 95 of 100 replications". It gave 93 of 100 (96.1% over 1,000)
+at n = 200, and 91.6% coverage at n = 12. Those results led to decisions 21 and 24. The
+grids were then regenerated, because decision 22 changed the misinformation post. The
+truth and the null difference are unchanged to four decimals.
