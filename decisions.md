@@ -49,5 +49,14 @@ brackets.
     Monte Carlo error, for example "upper 95% bound ≤ 7%"? Details in
     `results/m2/README.md`.
 
+22. **Misinformation shock can be true** (06 §5). The forged post "citizen X stole" is
+    true in a world where X stole in the last cycle. In step M0 this happened in World B
+    for 3 of 20 `full` seeds. The shock is identical across worlds, but in those runs
+    it is not misinformation. Options: keep it (the post is forged either way); pick X
+    among citizens with no theft in the last cycle (but then X depends on the world's
+    history, which breaks common random numbers); or use a claim that is false by
+    construction, such as "citizen X stole from the Treasury", which the action set
+    makes impossible. Details in `results/m0/README.md`.
+
 None of the original 20. New questions will come from the phase M results (which ablations
 deserve model spend) and the phase L pilot (twins, seeds per world, cost).

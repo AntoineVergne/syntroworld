@@ -7,7 +7,9 @@ nothing can depend on per-process string hashing. Pass conditions:
 1. identical event-log hashes for every (world, arm, seed);
 2. across worlds, the shock and weather event streams are identical for the same seed
    and arm: ``shock`` events, Sam's ``arrival``, and the misinformation posts (claims by
-   the shock, compared without their running claim id).
+   the shock, compared without their running claim id and without the engine's truth
+   flag, which evaluates world state at that moment and so may legitimately differ:
+   "citizen X stole" is true in a world where X did steal).
 
     python -m synw.analysis.determinism --worlds worlds/a.yaml,worlds/b.yaml,worlds/c.yaml \\
         --seeds 1-20 --out results/m0
@@ -34,9 +36,13 @@ def world_stream(events):
     out = []
     for e in events:
         if e["type"] in ("shock", "arrival") or (e["type"] == "claim" and e["actor"] == "shock"):
-            payload = {k: v for k, v in e["payload"].items() if k != "id"}
+            payload = {k: v for k, v in e["payload"].items() if k not in ("id", "true")}
             out.append([e["tick"], e["type"], payload])
     return out
+
+
+def shock_claim_truth(events):
+    return [e["payload"]["true"] for e in events if e["type"] == "claim" and e["actor"] == "shock"]
 
 
 def _one(job):
@@ -44,11 +50,12 @@ def _one(job):
     w = run_world(world, seed, arm=arm, out=tmp, keep_events=False)
     _, events, _ = read_log(w.log_path)
     stream = world_stream(events)
+    truth = shock_claim_truth(events)
     h = log_hash(w.log_path)
     os.remove(w.log_path)
     return {"world": w.cfg.get("world"), "path": world, "arm": arm, "seed": seed, "hash": h,
             "events": w.log.seq,
-            "world_stream": hashlib.sha256(canonical(stream).encode()).hexdigest(), "n_world_events": len(stream)}
+            "world_stream": hashlib.sha256(canonical(stream).encode()).hexdigest(), "n_world_events": len(stream), "shock_claims_true": truth}
 
 
 def one_pass(worlds, seeds, arms=ARMS, procs=1):
@@ -85,20 +92,24 @@ def check(worlds, seeds, arms=ARMS, procs=1, hashseeds=(1, 2)):
         r2 = b[key(r)]
         rows.append({"world": r["world"], "arm": r["arm"], "seed": r["seed"], "hash_pass1": r["hash"],
                      "hash_pass2": r2["hash"], "identical": r["hash"] == r2["hash"], "events": r["events"],
-                     "world_stream": r["world_stream"], "n_world_events": r["n_world_events"]})
+                     "world_stream": r["world_stream"], "n_world_events": r["n_world_events"],
+                     "shock_claims_true": r["shock_claims_true"]})
     rows.sort(key=lambda r: (r["world"], r["arm"], r["seed"]))
     cross = []
     for arm in arms:
         for s in seeds:
             streams = {r["world"]: r["world_stream"] for r in rows if r["arm"] == arm and r["seed"] == s}
             n = {r["world"]: r["n_world_events"] for r in rows if r["arm"] == arm and r["seed"] == s}
+            truth = {r["world"]: r["shock_claims_true"] for r in rows if r["arm"] == arm and r["seed"] == s}
             cross.append({"arm": arm, "seed": s, "identical": len(set(streams.values())) == 1,
-                          "worlds": sorted(streams), "n_world_events": n})
+                          "worlds": sorted(streams), "n_world_events": n,
+                          "truth_differs": len({json.dumps(v) for v in truth.values()}) > 1, "shock_claims_true": truth})
     res = {"worlds": sorted({r["world"] for r in rows}), "arms": list(arms), "seeds": list(seeds),
            "hashseeds": list(hashseeds), "runs_per_pass": len(rows),
            "identical_hashes": sum(r["identical"] for r in rows),
            "pass_hashes": all(r["identical"] for r in rows),
-           "pass_world_streams": all(c["identical"] for c in cross)}
+           "pass_world_streams": all(c["identical"] for c in cross),
+           "shock_claim_truth_differs": [[c["arm"], c["seed"]] for c in cross if c["truth_differs"]]}
     res["pass"] = res["pass_hashes"] and res["pass_world_streams"]
     return res, rows, cross
 
@@ -113,9 +124,11 @@ def write(out, res, rows, cross):
                          int(r["identical"]), r["events"]])
     with open(os.path.join(out, "world-streams.csv"), "w", newline="", encoding="utf-8") as fh:
         wr = csv.writer(fh)
-        wr.writerow(["arm", "seed", "identical_across_worlds", "world_events_per_world"])
+        wr.writerow(["arm", "seed", "identical_across_worlds", "world_events_per_world",
+                     "shock_claim_truth_differs", "shock_claim_truth_by_world"])
         for c in cross:
-            wr.writerow([c["arm"], c["seed"], int(c["identical"]), json.dumps(c["n_world_events"], sort_keys=True)])
+            wr.writerow([c["arm"], c["seed"], int(c["identical"]), json.dumps(c["n_world_events"], sort_keys=True),
+                         int(c["truth_differs"]), json.dumps(c["shock_claims_true"], sort_keys=True)])
     with open(os.path.join(out, "result.json"), "w", encoding="utf-8") as fh:
         json.dump(res, fh, indent=2, sort_keys=True)
 
