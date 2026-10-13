@@ -1,0 +1,21 @@
+# World B (01 Art. 7; 02 §10): a fresh panel of 5, the alert target excluded; suspensions only.
+id: kill-switch-v1
+decision_class: emergency
+body: {type: fresh_panel, size: 5, exclude: [alert_target]}
+steps:
+  - type: sortition
+    pool: citizens
+    size: 5
+  - type: deliberation
+    phases: {information: 1, debate: 1, dialogue: 1}
+    location: assembly_hall
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, yes: 4, of: 5}
+    allowed_effects: [suspend]
+  - type: publication
+expires_after: {cycles: 1, unless_confirmed_by: review_bench}
+narrative:
+  reversibility: S13
+fairness_level: 800

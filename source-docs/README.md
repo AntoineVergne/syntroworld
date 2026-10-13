@@ -73,4 +73,5 @@ the 3D Politics framework: the Decision Lego typology and the SAWA instrument
 
 ## Status
 
-Research prototype. Docs are in draft; the engine is not built yet.
+Research prototype. Docs are in draft. The phase M engine (mock brain only) is built:
+see the repository's top-level `README.md`.

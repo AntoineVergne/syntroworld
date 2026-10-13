@@ -1,0 +1,22 @@
+{
+  "contrasts": 2,
+  "draw": 400,
+  "false_verdict_rate": 0.006875,
+  "holm_fwer": 0.052,
+  "n_flips": 100000,
+  "n_resamples": 10000,
+  "pairs_per_contrast": 100,
+  "pass_fwer": false,
+  "pass_uncorrected": true,
+  "reps": 1000,
+  "runs": 2000,
+  "seed": 20261012,
+  "tests": 8000,
+  "uncorrected_by_outcome": {
+    "P1": 0.048,
+    "P2": 0.053,
+    "P3": 0.052,
+    "P4": 0.0505
+  },
+  "uncorrected_rate": 0.050875
+}

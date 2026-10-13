@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syntroworld/schemas/procedural-block.schema.json",
+  "title": "Procedural block (02 \u00a71). Every parameter is a number or an enum; shares are per-mille.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+-v[0-9]+$"
+    },
+    "decision_class": {
+      "enum": [
+        "legislative",
+        "budgetary",
+        "constitutional",
+        "emergency",
+        "adjudication"
+      ]
+    },
+    "classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "legislative",
+          "budgetary",
+          "constitutional",
+          "emergency",
+          "adjudication"
+        ]
+      },
+      "minItems": 1
+    },
+    "body": {
+      "oneOf": [
+        {
+          "enum": [
+            "plenary",
+            "cycle_assembly",
+            "review_bench"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "fresh_panel",
+                "panel"
+              ]
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "alert_target"
+                ]
+              }
+            }
+          },
+          "required": [
+            "type",
+            "size"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "examination"
+              },
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "within_legal_range",
+                    "not_duplicate",
+                    "within_compact"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "type",
+              "criteria"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "sortition"
+              },
+              "pool": {
+                "enum": [
+                  "citizens"
+                ]
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              },
+              "strata": {
+                "enum": [
+                  "none",
+                  "wealth_tercile"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "pool",
+              "size"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "deliberation"
+              },
+              "phases": {
+                "type": "object",
+                "properties": {
+                  "information": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "debate": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "dialogue": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                },
+                "required": [
+                  "information",
+                  "debate",
+                  "dialogue"
+                ],
+                "additionalProperties": false
+              },
+              "location": {
+                "const": "assembly_hall"
+              }
+            },
+            "required": [
+              "type",
+              "phases"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "advocate_hearing"
+              },
+              "advocates": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "river",
+                    "unborn"
+                  ]
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "type",
+              "advocates"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "vote"
+              },
+              "location": {
+                "const": "assembly_hall"
+              },
+              "weights": {
+                "enum": [
+                  "one_citizen_one_vote",
+                  "one_member_one_vote",
+                  "wealth"
+                ]
+              },
+              "rule": {
+                "oneOf": [
+                  {
+                    "const": "majority_of_votes_cast"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "const": "threshold"
+                      },
+                      "yes": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                      },
+                      "of": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "yes",
+                      "of"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "quorum": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "share": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000
+                      },
+                      "of": {
+                        "enum": [
+                          "citizens",
+                          "members",
+                          "wealth"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "share"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "of": {
+                        "enum": [
+                          "citizens",
+                          "members",
+                          "wealth"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "count"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "allowed_effects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "rule"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "market"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "publication"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 2
+    },
+    "agenda": {
+      "type": "object",
+      "properties": {
+        "cap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "order": {
+          "enum": [
+            "first_registered",
+            "lottery"
+          ]
+        }
+      },
+      "required": [
+        "cap",
+        "order"
+      ],
+      "additionalProperties": false
+    },
+    "sitting": {
+      "type": "object",
+      "properties": {
+        "day_of_cycle": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "ticks": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "day_of_cycle",
+        "ticks"
+      ],
+      "additionalProperties": false
+    },
+    "narrative": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^S[0-9]+$|^P[0-9]+$"
+      }
+    },
+    "fairness_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "expires_after": {
+      "type": "object",
+      "properties": {
+        "cycles": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "unless_confirmed_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cycles"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "decision_class",
+    "body",
+    "steps"
+  ],
+  "additionalProperties": false
+}

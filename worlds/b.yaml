@@ -1,0 +1,26 @@
+# World B, 3D polity (01, 02 §4): the Founding Compact in its small-town configuration.
+extends: base.yaml
+world: B
+description: "Founding Compact: sortition assemblies, procedural blocks, River and Unborn Advocates, basket-indexed dividend"
+personas: personas.yaml
+brain: {type: mock, lambda: 0}
+governance:
+  blocks:
+    - blocks/ordinary-law-v1.yaml
+    - blocks/budget-v1.yaml
+    - blocks/constitutional-v1.yaml
+    - blocks/review-v1.yaml
+    - blocks/kill-switch-v1.yaml
+  bodies:                                  # 01 Art. 2.7, below 20 citizens
+    cycle_assembly: {size: 5, sitting: {day_of_cycle: 2, ticks: [9, 14]}}
+    review_bench: {size: 3, sitting: {day_of_cycle: 3, ticks: [9, 11]}}
+  advocates: [river, unborn]
+  agenda: {cap: 3, order: lottery}         # up to 3 admissible proposals, drawn by lot
+  founding_rules:                          # Annex: register at founding
+    - {type: set_dividend, amount: {baskets: [1, 1]}}    # the full surplus, up to one Sawa per citizen per day
+    - {type: set_stipend, amount: {baskets: [1, 16]}}    # 1/16 Sawa per sitting tick
+  dividend_from_surplus: true
+  sawa_limits: true
+  kill_switch: true
+  concentration_trigger: true
+  reflexivity: true

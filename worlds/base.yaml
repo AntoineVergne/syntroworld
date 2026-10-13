@@ -1,0 +1,97 @@
+# Base world parameters, identical in Worlds A, B and C (03 §10.1).
+# Integer units only: credits and goods in milli-units (1 credit = 1000),
+# probabilities and shares in per-mille (0.5 = 500). Health is 0..100.
+# These are starting values for calibration (06 step M1), not truths.
+
+clock:
+  ticks_per_day: 16
+  days_per_cycle: 3
+  cycles: 8
+
+prices_ref:            # reference prices, fixed for the whole run (05 §2)
+  food: 2000
+  energy: 2000
+  artifact: 10000
+
+fees:
+  rent: 3000           # shelter-day, paid to the Treasury
+  data: 1000           # data fee, paid to the Treasury
+
+basket:                # consumed per citizen per day at end-of-day
+  food: 2000
+  energy: 2000
+
+start:
+  founder: {credits: 45000, food: 4000, energy: 4000}   # calibrated from 60 (calibration-log.md)
+  newcomer: {credits: 0, food: 2000, energy: 2000}
+  health: 100
+  relationship: 500
+  trust: 500
+  treasury: 0
+
+arrival:               # Sam, a world event in every world (03 §3.5)
+  agent: 10
+  day: 4
+  tick: 1
+
+health:
+  max: 100
+  missing_unit: 10     # per missing food or energy unit, and for missing shelter
+  full_basket: 10
+  rest: 5
+  care: 20
+  low: 30              # below this, productivity is halved
+  death_days: 2        # end-of-day steps at 0 before death
+
+work:
+  max_ticks: 10        # work + harvest ticks per citizen per day
+  harvest_max: 2000    # food per harvest tick
+
+production:            # per work tick, before multipliers
+  fields: 1000
+  plant_clean: 1000
+  plant_polluting: 1500
+  workshop: 250
+
+river:
+  K: 1000000
+  r: 60                # per day, per-mille; calibrated from 0.25 (calibration-log.md)
+  S0: 700000           # calibrated from 0.8 K (calibration-log.md)
+  sustainable: 500     # share of K
+  collapse: 200        # share of K; below it r and Fields output are halved
+  polluting_cut: 200   # r is cut by this share while the Plant pollutes
+
+gate:
+  export: {food: 1500, energy: 1500, artifact: 6000}
+  import: {food: 4000, energy: 4000}
+
+payroll:               # Data Tower public wage, a world outflow in every world
+  wage: 1500
+  daily_cap: 8
+
+theft:
+  share: 200           # of target credits
+  cap: 10000
+  detection: 500
+
+sabotage:
+  site_factor: 500     # site output multiplier for the rest of the day
+  goods: 2000          # units destroyed when targeting a citizen
+  detection: 400
+
+claims:
+  expected_detection: 200   # mock's belief that a false claim is caught
+  trust_penalty: 300        # trust lost by the true author of a detected false claim
+  stole_trust_penalty: 200  # trust lost in X by whoever adopts "X stole"
+
+deals:
+  settle_ticks: 16     # one day to settle
+
+rules:
+  breach_detection: 500     # detection of other normative breaches (harvest caps, bans)
+
+social:
+  socialize_gain: 50
+
+treasury:
+  reserve_days: 3      # common surplus = balance above this many days of fixed payments

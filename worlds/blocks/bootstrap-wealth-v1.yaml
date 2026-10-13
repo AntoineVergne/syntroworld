@@ -1,0 +1,20 @@
+# World C (02 §8): the bootstrap block of World A with votes weighted by wealth.
+# Only two fields differ from bootstrap-v1: vote weights and the quorum base.
+id: bootstrap-wealth-v1
+decision_class: legislative
+classes: [legislative, budgetary, constitutional, emergency, adjudication]  # covers every class, including amending itself
+body: plenary
+steps:
+  - type: examination
+    criteria: [within_legal_range, not_duplicate]
+  - type: vote
+    location: assembly_hall
+    weights: wealth             # reference units, at the start of the sitting
+    rule: majority_of_votes_cast
+    quorum: {share: 500, of: wealth}   # half of total wealth
+  - type: publication
+agenda: {cap: 3, order: first_registered}
+sitting: {day_of_cycle: 2, ticks: [9, 14]}
+narrative:
+  self_rule: S9
+fairness_level: 500

@@ -1,0 +1,18 @@
+# World B (01 Art. 2.5, 8; 02 §4): the Review Bench decides sanctions on detected breaches
+# and disputes, 2 of 3, with a reason code on every ballot.
+id: review-v1
+decision_class: adjudication
+classes: [adjudication, emergency]
+body: review_bench
+steps:
+  - type: examination
+    criteria: [within_legal_range, within_compact]
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, yes: 2, of: 3}
+    quorum: {count: 2}
+  - type: publication
+narrative:
+  accountability: S11
+fairness_level: 800

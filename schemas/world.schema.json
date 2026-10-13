@@ -1,0 +1,702 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syntroworld/schemas/world.schema.json",
+  "title": "Syntroworld world config (resolved)",
+  "type": "object",
+  "properties": {
+    "extends": {
+      "type": "string"
+    },
+    "world": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_+-]+$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "clock": {
+      "type": "object",
+      "properties": {
+        "ticks_per_day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "days_per_cycle": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "cycles": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "ticks_per_day",
+        "days_per_cycle",
+        "cycles"
+      ],
+      "additionalProperties": false
+    },
+    "prices_ref": {
+      "type": "object",
+      "properties": {
+        "food": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "energy": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "artifact": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "food",
+        "energy",
+        "artifact"
+      ],
+      "additionalProperties": false
+    },
+    "fees": {
+      "type": "object",
+      "properties": {
+        "rent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "data": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "rent",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "basket": {
+      "type": "object",
+      "properties": {
+        "food": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "energy": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "food",
+        "energy"
+      ],
+      "additionalProperties": false
+    },
+    "start": {
+      "type": "object",
+      "properties": {
+        "founder": {
+          "type": "object",
+          "properties": {
+            "credits": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "food": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "energy": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "credits",
+            "food",
+            "energy"
+          ],
+          "additionalProperties": false
+        },
+        "newcomer": {
+          "type": "object",
+          "properties": {
+            "credits": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "food": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "energy": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "credits",
+            "food",
+            "energy"
+          ],
+          "additionalProperties": false
+        },
+        "health": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "relationship": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "trust": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "treasury": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "founder",
+        "newcomer",
+        "health",
+        "relationship",
+        "trust",
+        "treasury"
+      ],
+      "additionalProperties": false
+    },
+    "arrival": {
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        }
+      },
+      "required": [
+        "agent",
+        "day",
+        "tick"
+      ],
+      "additionalProperties": false
+    },
+    "health": {
+      "type": "object",
+      "properties": {
+        "max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "missing_unit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "full_basket": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rest": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "care": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "low": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "death_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        }
+      },
+      "required": [
+        "max",
+        "missing_unit",
+        "full_basket",
+        "rest",
+        "care",
+        "low",
+        "death_days"
+      ],
+      "additionalProperties": false
+    },
+    "work": {
+      "type": "object",
+      "properties": {
+        "max_ticks": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "harvest_max": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "max_ticks",
+        "harvest_max"
+      ],
+      "additionalProperties": false
+    },
+    "production": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "plant_clean": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "plant_polluting": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "workshop": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "fields",
+        "plant_clean",
+        "plant_polluting",
+        "workshop"
+      ],
+      "additionalProperties": false
+    },
+    "river": {
+      "type": "object",
+      "properties": {
+        "K": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000000
+        },
+        "r": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "S0": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000000
+        },
+        "sustainable": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "collapse": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "polluting_cut": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "K",
+        "r",
+        "S0",
+        "sustainable",
+        "collapse",
+        "polluting_cut"
+      ],
+      "additionalProperties": false
+    },
+    "gate": {
+      "type": "object",
+      "properties": {
+        "export": {
+          "type": "object",
+          "properties": {
+            "food": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "energy": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "artifact": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "food",
+            "energy",
+            "artifact"
+          ],
+          "additionalProperties": false
+        },
+        "import": {
+          "type": "object",
+          "properties": {
+            "food": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "energy": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "food",
+            "energy"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "export",
+        "import"
+      ],
+      "additionalProperties": false
+    },
+    "payroll": {
+      "type": "object",
+      "properties": {
+        "wage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "daily_cap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "wage",
+        "daily_cap"
+      ],
+      "additionalProperties": false
+    },
+    "theft": {
+      "type": "object",
+      "properties": {
+        "share": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "cap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "detection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "share",
+        "cap",
+        "detection"
+      ],
+      "additionalProperties": false
+    },
+    "sabotage": {
+      "type": "object",
+      "properties": {
+        "site_factor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "goods": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "detection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "site_factor",
+        "goods",
+        "detection"
+      ],
+      "additionalProperties": false
+    },
+    "claims": {
+      "type": "object",
+      "properties": {
+        "expected_detection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "trust_penalty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "stole_trust_penalty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "expected_detection",
+        "trust_penalty",
+        "stole_trust_penalty"
+      ],
+      "additionalProperties": false
+    },
+    "deals": {
+      "type": "object",
+      "properties": {
+        "settle_ticks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "settle_ticks"
+      ],
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "breach_detection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "breach_detection"
+      ],
+      "additionalProperties": false
+    },
+    "social": {
+      "type": "object",
+      "properties": {
+        "socialize_gain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "socialize_gain"
+      ],
+      "additionalProperties": false
+    },
+    "treasury": {
+      "type": "object",
+      "properties": {
+        "reserve_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "reserve_days"
+      ],
+      "additionalProperties": false
+    },
+    "personas": {
+      "type": "string"
+    },
+    "brain": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "mock"
+          ]
+        },
+        "lambda": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "fairness": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          }
+        }
+      },
+      "required": [
+        "type",
+        "lambda"
+      ],
+      "additionalProperties": false
+    },
+    "governance": {
+      "type": "object",
+      "properties": {
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "bodies": {
+          "type": "object"
+        },
+        "advocates": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "river",
+              "unborn"
+            ]
+          }
+        },
+        "agenda": {
+          "type": "object",
+          "properties": {
+            "cap": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "order": {
+              "enum": [
+                "first_registered",
+                "lottery"
+              ]
+            }
+          },
+          "required": [
+            "cap",
+            "order"
+          ],
+          "additionalProperties": false
+        },
+        "founding_rules": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "dividend_from_surplus": {
+          "type": "boolean"
+        },
+        "sawa_limits": {
+          "type": "boolean"
+        },
+        "kill_switch": {
+          "type": "boolean"
+        },
+        "concentration_trigger": {
+          "type": "boolean"
+        },
+        "reflexivity": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "blocks",
+        "agenda"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "clock",
+    "prices_ref",
+    "fees",
+    "basket",
+    "start",
+    "arrival",
+    "health",
+    "work",
+    "production",
+    "river",
+    "gate",
+    "payroll",
+    "theft",
+    "sabotage",
+    "claims",
+    "deals",
+    "rules",
+    "social",
+    "treasury"
+  ],
+  "additionalProperties": false
+}

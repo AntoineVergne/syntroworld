@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syntroworld/schemas/effect.schema.json",
+  "title": "Typed decision effect (02 \u00a73.1). Amounts in milli-credits, rates in per-mille. Upper bounds that depend on the world (one basket) are checked in code.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "set_tax"
+        },
+        "base": {
+          "enum": [
+            "income",
+            "trade",
+            "harvest"
+          ]
+        },
+        "rate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 500
+        }
+      },
+      "required": [
+        "type",
+        "base",
+        "rate"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "set_dividend"
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000000
+        }
+      },
+      "required": [
+        "type",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "set_stipend"
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000000
+        }
+      },
+      "required": [
+        "type",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "allocate"
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000000
+        },
+        "purpose": {
+          "enum": [
+            "river_restoration",
+            "care_wage",
+            "monitoring",
+            "public_art",
+            "plant_upgrade"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "amount",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "set_plant_mode"
+        },
+        "mode": {
+          "enum": [
+            "clean",
+            "polluting"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "harvest_cap"
+        },
+        "qty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40000
+        }
+      },
+      "required": [
+        "type",
+        "qty"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "ban"
+        },
+        "act": {
+          "enum": [
+            "steal",
+            "sabotage",
+            "false_claim",
+            "default",
+            "post",
+            "message",
+            "harvest",
+            "sell_out"
+          ]
+        },
+        "scope": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "act"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "set_fine"
+        },
+        "action": {
+          "enum": [
+            "steal",
+            "sabotage",
+            "false_claim",
+            "default",
+            "harvest_cap",
+            "post",
+            "message",
+            "harvest",
+            "sell_out"
+          ]
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000000
+        }
+      },
+      "required": [
+        "type",
+        "action",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "suspend"
+        },
+        "agent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "move",
+              "work",
+              "harvest",
+              "care",
+              "order",
+              "sell_out",
+              "buy_in",
+              "give",
+              "steal",
+              "sabotage",
+              "post",
+              "message",
+              "deal",
+              "accept",
+              "settle",
+              "query",
+              "socialize",
+              "civic"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "duration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 48
+        }
+      },
+      "required": [
+        "type",
+        "agent",
+        "actions",
+        "duration"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "restitution"
+        },
+        "from": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "to": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            {
+              "const": "treasury"
+            }
+          ]
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000000
+        }
+      },
+      "required": [
+        "type",
+        "from",
+        "to",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "amend_block"
+        },
+        "block": {
+          "type": "string"
+        },
+        "field": {
+          "enum": [
+            "quorum",
+            "rule",
+            "weights",
+            "agenda_cap",
+            "deliberation",
+            "sortition_size"
+          ]
+        },
+        "value": {}
+      },
+      "required": [
+        "type",
+        "block",
+        "field",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "amend_text"
+        },
+        "article": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "article",
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}
