@@ -1,65 +1,65 @@
 {
   "coverage": {
     "ci": [
-      0.9402471673065924,
-      0.9669903745688493
+      0.9505070882819879,
+      0.9746610850701616
     ],
-    "covered": 955,
+    "covered": 964,
     "interval": "paired t",
     "min": 0.93,
     "n": 200,
     "pass": true,
-    "rate": 0.955,
+    "rate": 0.964,
     "reps": 1000
   },
-  "null_difference": -0.0031671653393626265,
-  "null_se": 0.000411047830475924,
+  "null_difference": 0.005099689158371099,
+  "null_se": 0.0004120195502399362,
   "outcome": "P1",
-  "planted_increment": 0.013924395776943077,
+  "planted_increment": 0.007822777984667621,
   "pool": 2000,
   "power_curve": [
     {
-      "coverage": 0.961,
-      "mean_estimate": 0.010735507332287982,
+      "coverage": 0.962,
+      "mean_estimate": 0.012784420197563866,
       "n": 12,
-      "power_05": 0.7,
-      "power_bonferroni": 0.309,
+      "power_05": 0.834,
+      "power_bonferroni": 0.455,
       "reps": 1000
     },
     {
       "coverage": 0.948,
-      "mean_estimate": 0.010706467769674658,
+      "mean_estimate": 0.012801441797746034,
       "n": 25,
-      "power_05": 0.963,
-      "power_bonferroni": 0.816,
+      "power_05": 0.995,
+      "power_bonferroni": 0.926,
       "reps": 1000
     },
     {
-      "coverage": 0.937,
-      "mean_estimate": 0.010695245363090989,
+      "coverage": 0.96,
+      "mean_estimate": 0.012956162731314618,
       "n": 50,
       "power_05": 1.0,
-      "power_bonferroni": 0.997,
+      "power_bonferroni": 1.0,
       "reps": 1000
     },
     {
-      "coverage": 0.948,
-      "mean_estimate": 0.010707625686709996,
+      "coverage": 0.962,
+      "mean_estimate": 0.012878921980027894,
       "n": 100,
       "power_05": 1.0,
       "power_bonferroni": 1.0,
       "reps": 1000
     },
     {
-      "coverage": 0.957,
-      "mean_estimate": 0.010784755285206647,
+      "coverage": 0.968,
+      "mean_estimate": 0.01289952932455952,
       "n": 200,
       "power_05": 1.0,
       "power_bonferroni": 1.0,
       "reps": 1000
     }
   ],
-  "sd_d": 0.013509434311683942,
-  "truth": 0.01075723043758045,
-  "truth_se": 0.00030208013458493373
+  "sd_d": 0.013638062893994928,
+  "truth": 0.01292246714303872,
+  "truth_se": 0.00030495635712390163
 }
