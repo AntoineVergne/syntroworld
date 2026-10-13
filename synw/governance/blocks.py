@@ -133,6 +133,10 @@ class Governance:
             return fmap["deliberation_sortition"]
         return fmap["plenary"]
 
+    def main_body(self):
+        """The body that decides legislation (B: the Cycle Assembly; B-nolot: the plenary)."""
+        return body_name(self.primary_block())
+
     def primary_block(self):
         return self.blocks[self.order[0]]
 
@@ -188,6 +192,10 @@ class Governance:
 
     # --- the Register of Proposals ---------------------------------------------------------
     def examine(self, effect, block):
+        if effect["type"] == "set_dividend" and not self.g.get("allow_dividend", True):
+            return "no dividend in this world"
+        if effect["type"] == "set_stipend" and not self.g.get("allow_stipend", True):
+            return "no stipends in this world"
         st = step(block, "examination")
         criteria = st["criteria"] if st else ["within_legal_range"]
         if "within_legal_range" in criteria:
@@ -282,6 +290,8 @@ class Governance:
         """(name, size, sitting, strata) for bodies drawn at the start of each cycle."""
         out = []
         for name, b in self.bodies.items():
+            if b is None:
+                continue
             out.append((name, b["size"], b["sitting"], b.get("strata", "none")))
         for bid in self.order:
             blk = self.blocks[bid]
@@ -430,7 +440,7 @@ class Governance:
         w = self.w
         s["state"] = "open"
         self.sitting_counts[s["body"]] = self.sitting_counts.get(s["body"], 0) + 1
-        if s["body"] == "cycle_assembly" and self.g.get("concentration_trigger"):
+        if s["body"] == self.main_body() and self.g.get("concentration_trigger"):
             self._concentration_item()
         if s["kind"] == "regular":
             for p in self._agenda(s):
@@ -459,7 +469,7 @@ class Governance:
             sched[s["end"]] = "aggregation"
         s["schedule"] = sched
         s["deliberative"] = bool(delib)
-        reflex = (s["body"] == "cycle_assembly" and self.g.get("reflexivity")
+        reflex = (s["body"] == self.main_body() and self.g.get("reflexivity")
                   and self.sitting_counts[s["body"]] % 2 == 0)
         self.log.emit(w.tick, "sitting_opened", s["body"],
                       {"sitting": s["id"], "block": s["block"], "items": [i["id"] for i in s["items"]],
@@ -540,7 +550,9 @@ class Governance:
             self._aggregate(s, item, present, t)
 
     def _eligible(self, s, present, t):
-        if s["members"] is None or not s.get("deliberative"):
+        """Who may vote: in a deliberating body (drawn or plenary), only those present at
+        every tick so far (02 §2, 01 Art. 3.2); otherwise whoever is present now."""
+        if not s.get("deliberative"):
             return list(present)
         ticks = [tk for tk in sorted(s["presence"]) if s["start"] <= tk <= t]
         ok = []
@@ -548,7 +560,8 @@ class Governance:
             if all(i in s["presence"][tk] for tk in ticks):
                 ok.append(i)
         logged = s.setdefault("absent_logged", set())
-        for i in s["members"]:
+        due = s["members"] if s["members"] is not None else sorted(set().union(*s["presence"].values()))
+        for i in due:
             if i not in ok and i not in logged:
                 logged.add(i)
                 self.log.emit(t, "absent", i, {"sitting": s["id"]})
@@ -587,6 +600,8 @@ class Governance:
         rule = vote["rule"]
         if rule == "majority_of_votes_cast":
             passed = cast > 0 and 2 * tallies["yes"] > cast
+        elif rule["type"] == "share":       # supermajority of votes cast, per-mille
+            passed = cast > 0 and tallies["yes"] * 1000 >= rule["yes"] * cast
         else:
             passed = counts["yes"] >= rule["yes"]
         allowed = vote.get("allowed_effects")

@@ -236,6 +236,24 @@
                       "of"
                     ],
                     "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "const": "share"
+                      },
+                      "yes": {
+                        "type": "integer",
+                        "minimum": 501,
+                        "maximum": 1000
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "yes"
+                    ],
+                    "additionalProperties": false
                   }
                 ]
               },

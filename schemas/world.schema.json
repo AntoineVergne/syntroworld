@@ -634,7 +634,17 @@
           "minItems": 1
         },
         "bodies": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
         },
         "advocates": {
           "type": "array",
@@ -685,6 +695,12 @@
           "type": "boolean"
         },
         "reflexivity": {
+          "type": "boolean"
+        },
+        "allow_dividend": {
+          "type": "boolean"
+        },
+        "allow_stipend": {
           "type": "boolean"
         }
       },

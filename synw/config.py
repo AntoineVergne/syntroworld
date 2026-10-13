@@ -45,9 +45,12 @@ def _schema(name):
 
 
 def deep_merge(base, over):
+    """Merge ``over`` into ``base``; a ``null`` value in ``over`` removes the inherited key."""
     out = copy.deepcopy(base)
     for k, v in over.items():
-        if isinstance(v, dict) and isinstance(out.get(k), dict):
+        if v is None:
+            out.pop(k, None)
+        elif isinstance(v, dict) and isinstance(out.get(k), dict):
             out[k] = deep_merge(out[k], v)
         else:
             out[k] = copy.deepcopy(v)
