@@ -64,5 +64,14 @@ brackets.
     those with plenaries? And should B-nodiv and B-nopay forbid the effect for good, as
     now, or only remove it at founding and let the polity re-adopt it?
 
+24. **M3 criterion and small-n intervals** (06 §7.2, §8.1). Step M3 recovered the planted P1
+    effect (+1.08 points) without bias. Its interval contained the truth in 93 of 100
+    replications at n = 200, against "at least 95". The same intervals cover 96.1% over
+    1,000 replications, so as with question 21 the criterion should carry its Monte Carlo
+    error. More important: at n = 12, the phase L floor, percentile bootstrap intervals
+    cover only 91.6%. Switch to a better small-sample interval (BCa, or a t-interval on
+    the paired differences) before phase L, or raise the floor? Details in
+    `results/m3/README.md`.
+
 None of the original 20. New questions will come from the phase M results (which ablations
 deserve model spend) and the phase L pilot (twins, seeds per world, cost).

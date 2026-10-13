@@ -1,0 +1,58 @@
+{
+  "coverage": {
+    "covered": 93,
+    "n": 200,
+    "pass": false,
+    "reps": 100
+  },
+  "null_difference": -0.0031671653393626265,
+  "null_se": 0.000411047830475924,
+  "outcome": "P1",
+  "planted_increment": 0.013924395776943077,
+  "pool": 2000,
+  "power_curve": [
+    {
+      "coverage": 0.916,
+      "mean_estimate": 0.010816421517762591,
+      "n": 12,
+      "power_05": 0.701,
+      "power_bonferroni": 0.31,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.944,
+      "mean_estimate": 0.010923578618006018,
+      "n": 25,
+      "power_05": 0.977,
+      "power_bonferroni": 0.845,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.951,
+      "mean_estimate": 0.010725586305448424,
+      "n": 50,
+      "power_05": 1.0,
+      "power_bonferroni": 0.996,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.957,
+      "mean_estimate": 0.01083165270644766,
+      "n": 100,
+      "power_05": 1.0,
+      "power_bonferroni": 1.0,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.961,
+      "mean_estimate": 0.010733607245208325,
+      "n": 200,
+      "power_05": 1.0,
+      "power_bonferroni": 1.0,
+      "reps": 1000
+    }
+  ],
+  "sd_d": 0.013509434311683942,
+  "truth": 0.01075723043758045,
+  "truth_se": 0.00030208013458493373
+}
