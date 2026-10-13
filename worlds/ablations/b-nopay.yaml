@@ -1,0 +1,9 @@
+# B-nopay (06 §3.3): World B minus stipends. Assembly service is unpaid, and no stipend
+# can be adopted.
+extends: ../b.yaml
+world: B-nopay
+description: "World B with unpaid assembly service"
+governance:
+  founding_rules:
+    - {type: set_dividend, amount: {baskets: [1, 1]}}    # the full surplus, up to one Sawa per citizen per day
+  allow_stipend: false

@@ -67,9 +67,30 @@ def _load_raw(path, seen=()):
         raise ConfigError(f"{path}: top level must be a mapping")
     parent = data.get("extends")
     if parent:
-        base = _load_raw(os.path.join(os.path.dirname(path), parent), seen + (path,))
+        ppath = os.path.join(os.path.dirname(path), parent)
+        base = _rebase(_load_raw(ppath, seen + (path,)), os.path.dirname(os.path.abspath(ppath)),
+                       os.path.dirname(path))
         data = deep_merge(base, {k: v for k, v in data.items() if k != "extends"})
     return data
+
+
+def _rebase(cfg, from_dir, to_dir):
+    """Rewrite a parent's relative file paths (personas, blocks) so they resolve from the
+    extending file's directory. They stay relative, so config hashes do not depend on
+    where the repository is checked out."""
+    def fix(p):
+        if not isinstance(p, str) or os.path.isabs(p):
+            return p
+        return os.path.relpath(os.path.join(from_dir, p), to_dir).replace(os.sep, "/")
+    if from_dir == to_dir:
+        return cfg
+    cfg = copy.deepcopy(cfg)
+    if "personas" in cfg:
+        cfg["personas"] = fix(cfg["personas"])
+    gov = cfg.get("governance")
+    if isinstance(gov, dict) and isinstance(gov.get("blocks"), list):
+        gov["blocks"] = [fix(b) for b in gov["blocks"]]
+    return cfg
 
 
 def validate(cfg):

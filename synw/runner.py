@@ -318,7 +318,7 @@ class World:
             data_access=c.data_access, world=self.cfg.get("world", ""),
             texts=list(gov.order) if gov else [], town=town, citizens=active, home=c.home,
             persona_index=idx, project=self.projection, menu=list(MENU),
-            legal=lambda eff: E.is_legal(eff, self.cfg))
+            legal=lambda eff: E.is_legal(eff, self.cfg) and not (gov and gov.forbidden(eff)))
 
     # --- per-day records -------------------------------------------------------------------
     def _new_day_records(self):

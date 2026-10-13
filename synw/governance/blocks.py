@@ -191,11 +191,18 @@ class Governance:
         return b
 
     # --- the Register of Proposals ---------------------------------------------------------
-    def examine(self, effect, block):
-        if effect["type"] == "set_dividend" and not self.g.get("allow_dividend", True):
+    def forbidden(self, effect):
+        """Why this world's constitution rules the effect out entirely, or None."""
+        if effect.get("type") == "set_dividend" and not self.g.get("allow_dividend", True):
             return "no dividend in this world"
-        if effect["type"] == "set_stipend" and not self.g.get("allow_stipend", True):
+        if effect.get("type") == "set_stipend" and not self.g.get("allow_stipend", True):
             return "no stipends in this world"
+        return None
+
+    def examine(self, effect, block):
+        why = self.forbidden(effect)
+        if why:
+            return why
         st = step(block, "examination")
         criteria = st["criteria"] if st else ["within_legal_range"]
         if "within_legal_range" in criteria:

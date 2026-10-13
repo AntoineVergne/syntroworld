@@ -1,0 +1,9 @@
+# B-nodiv (06 §3.3): World B minus the dividend. No dividend at founding, none can be
+# adopted, and the surplus goes to the participatory budget (allocations) only.
+extends: ../b.yaml
+world: B-nodiv
+description: "World B without the citizen's dividend"
+governance:
+  founding_rules:
+    - {type: set_stipend, amount: {baskets: [1, 16]}}    # 1/16 Sawa per sitting tick
+  allow_dividend: false
