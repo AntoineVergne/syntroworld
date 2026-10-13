@@ -24,15 +24,15 @@ The world events that must not depend on governance:
 
 The posts are compared without two fields:
 - the running claim id, which counts every claim made earlier in the run;
-- the engine's truth flag. The flag records whether the claim was true when posted,
-  which depends on what happened in that world.
+- the engine's truth flag, which evaluates world state when the post appears.
 
-On the first comparison the flag differed for `full` seeds 2, 8 and 15: the forged
-post "citizen X stole" was *true* in World B, because X had in fact stolen there that
-cycle. The shock itself (time, targets, text, attribution) was identical. The
-comparison now excludes the flag, and `result.json` lists those three seeds under
-`shock_claim_truth_differs`.
+## History
 
-This matters for reading the misinformation shock. Its *content* is a common random
-number across worlds, but whether it is misinformation is not guaranteed. In a world
-where X did steal, the post tells the truth. See decisions.md, question 22.
+The first M0 run used an engine whose forged post read "citizen X stole". For `full`
+seeds 2, 8 and 15, that post was *true* in World B, because X had in fact stolen
+there. Following decision 22, the post now reads "citizen X stole from the Treasury",
+as 06 §5 specifies. No action can take from the Treasury, so the post is false by
+construction. In this re-run the truth flags agree across worlds for every seed and
+arm (`shock_claim_truth_differs` is empty in `result.json`). The River post ("the
+River stock is high") can still be true in one world and false in another; it did not
+happen for seeds 1 to 20.

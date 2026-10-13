@@ -34,20 +34,7 @@
     19,
     20
   ],
-  "shock_claim_truth_differs": [
-    [
-      "full",
-      2
-    ],
-    [
-      "full",
-      8
-    ],
-    [
-      "full",
-      15
-    ]
-  ],
+  "shock_claim_truth_differs": [],
   "worlds": [
     "A",
     "B",
