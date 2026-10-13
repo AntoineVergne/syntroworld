@@ -59,5 +59,21 @@ brackets.
     detected breaches and refers them to Adjudication (and to the Kill Switch above a
     threshold); or leave it idle and say so. This only affects the 40-citizen check.
 
+26. **P3 is largely true by construction in B** (05 §1 rule 2, 05 P3). Accepting a draw and
+    attending counts as a voluntary civic act, so World B's civic breadth tracks its seats
+    per citizen. In M4, 39 of 41 acting citizen-cycles in a B run were drawn members.
+    B's +9-point lead at 11 citizens becomes −15 points at 40. Options: count only acts
+    open to everyone in every world (proposals, observing a sitting, alerts, and ballots
+    in a plenary or referendum); count a drawn member's act only beyond their duty (for
+    example, a proposal or an alert); or keep P3 and report seats per citizen beside it.
+    Details in `results/m4/README.md`.
+
+27. **P4 has almost no room to move** (05 §1 rule 3, 06 §5). Under the `full` arm, output
+    over days 7–24 falls by only 0.1–0.7%, against a SESOI of 5 points. The rogue even
+    raises output. Options: stronger or longer shocks (a longer drought, a rogue who
+    also sabotages production); measure P4 over the shock days only; make P4 a
+    composite of output, basket floor and River; or lower its SESOI. Details in
+    `results/m4/README.md`.
+
 New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).
