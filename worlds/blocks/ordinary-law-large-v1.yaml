@@ -1,0 +1,22 @@
+# Large-town World B (02 §4, 20+ citizens): as ordinary-law-v1, decided by the Strategy Assembly.
+id: ordinary-law-large-v1
+decision_class: legislative
+body: strategy_assembly
+steps:
+  - type: examination
+    criteria: [within_legal_range, within_compact, not_duplicate]
+  - type: deliberation
+    phases: {information: 1, debate: 2, dialogue: 2}
+    location: assembly_hall
+  - type: advocate_hearing
+    advocates: [river, unborn]
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, yes: 3, of: 5}
+    quorum: {count: 4}
+  - type: publication
+narrative:
+  capture_resistance: S6
+  minority_voice: S7
+fairness_level: 800

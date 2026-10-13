@@ -33,11 +33,9 @@
     "body": {
       "oneOf": [
         {
-          "enum": [
-            "plenary",
-            "cycle_assembly",
-            "review_bench"
-          ]
+          "type": "string",
+          "pattern": "^[a-z][a-z_]*$",
+          "description": "plenary, or a standing body defined in the world config (governance.bodies)"
         },
         {
           "type": "object",

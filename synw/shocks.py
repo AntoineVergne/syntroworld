@@ -5,6 +5,9 @@
   construction: no action takes from the Treasury; decision 22) and "the River is high",
   both attributed to citizen Y. X = (seed + 1) mod 11, Y = (seed + 2) mod 11, skipping the rogue.
 - rogue: day 19 to the end. Citizen seed mod 11 takes the rogue overlay (04 §5).
+
+With a larger population (the phase M size check) the rotation runs over all citizens:
+mod N instead of mod 11.
 """
 
 ARMS = {
@@ -39,7 +42,7 @@ class Shocks:
         self.w = w
         self.arm = arm
         self.active = ARMS[arm]
-        self.targets = targets(w.seed)
+        self.targets = targets(w.seed, len(w.citizens))
 
     def on_tick_start(self):
         w = self.w

@@ -133,6 +133,13 @@ class Governance:
             return fmap["deliberation_sortition"]
         return fmap["plenary"]
 
+    def adjudication_body(self):
+        """The drawn body that decides sanctions (B: the Review Bench; 20+ citizens: the
+        Adjudication Assembly). None when sanctions go through the plenary (A, C)."""
+        blk = self.route({"type": "restitution", "from": 0, "to": "treasury", "amount": 0})
+        name = body_name(blk) if blk else None
+        return name if name in self.bodies else None
+
     def main_body(self):
         """The body that decides legislation (B: the Cycle Assembly; B-nolot: the plenary)."""
         return body_name(self.primary_block())
@@ -325,7 +332,10 @@ class Governance:
         taken = set()
         for name, size, _sitting, strata in self.standing_bodies():
             pool = [i for i in self.eligible_pool() if i not in taken]
-            weights = {i: 500 if w.citizens[i].served.get(name) == cyc - 1 else 1000 for i in pool}
+            recent = {i for i in pool if w.citizens[i].served.get(name) == cyc - 1}
+            if self.bodies.get(name, {}).get("no_consecutive"):
+                pool = [i for i in pool if i not in recent]      # 20+ citizens: no consecutive terms
+            weights = {i: 500 if i in recent else 1000 for i in pool}
             st = None
             if strata == "wealth_tercile":
                 wealth = {i: w.citizens[i].wealth(w.cfg["prices_ref"]) for i in pool}
@@ -371,7 +381,7 @@ class Governance:
     # --- duties ------------------------------------------------------------------------------
     def _pending_for_body(self, body):
         bids = {bid for bid in self.order if body_name(self.blocks[bid]) == body}
-        if body == "review_bench" and self._bench_candidates():
+        if body == self.adjudication_body() and self._bench_candidates():
             return True
         return any(p["status"] == "admissible" and p["block"] in bids for p in self.register)
 
@@ -421,7 +431,7 @@ class Governance:
         if s["body"] in self.bodies:
             cap, order = self.agenda_cfg["cap"], self.agenda_cfg["order"]
         bids = {bid for bid in self.order if body_name(self.blocks[bid]) == s["body"]}
-        if s["body"] == "review_bench":
+        if s["body"] == self.adjudication_body():
             self._bench_items()
         cands = [p for p in self.register if p["status"] == "admissible" and p["block"] in bids]
         first = [p for p in cands if p["urgent"] or p["mandatory"]]
@@ -741,7 +751,7 @@ class Governance:
 
     def _bench_items(self):
         w = self.w
-        if "review_bench" not in self.bodies:
+        if self.adjudication_body() not in self.bodies:
             return
         fine = min(2 * w.sawa(), E.bounds(w.cfg, "restitution")[1])
         for tk, act, agent, payload in self._bench_candidates()[:self.agenda_cfg["cap"]]:
@@ -749,7 +759,7 @@ class Governance:
             amt = min(fine, max(0, w.citizens[agent].credits))
             if amt <= 0:
                 continue
-            self.register_proposal("review_bench", {"type": "restitution", "from": agent,
+            self.register_proposal(self.adjudication_body(), {"type": "restitution", "from": agent,
                                                     "to": "treasury", "amount": amt},
                                    sanction=True, mandatory=True, reason=f"breach:{act}")
 

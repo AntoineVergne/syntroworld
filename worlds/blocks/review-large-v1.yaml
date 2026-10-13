@@ -1,0 +1,17 @@
+# Large-town World B (02 §4, 20+ citizens): as review-v1, decided by the Adjudication Assembly.
+id: review-large-v1
+decision_class: adjudication
+classes: [adjudication, emergency]
+body: adjudication_assembly
+steps:
+  - type: examination
+    criteria: [within_legal_range, within_compact]
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, yes: 3, of: 5}
+    quorum: {count: 3}
+  - type: publication
+narrative:
+  accountability: S11
+fairness_level: 800
