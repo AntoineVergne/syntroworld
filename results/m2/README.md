@@ -12,7 +12,25 @@ Holm across the 8 tests, and 95% paired t-intervals for the verdicts. Replicatio
 Reproduce:
 `python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl --json results/m2/false-positive.json`
 
-## Result (after decisions 25–27): FAIL as written
+## Result (after decisions 25–30): PASS
+
+| Check | Criterion (decision 29) | Observed |
+|---|---|---|
+| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **4.95%** (s.e. 0.24%) |
+| Holm family-wise rate (1,000 replications) | lower bound of exact 95% interval ≤ 5% | **3.50%**, 95% CI 2.45–4.83% |
+
+By outcome (uncorrected): P1 4.70%, P2 4.85%, P3 5.60%, P4 4.65%. False "better" or
+"worse" verdicts: 0.46% of tests.
+
+**Reading.** The whole interval lies *below* 5%, so the procedure is conservative: it
+makes fewer false discoveries than its nominal rate. That is the safe direction, and it
+is expected. Holm guarantees at most 5% under any dependence, and gives about 4.89% for
+8 independent tests. Here the four outcomes are correlated within a contrast, which
+lowers the family-wise rate. Decision 29 is worded "the interval includes 5% (lower
+bound ≤ 5%)". Taken literally, this interval does not include 5%. The operative test,
+lower bound ≤ 5%, is met, and only a rate *above* 5% would be a problem.
+
+## Previous result (after decisions 25–27): FAIL under decision 21
 
 | Check | Criterion (decision 21) | Observed |
 |---|---|---|

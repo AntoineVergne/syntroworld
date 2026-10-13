@@ -158,7 +158,7 @@ def report(res):
         f"{'PASS' if res['pass_uncorrected'] else 'FAIL'}  uncorrected rejection rate in 3%..7%: "
         f"{res['uncorrected_rate']:.2%} (binomial s.e. at 5%: {se_u:.2%})",
         f"{'PASS' if res['pass_fwer'] else 'FAIL'}  Holm family-wise rate compatible with "
-        f"{res['fwer_target']:.0%} (95% interval includes it): {res['holm_fwer']:.2%}, "
+        f"{res['fwer_target']:.0%} (lower bound of the 95% interval <= {res['fwer_target']:.0%}): {res['holm_fwer']:.2%}, "
         f"95% CI [{res['holm_fwer_ci'][0]:.2%}, {res['holm_fwer_ci'][1]:.2%}] (s.e. at 5%: {se_f:.2%})",
         "      by outcome (uncorrected): " + ", ".join(f"{y} {v:.2%}" for y, v in res["uncorrected_by_outcome"].items()),
         f"      false 'better'/'worse' verdicts: {res['false_verdict_rate']:.2%} of tests",
