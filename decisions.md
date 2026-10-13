@@ -58,5 +58,11 @@ brackets.
     construction, such as "citizen X stole from the Treasury", which the action set
     makes impossible. Details in `results/m0/README.md`.
 
+23. **What B-nolot removes** (06 §3.3). The table says "the Cycle Assembly is replaced by a
+    plenary of all citizens". The ablation does exactly that: the Review Bench and the
+    Kill Switch panel are still drawn by lot. Should "B minus sortition" also replace
+    those with plenaries? And should B-nodiv and B-nopay forbid the effect for good, as
+    now, or only remove it at founding and let the polity re-adopt it?
+
 None of the original 20. New questions will come from the phase M results (which ablations
 deserve model spend) and the phase L pilot (twins, seeds per world, cost).

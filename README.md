@@ -18,8 +18,14 @@ Phase M checks over many seeds (numpy needed for these only: `pip install -e ".[
 
 ```
 python -m synw.analysis.grid --world worlds/b.yaml --arm full --seeds 1-2000 --out results/m2/grid-b-full-2000.jsonl
+python -m synw.analysis.determinism --seeds 1-20 --out results/m0                   # 06 step M0
 python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl     # 06 step M2
+python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl \
+    --planted-a results/m3/grid-a-full-planted.jsonl \
+    --null-b results/m2/grid-b-full-2000.jsonl --null-a results/m3/grid-a-full-null.jsonl   # 06 step M3
 ```
+
+Results of each step are in `results/m0/` to `results/m3/`, each with a README.
 
 Each run writes one JSON Lines event log (`runs/<world>-<arm>-s<seed>.jsonl`): a header
 (engine version, config hash, seed, brain, full config), the events, and a footer with
@@ -35,10 +41,11 @@ synw/
   brains/      base (interface, observation, action validator)  mock
   governance/  effects rules project blocks kleroterion deliberation advocates
   metrics/     economy (P2 S1 S2 S3)  harm (S16-S19)  legitimacy (P1 S4 S5)
-               participation (P3)  resilience (P4)
-  analysis/    compare (paired statistics, 06 §7)  calibrate (06 step M1)
-               grid (seed grids, run-level outcomes)  false_positive (06 step M2)
+               participation (P3)  resilience (P4)  secondary (S6-S15)
+  analysis/    compare (paired statistics, 06 §7)  grid (seed grids, run-level outcomes)
+               determinism (M0)  calibrate (M1)  false_positive (M2)  planted (M3)
 worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml blocks/
+               ablations/ (b-nolot b-noadv b-nodiv b-nopay, 06 §3.3)
 schemas/       world.schema.json effect.schema.json procedural-block.schema.json
 tests/         one file per ticket
 ```
@@ -107,9 +114,71 @@ changed there.
   second field in which World C differs from A.
 - **S1** counts departed citizens as citizen-days without the basket, in line with 05 §2.
 - **YAML**: only `true`/`false` are booleans, so `{yes: 3, of: 5}` reads as written.
+- **Config inheritance**: `null` in an extending file removes the inherited key (B-nolot
+  removes the Cycle Assembly with `cycle_assembly: null`). Relative paths inherited from
+  a parent are rebased onto the extending file's directory.
+
+### Phase M steps
+
+- **M0** (`analysis/determinism.py`): both `none` and `full` arms. The two passes use
+  different `PYTHONHASHSEED`. "Shock and weather streams" means shock events, Sam's
+  arrival and the forged posts. The posts are compared without the engine's truth flag,
+  which reflects world state (see `results/m0/README.md` and decisions.md, question 22).
+- **M2**: 400 seeds split into two pseudo-contrasts of 100 pairs each.
+- **M3** (`analysis/planted.py`): the "known amount" is the planted B − A difference in
+  P1, averaged over the full pool of 2,000 paired seeds. Each replication draws 200 of
+  those seeds. The mechanical (null-mock) difference is reported beside it. λ = 1 (1000‰).
+- **Planted mock**: fairness comes from the procedure, through `brain.fairness` in
+  `base.yaml`: a drawn body (with or without deliberation) 0.8, a plenary 0.5,
+  wealth-weighted votes 0.2. Planted distress, which drives exits, rises by
+  0.01 × λ × (1 − mean legitimacy of the rules in force).
+
+### Secondary outcomes (`metrics/secondary.py`, `metrics/legitimacy.py`)
+
+- **S5**: a citizen who did not vote on a rule counts as against it if their last logged
+  evaluation of the proposal behind it was negative. Founding norms have no vote and so
+  are never counted.
+- **S6, S7** (win rate): decided proposals are final decisions that were adopted,
+  rejected or failed on quorum (lapsed items are excluded). A citizen's position is their
+  ballot in the deciding round, or else the sign of their last logged evaluation; an
+  abstention with no evaluation is no position. A position "wins" when yes meets adopted
+  or no meets not adopted. Spearman correlation uses average ranks for ties, and needs at
+  least 3 citizens. S6 is also reported per window cycle.
+- **S8**: counts the same voluntary acts as P3, in the window, over every citizen present
+  in it, including those with no acts.
+- **S9**: amendments take effect at the start of a cycle, so the change is P1 in that
+  cycle minus P1 in the cycle before.
+- **S10**: the run number is the *gross* value the rogue took through theft from onset to
+  the end of the run. `net` subtracts the automatic restitution of detected thefts.
+- **S11**: the clock stops at the first fine, decided restitution or suspension hitting the
+  rogue. The automatic restitution after a detected theft is a world rule, not a sanction,
+  so it does not count. If nothing hits the rogue, the time runs to the end and is
+  flagged as censored; the restricted mean over runs is taken in the analysis.
+- **S12**: rebuilt from the log. Adopting a false claim plants a belief; adopting a true
+  claim on the same topic, querying the topic, or departing removes it. It is counted at
+  the end of each window day.
+- **S13**: shock periods are the drought days, plus every day from the misinformation and
+  rogue onsets to the end (the posts are never removed). Only sittings that opened with an
+  agenda are counted; "valid" means at least one item was adopted or rejected. Dividend
+  days are window days on which a dividend was configured, and "in full" means the set
+  amount was paid to every recipient.
+- **S14**: a deficit day is a window day on which the Treasury balance fell.
+- **S15**: rejected actions (`invalid_action`) over agent-ticks, counted from arrival to
+  departure. Invalid outputs of the other brain calls are reported separately.
+
+### Ablations (`worlds/ablations/`)
+
+- **B-nolot**: only the Cycle Assembly becomes a plenary, which deliberates and hears
+  the Advocates. Every present citizen votes by majority of votes cast, with a quorum of
+  half the citizens; constitutional changes need two thirds of votes cast. The Review
+  Bench and the Kill Switch panel keep their lotteries (see decisions.md, question 23).
+  Plenary voters must attend every deliberation tick.
+- **B-nodiv and B-nopay**: besides removing the founding dividend or stipend, the world
+  makes that effect inadmissible. Otherwise the mock, or the polity, could vote it back
+  in. A forbidden effect is also illegal in the observation, so the mock does not propose it.
 
 ## Not built yet
 
-The model brain and replay (phase L), ablation configs, the planted-effect check (06 step
-M3), and secondary outcomes S5–S15 beyond the compliance variants in
-`metrics/legitimacy.py`.
+The model brain and replay (phase L), the A+text sermon control (phase L only), the
+phase M4 mechanical-baseline grid, the 40-citizen size check, and the model-judged layer
+(05 §6).
