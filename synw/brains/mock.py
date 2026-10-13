@@ -51,6 +51,7 @@ class MockBrain(Brain):
         self._sab_day = 0
         self._sab_target = None
         self._sab_today = False
+        self._observe_cycle = 0
 
     # --- helpers -------------------------------------------------------------------------
     def _new_day(self, obs):
@@ -120,6 +121,15 @@ class MockBrain(Brain):
 
     # --- act -----------------------------------------------------------------------------
     def act(self, obs):
+        """One action per tick; never one this citizen is suspended from (the mock knows its
+        own suspensions, so S15 stays a measure of brain errors)."""
+        a = self._act(obs)
+        if a.kind != "rest" and any(r.get("type") == "suspend" and r.get("agent") == obs.me
+                                    and a.kind in r.get("actions", ()) for r in obs.rules):
+            return REST
+        return a
+
+    def _act(self, obs):
         self._new_day(obs)
         if obs.incapacitated or obs.in_transit:                                     # 1
             return REST
@@ -159,8 +169,13 @@ class MockBrain(Brain):
 
     # 2. civic duties
     def _duty(self, obs):
-        """Seats first (member, plenary), then observing a public sitting. Plenary attendance and
-        observing are each decided once per sitting, with probability ``civic``."""
+        """Seats first (member, plenary), then observing a public sitting.
+
+        Plenary attendance is decided once per sitting with probability ``civic``. Observing
+        is decided once per *cycle* (decision 30): one roll, with probability ``civic``, for
+        the first public sitting of a body the citizen does not sit on, so a citizen
+        observes at most one sitting per cycle. That is the same single chance a World A
+        citizen has with their one plenary."""
         order = {"member": 0, "plenary": 1, "observer": 2}
         for d in sorted(obs.duties, key=lambda d: (order.get(d.get("role"), 3), d["start"])):
             if d["kind"] != "sitting":
@@ -169,6 +184,12 @@ class MockBrain(Brain):
             if sid not in self.attend:
                 if d["role"] == "member":
                     self.attend[sid] = True
+                elif d["role"] == "observer":
+                    if self._observe_cycle == obs.cycle:
+                        self.attend[sid] = False          # this cycle's chance is used
+                    else:
+                        self._observe_cycle = obs.cycle
+                        self.attend[sid] = self.rng.random() < share(self.p["civic"])
                 else:
                     self.attend[sid] = self.rng.random() < share(self.p["civic"])
             if not self.attend[sid]:

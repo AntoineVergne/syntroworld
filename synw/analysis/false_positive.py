@@ -7,8 +7,9 @@ if each pair were two worlds. There is no true difference, so:
 
 - the uncorrected rejection rate (p ≤ 0.05) must lie within 3% to 7%;
 - the Holm family-wise rejection rate (any of the 8 tests rejected) must be compatible
-  with 5%: the upper bound of its exact 95% interval is at most 7% (Antoine's
-  decision 21, which adds the Monte Carlo margin).
+  with 5%: its exact 95% interval includes 5%, i.e. the lower bound is at most 5%
+  (decision 29, replacing decision 21's "upper bound ≤ 7%", which failed a correct
+  procedure 20–25% of the time).
 
 The tests are those of ``synw.analysis.compare``: a two-sided sign-flip test, exact up
 to 20 pairs, otherwise 100,000 random flips; Holm across the 8 tests; 95% paired
@@ -100,7 +101,7 @@ def load_outcomes(rows, outcomes=OUTCOMES):
 
 
 def check(rows, reps=1000, draw=400, contrasts=2, seed=20261012, n_flips=100000,
-          outcomes=OUTCOMES, alpha=ALPHA, fwer_max_upper=0.07):
+          outcomes=OUTCOMES, alpha=ALPHA, fwer_target=0.05):
     np = _np()
     rng = np.random.default_rng(seed)
     seeds, vals = load_outcomes(rows, outcomes)
@@ -142,8 +143,8 @@ def check(rows, reps=1000, draw=400, contrasts=2, seed=20261012, n_flips=100000,
         "runs": N, "reps": reps, "draw": draw, "pairs_per_contrast": per, "contrasts": contrasts,
         "tests": tests, "uncorrected_rate": unc, "uncorrected_by_outcome": by_outcome,
         "holm_fwer": fw, "holm_fwer_ci": list(fw_ci), "false_verdict_rate": false_verdicts / tests,
-        "pass_uncorrected": 0.03 <= unc <= 0.07, "pass_fwer": fw_ci[1] <= fwer_max_upper,
-        "fwer_max_upper": fwer_max_upper, "seed": seed, "n_flips": n_flips, "interval": "paired t",
+        "pass_uncorrected": 0.03 <= unc <= 0.07, "pass_fwer": fw_ci[0] <= fwer_target,
+        "fwer_target": fwer_target, "seed": seed, "n_flips": n_flips, "interval": "paired t",
     }
 
 
@@ -156,8 +157,8 @@ def report(res):
         f"({res['pairs_per_contrast']} pairs each)",
         f"{'PASS' if res['pass_uncorrected'] else 'FAIL'}  uncorrected rejection rate in 3%..7%: "
         f"{res['uncorrected_rate']:.2%} (binomial s.e. at 5%: {se_u:.2%})",
-        f"{'PASS' if res['pass_fwer'] else 'FAIL'}  Holm family-wise rate compatible with 5% "
-        f"(upper 95% bound <= {res['fwer_max_upper']:.0%}): {res['holm_fwer']:.2%}, "
+        f"{'PASS' if res['pass_fwer'] else 'FAIL'}  Holm family-wise rate compatible with "
+        f"{res['fwer_target']:.0%} (95% interval includes it): {res['holm_fwer']:.2%}, "
         f"95% CI [{res['holm_fwer_ci'][0]:.2%}, {res['holm_fwer_ci'][1]:.2%}] (s.e. at 5%: {se_f:.2%})",
         "      by outcome (uncorrected): " + ", ".join(f"{y} {v:.2%}" for y, v in res["uncorrected_by_outcome"].items()),
         f"      false 'better'/'worse' verdicts: {res['false_verdict_rate']:.2%} of tests",

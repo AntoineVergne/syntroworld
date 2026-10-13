@@ -19,8 +19,11 @@ def voluntary_acts(run):
     """[(citizen, tick, type)] of voluntary acts open to every citizen."""
     run = as_run(run)
     out = []
-    for t in ("proposal_registered", "alert", "observe"):
+    for t in ("proposal_registered", "alert"):
         out += [(e["actor"], e["tick"], t) for e in run.of(t) if isinstance(e["actor"], int)]
+    for e in run.of("observe"):     # only while a sitting is actually open
+        if isinstance(e["actor"], int) and e["payload"].get("bodies", [None]):
+            out.append((e["actor"], e["tick"], "observe"))
     for e in run.of("attend"):
         if isinstance(e["actor"], int) and OPEN_BODY in e["payload"].get("bodies", []):
             out.append((e["actor"], e["tick"], "attend"))

@@ -44,7 +44,7 @@ def test_null_rates_and_determinism():
     assert 0.025 <= a["uncorrected_rate"] <= 0.075
     assert a["holm_fwer"] <= 0.08
     lo, hi = a["holm_fwer_ci"]
-    assert lo <= a["holm_fwer"] <= hi and a["pass_fwer"] == (hi <= 0.07)
+    assert lo <= a["holm_fwer"] <= hi and a["pass_fwer"] == (lo <= 0.05)
     assert len(report(a)) == 5
 
 

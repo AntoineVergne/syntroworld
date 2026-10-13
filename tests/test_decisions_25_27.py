@@ -29,6 +29,7 @@ def test_p3_counts_only_acts_open_to_all():
               ev(day, "ballot", 0, {"body": "cycle_assembly", "vote": "yes"}),
               ev(day, "attend", 1, {"bodies": ["plenary"]}),             # plenary: counted
               ev(day, "observe", 2, {"bodies": ["cycle_assembly"]}),     # observing: counted
+              ev(day, "observe", 0, {"bodies": []}),                     # nothing open yet: not counted
               ev(day, "proposal_registered", 3, {})])
     assert sorted(c for c, _, _ in voluntary_acts(r)) == [1, 2, 3]
     assert p3_civic_breadth(r) == 3 / (4 * 6)     # 3 of 4 citizens act in 1 of 6 window cycles
@@ -85,3 +86,17 @@ def test_oversight_refers_to_adjudication():
     origins = {e["payload"].get("origin", "") for e in ev_ if e["type"] == "proposal_registered"
                and e["actor"] == "adjudication_assembly"}
     assert not any(o.startswith("breach:") for o in origins)
+
+
+def test_observe_at_most_one_sitting_per_cycle():
+    """Decision 30: a citizen observes at most one public sitting per cycle."""
+    from collections import defaultdict
+    w = run(wpath("size40/b.yaml"), 2)
+    days = defaultdict(set)
+    for e in w.log.events:
+        if e["type"] == "observe" and e["payload"]["bodies"]:
+            t = w.clock.at(e["tick"])
+            days[(e["actor"], t.cycle)].add(t.day)
+    # Strategy and Budget sit together in the Hall, so one observed sitting may carry both
+    # bodies; what decision 30 limits is one observed sitting (one sitting day) per cycle
+    assert days and all(len(d) == 1 for d in days.values())
