@@ -22,9 +22,24 @@ The world events that must not depend on governance:
 - Sam's `arrival`;
 - the two forged misinformation posts.
 
-The posts are compared without two fields:
+The comparison covers what was *scheduled*. Fields that report how a shock landed in that
+particular world are excluded:
 - the running claim id, which counts every claim made earlier in the run;
-- the engine's truth flag, which evaluates world state when the post appears.
+- the engine's truth flag, which evaluates world state when the post appears;
+- the rogue actually hit (`target`, `applied`, `replaced`). If the scheduled rogue has
+  died or left, the next present citizen takes the overlay (decisions.md, question 28).
+
+## Latest run (after decisions 25–27)
+
+| Check | Result |
+|---|---|
+| Identical event-log hashes | **120 of 120** |
+| Scheduled shocks identical across worlds | **40 of 40** |
+| Forged posts whose truth differs across worlds | none |
+| Rogue replaced because the scheduled one had left | 6 of 60 `full` runs: A seed 10; B seed 7; C seeds 2, 6, 7, 10 (`result.json`, `rogue_replaced`) |
+
+The replacements come from the stronger drought (decision 27): more citizens now die or
+leave before day 19, most often in World C.
 
 ## History
 
