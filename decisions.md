@@ -1,6 +1,6 @@
 # Decisions
 
-Questions only Antoine can make. Questions 2 to 20 were answered in review on 2026-10-12, and
+Questions only Antoine can make. Questions 2 to 20 were answered in review on 2026-10-12 and question 21 on 2026-10-13, and
 the docs have been updated to match. Any change of mind means editing the doc named in
 brackets.
 
@@ -26,6 +26,7 @@ brackets.
 | 18 | Engine stack? | Python library and command-line runner writing JSON Lines; no web server or database server | 03 §1, §9 |
 | 19 | README licence section and title? | Removed; renamed Syntroworld; README added | source-docs/README.md |
 | 20 | Publication promises in 06? | Dropped for now; backlog | 06 §10 |
+| 21 | M2 family-wise criterion? | Pass if the upper bound of the 95% interval on the Holm family-wise rate is at most 7%. Decided before the freeze, so not a protocol amendment. Step M2 passes (5.20%, interval 3.9–6.8%). | 06 §8.1, results/m2/README.md |
 
 ## Consequences worth knowing
 
@@ -42,12 +43,5 @@ brackets.
 
 ## Still open
 
-21. **M2 family-wise criterion** (06 §8.1). Step M2 measured a Holm family-wise rate
-    of 5.20% (52 of 1,000 replications; s.e. 0.69%). The expected rate for this design
-    is 4.89%, and the uncorrected rate is 5.09%. As written ("≤ 5%"), the criterion
-    fails a correct procedure about 40% of the time. Should it be restated with its
-    Monte Carlo error, for example "upper 95% bound ≤ 7%"? Details in
-    `results/m2/README.md`.
-
-None of the original 20. New questions will come from the phase M results (which ablations
+None. Question 21 is answered. New questions will come from the phase M results (which ablations
 deserve model spend) and the phase L pilot (twins, seeds per world, cost).

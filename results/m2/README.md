@@ -45,3 +45,7 @@ family-wise rate is at most 7%" or "the rate is at most 5% + 2 s.e.". Alternativ
 keep "≤ 5%" and raise the replication count. Even 10,000 replications (s.e. 0.22%)
 would still fail a procedure sitting exactly at 5% about half the time. Until
 then, M2 is recorded as **failed as written, consistent with nominal**.
+
+**Resolved (decision 21, 2026-10-13):** Antoine restated the criterion as "the upper
+bound of the 95% interval on the family-wise rate is at most 7%", before the freeze.
+The observed interval is 3.9–6.8%, so **M2 passes**. No run was repeated.
