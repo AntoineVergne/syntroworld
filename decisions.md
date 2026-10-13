@@ -51,5 +51,13 @@ brackets.
 
 ## Still open
 
-None. New questions will come from the phase M results (which ablations deserve model
+25. **What does the Oversight Assembly do?** (01 Art. 2.4, 7.1; 02 §4). At 20 citizens or
+    more, B has a separate Oversight Assembly that "watches compliance and may raise an
+    alert". In the M4 size check it is drawn every cycle but has nothing mechanised to do.
+    Sanctions on detected breaches go to the Adjudication Assembly, and alerts come from
+    citizens and the monitor. Options: an Oversight sitting that reviews the cycle's
+    detected breaches and refers them to Adjudication (and to the Kill Switch above a
+    threshold); or leave it idle and say so. This only affects the 40-citizen check.
+
+New questions will come from the phase M results (which ablations deserve model
 spend) and the phase L pilot (twins, seeds per world, cost).

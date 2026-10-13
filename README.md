@@ -23,6 +23,7 @@ python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl 
 python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl \
     --planted-a results/m3/grid-a-full-planted.jsonl \
     --null-b results/m2/grid-b-full-2000.jsonl --null-a results/m3/grid-a-full-null.jsonl   # 06 step M3
+python -m synw.analysis.baseline run --out results/m4 && python -m synw.analysis.baseline report --out results/m4   # M4
 ```
 
 Results of each step are in `results/m0/` to `results/m3/`, each with a README.
@@ -43,9 +44,10 @@ synw/
   metrics/     economy (P2 S1 S2 S3)  harm (S16-S19)  legitimacy (P1 S4 S5)
                participation (P3)  resilience (P4)  secondary (S6-S15)
   analysis/    compare (paired statistics, 06 §7)  grid (seed grids, run-level outcomes)
-               determinism (M0)  calibrate (M1)  false_positive (M2)  planted (M3)
+               determinism (M0)  calibrate (M1)  false_positive (M2)  planted (M3)  baseline (M4)
 worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml blocks/
                ablations/ (b-nolot b-noadv b-nodiv b-nopay, 06 §3.3)
+               size40/ (A, B, C with 40 citizens, the M4 size check)
 schemas/       world.schema.json effect.schema.json procedural-block.schema.json
 tests/         one file per ticket
 ```
@@ -133,6 +135,19 @@ changed there.
   those seeds. The mechanical (null-mock) difference is reported beside it. λ = 1 (1000‰).
   Pass: the 95% t-interval covers the truth in at least 93% of 1,000 replications at
   n = 200 (decisions 21 and 24).
+- **M4** (`analysis/baseline.py`): the single-shock arms run for A, B and C (not the
+  ablations). P4 is computed as 1 − S2(arm) / S2(none) from the `none` cell of the same
+  world and seed. That is the P4 formula exactly, and it avoids re-running every twin. Only
+  the 8 primary tests (B vs A, B vs C, `full` arm) get Holm and verdicts. Every other
+  contrast is reported as an estimate with an interval and an uncorrected p-value.
+- **Size check** (`worlds/size40/`): 39 founders cycle the ten founder personas ("Mira 2",
+  ...), and the newcomer is citizen 39, arriving on day 4. River K and S0 and the Data
+  Tower job cap scale by 40/11, so per-capita resources match the 11-citizen town;
+  otherwise the check would measure scarcity, not size. World B uses the 20+ configuration
+  of 02 §4: Strategy (ordinary law and amendments), Budget, Oversight and Adjudication
+  (sanctions, 3 of 5) assemblies of 5, with no consecutive terms. Oversight is drawn but
+  has no mechanised function yet (decisions.md, question 25). Shock targets rotate over
+  all 40 citizens.
 - **Intervals** (`analysis/compare.py`): paired t-intervals with an exact Student-t
   quantile (decision 24). The percentile bootstrap remains available for comparison.
 - **Planted mock**: fairness comes from the procedure, through `brain.fairness` in
