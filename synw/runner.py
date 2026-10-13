@@ -15,7 +15,7 @@ from .governance.blocks import Governance
 from .governance.project import project as _project
 from .governance.rules import RuleRegistry
 from .rng import Streams
-from .shocks import Shocks
+from .shocks import Shocks, shock_config
 from .world import agents as A
 from .world import claims as C
 from .world import deals as D
@@ -64,6 +64,7 @@ class World:
         self.river_r_bonus = 0
         self.plant_bonus = 0
         self.drought = False
+        self.shock_cfg = shock_config(cfg)
         self.site_factor = {}
         self.harvest_today = 0
         self.output_today = 0
@@ -284,6 +285,8 @@ class World:
             "carers_at_clinic": sum(1 for o in self.citizens.values() if o.active and o.location == "clinic"
                                     and o.persona.get("main_site") == "clinic" and o.idx != idx),
             "low_health": sum(1 for i in active if self.citizens[i].health < 40 and i != idx),
+            "workers": {s: sum(1 for i in active if self.citizens[i].location == s and i != idx)
+                        for s in wmap.SABOTAGE_SITES},
             "social": {s: sum(1 for i in active if self.citizens[i].location == s and i != idx)
                        for s in ("cafe", "square")},
             "production": {"fields": self.cfg["production"]["fields"],
@@ -532,8 +535,12 @@ class World:
             if ck in ("attend", "observe"):
                 if c.location != "assembly_hall":
                     return log.emit(t, "failed", idx, {"action": k, "reason": "not_at_hall"})
-                self.attendees.add(idx)
-                log.emit(t, "attend" if ck == "attend" else "observe", idx, {})
+                roles = self.governance.roles_now(idx)
+                if ck == "attend":
+                    self.attendees.add(idx)
+                    log.emit(t, "attend", idx, {"bodies": roles["member"]})
+                else:
+                    log.emit(t, "observe", idx, {"bodies": roles["observer"] + roles["member"]})
             elif ck == "alert":
                 self.governance.alert(idx, a.get("target"), a.get("deal"), a.get("reason"))
 

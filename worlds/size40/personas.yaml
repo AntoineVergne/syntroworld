@@ -49,3 +49,4 @@ rogue_overlay:
   honesty: 100
   public_good: 0
   exit_propensity: 0
+  sabotage_daily: 1000    # decision 27: sabotages the busiest production site every day

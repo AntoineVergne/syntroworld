@@ -702,12 +702,60 @@
         },
         "allow_stipend": {
           "type": "boolean"
+        },
+        "oversight": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "block": {
+              "type": "string"
+            },
+            "alert_threshold": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "body",
+            "block"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
         "blocks",
         "agenda"
       ],
+      "additionalProperties": false
+    },
+    "shocks": {
+      "type": "object",
+      "properties": {
+        "drought": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "fields_factor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "plant_factor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            }
+          },
+          "additionalProperties": false
+        }
+      },
       "additionalProperties": false
     }
   },

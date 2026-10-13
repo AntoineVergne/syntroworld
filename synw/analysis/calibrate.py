@@ -1,7 +1,7 @@
 """Calibration report for the null world (03 §10.2, 06 step M1).
 
 Runs a world (World A by default) with the null mock over a seed range, with no shocks
-(plus a drought-only arm for the drought target), and prints each target with its value
+(plus the drought-only and full arms for the shock targets), and prints each target with its value
 and pass/fail. Tuning the parameters is a separate step.
 
     python -m synw.analysis.calibrate --world worlds/a.yaml --seeds 1-20
@@ -15,7 +15,9 @@ from ..metrics import Run
 from ..metrics.economy import gini_by_day, output_by_day, river_ever_below, s1_basket_floor
 from ..metrics.harm import s16_deaths, s17_exits, s18_harm_rate
 from ..metrics.legitimacy import s4_founding_compliance
+from ..metrics.resilience import p4_output_loss
 from ..runner import run as run_world
+from ..shocks import shock_config
 
 
 def parse_seeds(spec):
@@ -39,11 +41,13 @@ def collect(world, seeds):
     for s in seeds:
         r, t = _run(world, s, "none")
         rd, td = _run(world, s, "drought")
+        rf, tf = _run(world, s, "full")
         g = gini_by_day(r)
         days = sorted(g)
         o_none, o_dr = output_by_day(r), output_by_day(rd)
-        base = o_none.get(7, 0) + o_none.get(8, 0)
-        drought_loss = (1 - (o_dr.get(7, 0) + o_dr.get(8, 0)) / base) if base else None
+        ddays = range(7, 7 + shock_config(r.cfg)["drought"]["days"])
+        base = sum(o_none.get(d, 0) for d in ddays)
+        drought_loss = (1 - sum(o_dr.get(d, 0) for d in ddays) / base) if base else None
         rows.append({
             "seed": s,
             "gini_rise": g[days[-1]] - g[days[0]],
@@ -53,7 +57,8 @@ def collect(world, seeds):
             "departures": s16_deaths(r)["count"] + s17_exits(r)["count"],
             "s18": s18_harm_rate(r),
             "drought_loss": drought_loss,
-            "seconds": max(t, td),
+            "p4_full": p4_output_loss(rf, r),
+            "seconds": max(t, td, tf),
         })
     return rows
 
@@ -74,6 +79,7 @@ def targets(rows):
     dep_med = _median([r["departures"] for r in rows])
     harm = share(lambda r: (r["s18"] or 0) > 0)
     dl = _median([r["drought_loss"] for r in rows])
+    p4 = _median([r["p4_full"] for r in rows])
     secs = max(r["seconds"] for r in rows) if rows else None
     ok = lambda v, lo=None, hi=None: v is not None and (lo is None or v >= lo) and (hi is None or v <= hi)
     return [
@@ -84,7 +90,8 @@ def targets(rows):
         ("runs with a death or exit in 10%..50%; median departures <= 1",
          f"{dep_any:.0%}; median {dep_med}", ok(dep_any, 0.10, 0.50) and ok(dep_med, None, 1)),
         ("runs with harm rate S18 > 0 >= 80%", f"{harm:.0%}", ok(harm, 0.80)),
-        ("drought lowers output days 7-8 by >= 10% vs twin (median)", f"{dl:.1%}" if dl is not None else "NA", ok(dl, 0.10)),
+        ("drought lowers output on its days by >= 10% vs twin (median)", f"{dl:.1%}" if dl is not None else "NA", ok(dl, 0.10)),
+        ("full-arm output loss P4 (median) in 10%..20% (decision 27)", f"{p4:.1%}" if p4 is not None else "NA", ok(p4, 0.10, 0.20)),
         ("one run takes under 10 seconds (slowest)", f"{secs:.2f}s" if secs is not None else "NA", ok(secs, None, 10.0)),
     ]
 
@@ -102,7 +109,7 @@ def main(argv=None):
     ap.add_argument("--seeds", default="1-20")
     args = ap.parse_args(argv)
     rows = collect(args.world, parse_seeds(args.seeds))
-    print(f"calibration: {args.world}, null mock, seeds {args.seeds} ({len(rows)} runs, arms none + drought)")
+    print(f"calibration: {args.world}, null mock, seeds {args.seeds} ({len(rows)} seeds, arms none + drought + full)")
     for line in report(rows):
         print(line)
     return 0

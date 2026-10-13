@@ -48,6 +48,9 @@ class MockBrain(Brain):
         self.planned_site = None
         self.defaulting = set()        # deals this agent chose to default on
         self._pending_query = False
+        self._sab_day = 0
+        self._sab_target = None
+        self._sab_today = False
 
     # --- helpers -------------------------------------------------------------------------
     def _new_day(self, obs):
@@ -123,6 +126,9 @@ class MockBrain(Brain):
         a = self._duty(obs)                                                         # 2
         if a is not None:
             return a
+        a = self._rogue_sabotage(obs)
+        if a is not None:
+            return a
         a = self._deals_and_alerts(obs)
         if a is not None:
             return a
@@ -153,7 +159,10 @@ class MockBrain(Brain):
 
     # 2. civic duties
     def _duty(self, obs):
-        for d in obs.duties:
+        """Seats first (member, plenary), then observing a public sitting. Plenary attendance and
+        observing are each decided once per sitting, with probability ``civic``."""
+        order = {"member": 0, "plenary": 1, "observer": 2}
+        for d in sorted(obs.duties, key=lambda d: (order.get(d.get("role"), 3), d["start"])):
             if d["kind"] != "sitting":
                 continue
             sid = d["id"]
@@ -169,7 +178,7 @@ class MockBrain(Brain):
             mv = self._go(obs, "assembly_hall")
             if mv is not None:
                 return mv
-            return Action("civic", {"kind": "attend"})
+            return Action("civic", {"kind": "observe" if d["role"] == "observer" else "attend"})
         return None
 
     def _deals_and_alerts(self, obs):
@@ -399,6 +408,28 @@ class MockBrain(Brain):
         return Action("work")
 
     # 6. harmful acts
+    def _rogue_sabotage(self, obs):
+        """Rogue overlay (decision 27): once a day, with probability ``sabotage_daily``,
+        sabotage the production site where most others are working."""
+        rate = self.p.get("sabotage_daily", 0)
+        if not rate or obs.tick_of_day > 12:
+            return None
+        if self._sab_day != obs.day:          # one roll per day; then wait for a busy site
+            self._sab_day = obs.day
+            self._sab_target = None
+            self._sab_today = self.rng.random() < share(rate)
+        if self._sab_today and self._sab_target is None:
+            workers = obs.town.get("workers", {})
+            busy = [s for s in sorted(workers) if workers[s] > 0]
+            if busy:
+                self._sab_target = max(busy, key=lambda s: (workers[s], s))
+        if self._sab_target is None:
+            return None
+        if obs.location != self._sab_target:
+            return Action("move", {"to": self._sab_target})
+        target, self._sab_target, self._sab_today = self._sab_target, None, False
+        return Action("sabotage", {"target": target})
+
     def _harm(self, obs):
         det = obs.town.get("detection", {})
         others = [o for o in obs.colocated if o["idx"] != obs.me]

@@ -26,6 +26,7 @@ def test_large_town_b_draws_four_assemblies_without_consecutive_terms():
             by_cycle[w.clock.at(e["tick"]).cycle][e["payload"]["body"]] = e["payload"]["members"]
     assert sorted(by_cycle) == list(range(1, 9))
     for cyc, bodies in by_cycle.items():
+        bodies = {b: m for b, m in bodies.items() if not b.startswith("fresh:")}   # Kill Switch panels
         assert len(bodies) == 4
         seated = [m for ms in bodies.values() for m in ms]
         assert len(seated) == len(set(seated)) == 20          # nobody on two bodies

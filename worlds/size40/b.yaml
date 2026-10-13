@@ -15,11 +15,13 @@ governance:
     - ../blocks/budget-large-v1.yaml
     - ../blocks/constitutional-large-v1.yaml
     - ../blocks/review-large-v1.yaml
+    - ../blocks/oversight-large-v1.yaml     # after review: sanctions route to Adjudication
     - ../blocks/kill-switch-v1.yaml
   bodies:
     cycle_assembly: null
     review_bench: null
     strategy_assembly: {size: 5, sitting: {day_of_cycle: 2, ticks: [9, 14]}, no_consecutive: true}
     budget_assembly: {size: 5, sitting: {day_of_cycle: 2, ticks: [9, 14]}, no_consecutive: true}
-    oversight_assembly: {size: 5, sitting: {day_of_cycle: 3, ticks: [9, 11]}, no_consecutive: true}
+    oversight_assembly: {size: 5, sitting: {day_of_cycle: 3, ticks: [6, 8]}, no_consecutive: true}   # before Adjudication
     adjudication_assembly: {size: 5, sitting: {day_of_cycle: 3, ticks: [9, 11]}, no_consecutive: true}
+  oversight: {body: oversight_assembly, block: oversight-large-v1, alert_threshold: 3}   # decision 25

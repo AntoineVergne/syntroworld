@@ -16,10 +16,12 @@ def site_output(w, c, site):
         if w.river_collapsed():
             base //= 2
         if w.drought:
-            base //= 2
+            base = base * w.shock_cfg["drought"]["fields_factor"] // 1000
     elif site == "plant":
         base = prod["plant_polluting"] if w.plant_mode == "polluting" else prod["plant_clean"]
         base += w.plant_bonus
+        if w.drought:   # low water also cuts the Plant (decision 27)
+            base = base * w.shock_cfg["drought"]["plant_factor"] // 1000
     elif site == "workshop":
         base = prod["workshop"]
     else:
