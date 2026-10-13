@@ -123,11 +123,18 @@ changed there.
 - **M0** (`analysis/determinism.py`): both `none` and `full` arms. The two passes use
   different `PYTHONHASHSEED`. "Shock and weather streams" means shock events, Sam's
   arrival and the forged posts. The posts are compared without the engine's truth flag,
-  which reflects world state (see `results/m0/README.md` and decisions.md, question 22).
-- **M2**: 400 seeds split into two pseudo-contrasts of 100 pairs each.
+  which reflects world state. Since decision 22 the "stole" post is false by
+  construction; only the River post's truth can still differ between worlds.
+- **M2**: 400 seeds split into two pseudo-contrasts of 100 pairs each. The family-wise
+  criterion carries its Monte Carlo margin: the upper bound of the exact 95% interval is
+  at most 7% (decision 21).
 - **M3** (`analysis/planted.py`): the "known amount" is the planted B − A difference in
   P1, averaged over the full pool of 2,000 paired seeds. Each replication draws 200 of
   those seeds. The mechanical (null-mock) difference is reported beside it. λ = 1 (1000‰).
+  Pass: the 95% t-interval covers the truth in at least 93% of 1,000 replications at
+  n = 200 (decisions 21 and 24).
+- **Intervals** (`analysis/compare.py`): paired t-intervals with an exact Student-t
+  quantile (decision 24). The percentile bootstrap remains available for comparison.
 - **Planted mock**: fairness comes from the procedure, through `brain.fairness` in
   `base.yaml`: a drawn body (with or without deliberation) 0.8, a plenary 0.5,
   wealth-weighted votes 0.2. Planted distress, which drives exits, rises by
@@ -171,11 +178,12 @@ changed there.
 - **B-nolot**: only the Cycle Assembly becomes a plenary, which deliberates and hears
   the Advocates. Every present citizen votes by majority of votes cast, with a quorum of
   half the citizens; constitutional changes need two thirds of votes cast. The Review
-  Bench and the Kill Switch panel keep their lotteries (see decisions.md, question 23).
+  Bench and the Kill Switch panel keep their lotteries (decision 23).
   Plenary voters must attend every deliberation tick.
-- **B-nodiv and B-nopay**: besides removing the founding dividend or stipend, the world
-  makes that effect inadmissible. Otherwise the mock, or the polity, could vote it back
-  in. A forbidden effect is also illegal in the observation, so the mock does not propose it.
+- **B-nodiv and B-nopay** remove the founding dividend or stipend only; the polity may
+  adopt one later (decision 23). The `allow_dividend` and `allow_stipend` flags can still
+  forbid an effect outright; a forbidden effect is then also illegal in the observation,
+  so the mock does not propose it.
 
 ## Not built yet
 

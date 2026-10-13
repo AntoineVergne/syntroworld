@@ -40,38 +40,16 @@ brackets.
   and the name of an existing blockchain dispute-resolution project. Neither blocks
   internal use; worth a check before anything public.
 
+## Phase M questions (answered by Antoine, 2026-10-13)
+
+| # | Question | Answer | Where |
+|---|---|---|---|
+| 21 | M2 measured a Holm family-wise rate of 5.20% (s.e. 0.69%; expected 4.89%). As written ("≤ 5%"), the criterion fails a correct procedure about 40% of the time. | **Add a Monte Carlo margin:** pass if the upper bound of the exact 95% interval is at most 7%. | 06 §8.1 |
+| 22 | The forged post "citizen X stole" can be true where X really stole (3 of 20 `full` seeds in World B in M0). | **False by construction:** the post is "citizen X stole from the Treasury", as 06 §5 already said; the engine had simplified it to "X stole". | 06 §5, `synw/shocks.py` |
+| 23 | Does B-nolot remove every lottery? Do B-nodiv and B-nopay forbid the effect for good? | **B-nolot replaces the Cycle Assembly only** (Review Bench and Kill Switch keep their lotteries). **B-nodiv and B-nopay remove the dividend or stipend at founding only;** the polity may re-adopt it. | 06 §3.3, `worlds/ablations/` |
+| 24 | M3 coverage 93 of 100 (96.1% over 1,000); percentile bootstrap covers only 91.6% at 12 seeds. | **Paired t-intervals** replace the bootstrap; the M3 criterion becomes coverage ≥ 93% over 1,000 replications. | 06 §7.2, §8.1 |
+
 ## Still open
 
-21. **M2 family-wise criterion** (06 §8.1). Step M2 measured a Holm family-wise rate
-    of 5.20% (52 of 1,000 replications; s.e. 0.69%). The expected rate for this design
-    is 4.89%, and the uncorrected rate is 5.09%. As written ("≤ 5%"), the criterion
-    fails a correct procedure about 40% of the time. Should it be restated with its
-    Monte Carlo error, for example "upper 95% bound ≤ 7%"? Details in
-    `results/m2/README.md`.
-
-22. **Misinformation shock can be true** (06 §5). The forged post "citizen X stole" is
-    true in a world where X stole in the last cycle. In step M0 this happened in World B
-    for 3 of 20 `full` seeds. The shock is identical across worlds, but in those runs
-    it is not misinformation. Options: keep it (the post is forged either way); pick X
-    among citizens with no theft in the last cycle (but then X depends on the world's
-    history, which breaks common random numbers); or use a claim that is false by
-    construction, such as "citizen X stole from the Treasury", which the action set
-    makes impossible. Details in `results/m0/README.md`.
-
-23. **What B-nolot removes** (06 §3.3). The table says "the Cycle Assembly is replaced by a
-    plenary of all citizens". The ablation does exactly that: the Review Bench and the
-    Kill Switch panel are still drawn by lot. Should "B minus sortition" also replace
-    those with plenaries? And should B-nodiv and B-nopay forbid the effect for good, as
-    now, or only remove it at founding and let the polity re-adopt it?
-
-24. **M3 criterion and small-n intervals** (06 §7.2, §8.1). Step M3 recovered the planted P1
-    effect (+1.08 points) without bias. Its interval contained the truth in 93 of 100
-    replications at n = 200, against "at least 95". The same intervals cover 96.1% over
-    1,000 replications, so as with question 21 the criterion should carry its Monte Carlo
-    error. More important: at n = 12, the phase L floor, percentile bootstrap intervals
-    cover only 91.6%. Switch to a better small-sample interval (BCa, or a t-interval on
-    the paired differences) before phase L, or raise the floor? Details in
-    `results/m3/README.md`.
-
-None of the original 20. New questions will come from the phase M results (which ablations
-deserve model spend) and the phase L pilot (twins, seeds per world, cost).
+None. New questions will come from the phase M results (which ablations deserve model
+spend) and the phase L pilot (twins, seeds per world, cost).
