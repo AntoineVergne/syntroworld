@@ -117,7 +117,21 @@ class Governance:
         return self.w.log
 
     def fairness(self, block):
-        return block.get("fairness_level", 500)
+        """Declared fairness of a procedure, used only by the planted mock (03 §6.4).
+
+        With a ``brain.fairness`` map in the config, the level follows the procedure's
+        features: wealth-weighted votes, a drawn body (sortition, with or without
+        deliberation), or a plenary. Otherwise the block's own ``fairness_level``.
+        """
+        fmap = self.w.cfg.get("brain", {}).get("fairness")
+        if not fmap:
+            return block.get("fairness_level", 500)
+        vote = step(block, "vote") or {}
+        if vote.get("weights") == "wealth":
+            return fmap["wealth_weighted"]
+        if block["body"] != "plenary":
+            return fmap["deliberation_sortition"]
+        return fmap["plenary"]
 
     def primary_block(self):
         return self.blocks[self.order[0]]

@@ -95,3 +95,11 @@ social:
 
 treasury:
   reserve_days: 3      # common surplus = balance above this many days of fixed payments
+
+brain:
+  type: mock
+  lambda: 0            # null mock; the planted mock (06 step M3) sets lambda > 0
+  fairness:            # declared fairness by procedure, read only by the planted mock (03 §6.4)
+    deliberation_sortition: 800
+    plenary: 500
+    wealth_weighted: 200

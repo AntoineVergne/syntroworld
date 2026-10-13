@@ -23,6 +23,7 @@ from ..world import map as wmap
 GOODS = ("food", "energy", "artifact")
 SITE_GOOD = {"fields": "food", "river": "food", "plant": "energy", "workshop": "artifact"}
 HARM_ACTS = ("steal", "sabotage", "false_claim")
+PLANTED_EXIT_SCALE = 0.01   # planted mock: daily distress from low legitimacy, per unit of λ
 
 
 def share(x):
@@ -445,8 +446,12 @@ class MockBrain(Brain):
             return
         self.exit_checked = True
         distress = 1.0 if (self.low_days >= 2 or self._wealth(obs) < self.basket_cost) else 0.0
-        if distress and self.lam > 0:
-            distress = min(1.0, distress * (1.0 + self.lam))
+        if self.lam > 0:
+            # planted mock: distress also rises as the legitimacy of the rules in force falls
+            norms = [r for r in obs.rules if r.get("kind") == "normative"]
+            if norms:
+                legit = sum(self._legitimacy(r, obs) for r in norms) / len(norms)
+                distress = max(distress, PLANTED_EXIT_SCALE * self.lam * (1.0 - legit))
         if self.rng.random() < share(self.p["exit_propensity"]) * distress:
             self.exit_intent = True
 

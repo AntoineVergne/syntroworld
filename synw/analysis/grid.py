@@ -24,19 +24,19 @@ from ..runner import run as run_world
 from .calibrate import parse_seeds
 
 
-def outcomes(world, seed, arm="none", lam=None):
+def outcomes(world, seed, arm="none", lam=None, twin=True):
     """Run-level outcomes for one world, arm and seed (P4 against the ``none`` twin)."""
     w = run_world(world, seed, arm=arm, lam=lam)
     r = Run(w.log.header, w.log.events)
-    twin = r
-    if arm != "none":
+    twin_run = r
+    if arm != "none" and twin:
         t = run_world(world, seed, arm="none", lam=lam)
-        twin = Run(t.log.header, t.log.events)
+        twin_run = Run(t.log.header, t.log.events)
     s3 = s3_commons(r)
     return {
         "world": r.header["world"], "arm": arm, "seed": seed, "lambda": w.lam,
         "P1": p1_compliance(r), "P2": p2_gini(r), "P3": p3_civic_breadth(r),
-        "P4": p4_output_loss(r, twin),
+        "P4": p4_output_loss(r, twin_run) if (arm == "none" or twin) else None,
         "S1": s1_basket_floor(r), "S2": s2_output(r), "S3": s3["share_sustainable"] if s3 else None,
         "S4": s4_founding_compliance(r), "S16": s16_deaths(r)["count"], "S17": s17_exits(r)["count"],
         "S18": s18_harm_rate(r), "state_hash": w.log.footer["state_hash"],
@@ -47,8 +47,8 @@ def _one(args):
     return outcomes(*args)
 
 
-def run_grid(world, seeds, arm="none", lam=None, procs=1):
-    jobs = [(world, s, arm, lam) for s in seeds]
+def run_grid(world, seeds, arm="none", lam=None, procs=1, twin=True):
+    jobs = [(world, s, arm, lam, twin) for s in seeds]
     if procs > 1:
         with Pool(procs) as p:
             return p.map(_one, jobs, chunksize=4)
@@ -74,9 +74,10 @@ def main(argv=None):
     ap.add_argument("--seeds", default="1-20")
     ap.add_argument("--lambda", dest="lam", type=int, default=None)
     ap.add_argument("--procs", type=int, default=os.cpu_count() or 1)
+    ap.add_argument("--no-twin", action="store_true", help="skip the none twin (P4 left empty)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args(argv)
-    rows = run_grid(args.world, parse_seeds(args.seeds), args.arm, args.lam, args.procs)
+    rows = run_grid(args.world, parse_seeds(args.seeds), args.arm, args.lam, args.procs, twin=not args.no_twin)
     write_rows(rows, args.out)
     print(f"{len(rows)} runs -> {args.out}")
     return 0
