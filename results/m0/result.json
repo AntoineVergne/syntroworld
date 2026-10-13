@@ -1,0 +1,43 @@
+{
+  "arms": [
+    "none",
+    "full"
+  ],
+  "hashseeds": [
+    1,
+    2
+  ],
+  "identical_hashes": 120,
+  "pass": true,
+  "pass_hashes": true,
+  "pass_world_streams": true,
+  "runs_per_pass": 120,
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "shock_claim_truth_differs": [],
+  "worlds": [
+    "A",
+    "B",
+    "C"
+  ]
+}

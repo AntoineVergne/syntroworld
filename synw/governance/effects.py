@@ -39,7 +39,7 @@ PRIMARY = {
 
 BLOCK_FIELDS = {
     "quorum": "share or count",
-    "rule": "majority_of_votes_cast or {type: threshold, yes, of}",
+    "rule": "majority_of_votes_cast, {type: threshold, yes, of} or {type: share, yes (per-mille)}",
     "weights": "one_citizen_one_vote | one_member_one_vote | wealth",
     "agenda_cap": "1..5",
     "deliberation": "true | false (insert or remove a deliberation step)",
@@ -90,7 +90,9 @@ def _valid_block_value(field, value):
         return value == "majority_of_votes_cast" or (
             isinstance(value, dict) and value.get("type") == "threshold"
             and isinstance(value.get("yes"), int) and isinstance(value.get("of"), int)
-            and 1 <= value["yes"] <= value["of"])
+            and 1 <= value["yes"] <= value["of"]) or (
+            isinstance(value, dict) and value.get("type") == "share" and set(value) == {"type", "yes"}
+            and isinstance(value["yes"], int) and 501 <= value["yes"] <= 1000)
     if field == "weights":
         return value in ("one_citizen_one_vote", "one_member_one_vote", "wealth")
     if field == "agenda_cap":

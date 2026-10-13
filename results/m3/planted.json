@@ -1,0 +1,65 @@
+{
+  "coverage": {
+    "ci": [
+      0.9402471673065924,
+      0.9669903745688493
+    ],
+    "covered": 955,
+    "interval": "paired t",
+    "min": 0.93,
+    "n": 200,
+    "pass": true,
+    "rate": 0.955,
+    "reps": 1000
+  },
+  "null_difference": -0.0031671653393626265,
+  "null_se": 0.000411047830475924,
+  "outcome": "P1",
+  "planted_increment": 0.013924395776943077,
+  "pool": 2000,
+  "power_curve": [
+    {
+      "coverage": 0.961,
+      "mean_estimate": 0.010735507332287982,
+      "n": 12,
+      "power_05": 0.7,
+      "power_bonferroni": 0.309,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.948,
+      "mean_estimate": 0.010706467769674658,
+      "n": 25,
+      "power_05": 0.963,
+      "power_bonferroni": 0.816,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.937,
+      "mean_estimate": 0.010695245363090989,
+      "n": 50,
+      "power_05": 1.0,
+      "power_bonferroni": 0.997,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.948,
+      "mean_estimate": 0.010707625686709996,
+      "n": 100,
+      "power_05": 1.0,
+      "power_bonferroni": 1.0,
+      "reps": 1000
+    },
+    {
+      "coverage": 0.957,
+      "mean_estimate": 0.010784755285206647,
+      "n": 200,
+      "power_05": 1.0,
+      "power_bonferroni": 1.0,
+      "reps": 1000
+    }
+  ],
+  "sd_d": 0.013509434311683942,
+  "truth": 0.01075723043758045,
+  "truth_se": 0.00030208013458493373
+}

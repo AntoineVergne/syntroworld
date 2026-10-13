@@ -1,0 +1,6 @@
+# B-noadv (06 §3.3): World B minus the Advocates. No hearing, no objection.
+extends: ../b.yaml
+world: B-noadv
+description: "World B without the River and Unborn Advocates"
+governance:
+  advocates: []

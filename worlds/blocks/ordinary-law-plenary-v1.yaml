@@ -1,0 +1,24 @@
+# World B-nolot (06 §3.3): ordinary laws, decided by a plenary of all citizens instead of the
+# drawn Cycle Assembly. Deliberation, the Advocates and the lottery agenda are kept.
+id: ordinary-law-plenary-v1
+decision_class: legislative
+body: plenary
+steps:
+  - type: examination
+    criteria: [within_legal_range, within_compact, not_duplicate]
+  - type: deliberation
+    phases: {information: 1, debate: 2, dialogue: 2}
+    location: assembly_hall
+  - type: advocate_hearing
+    advocates: [river, unborn]
+  - type: vote
+    location: assembly_hall
+    weights: one_citizen_one_vote
+    rule: majority_of_votes_cast
+    quorum: {share: 500, of: citizens}
+  - type: publication
+agenda: {cap: 3, order: lottery}
+sitting: {day_of_cycle: 2, ticks: [9, 14]}
+narrative:
+  minority_voice: S7
+fairness_level: 500

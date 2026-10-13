@@ -1,0 +1,3 @@
+M0 determinism: worlds A, B, C; arms none, full; seeds 1-20; two passes with PYTHONHASHSEED 1 and 2
+PASS  identical event-log hashes: 120 of 120
+PASS  shock and weather streams identical across worlds for each seed and arm

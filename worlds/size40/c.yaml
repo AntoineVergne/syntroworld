@@ -1,0 +1,9 @@
+# World C with 40 citizens (06 §8.1 M4 size check). Resources scale per capita.
+extends: ../c.yaml
+world: C40
+personas: personas.yaml
+arrival: {agent: 39}           # the newcomer is the last citizen
+river:                         # resources per capita as at 11 citizens: K and S0 x 40/11
+  K: 3636364
+  S0: 2545455
+payroll: {daily_cap: 29}       # 8 x 40/11, rounded

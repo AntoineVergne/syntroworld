@@ -64,8 +64,8 @@ institutions.
 |---|---|---|
 | B-nolot | sortition | the Cycle Assembly is replaced by a plenary of all citizens; deliberation kept |
 | B-noadv | Advocates | no hearing, no objection |
-| B-nodiv | dividend | surplus goes to the participatory budget only |
-| B-nopay | stipends | assembly service is unpaid |
+| B-nodiv | dividend | no dividend at founding: the surplus goes to the participatory budget; the polity may still adopt one (decision 23) |
+| B-nopay | stipends | assembly service is unpaid at founding; the polity may still adopt stipends (decision 23) |
 
 ### 3.4 Sermon control (phase L only; decided: included)
 
@@ -170,8 +170,8 @@ Tests are two-sided. We publish the results whichever way they fall.
 ### 7.2 Estimate, interval, test
 
 - **Estimate:** mean of `d_s`.
-- **Interval:** 95% percentile bootstrap over seeds, 10,000 resamples, fixed resampling
-  seed.
+- **Interval:** 95% paired t-interval on `d_s` (decision 24: in step M3 the percentile
+  bootstrap covered only 91.6% at 12 seeds).
 - **Test:** sign-flip permutation test on `d_s`, two-sided. Exact when there are 20 seeds
   or fewer; otherwise 100,000 random flips with a fixed seed.
 - **Multiplicity:** Holm correction across the 8 primary tests, family-wise α = 0.05.
@@ -228,8 +228,8 @@ it. A run stopped by its budget cap counts as failed.
 |---|---|---|
 | M0 Determinism | Run each world twice per seed, seeds 1 to 20. | Identical event-log hashes. Across worlds, the shock and weather event streams are identical for the same seed. |
 | M1 Calibration | Run world A, null mock, `none` arm, 200 seeds. Tune world parameters (03 §10) until the targets hold. | Every target in 03 §10 holds. No primary outcome sits at its floor or ceiling. |
-| M2 False-positive check | Run world B, `full` arm, 2,000 seeds once. Then, 1,000 times: draw 400 seeds, pair them at random, and run the full paired analysis (all 4 outcomes, two such pseudo-contrasts) as if each pair were two worlds. There is no true difference. | Uncorrected rejection rate within 3% to 7%; Holm family-wise rejection rate with the upper bound of its 95% interval at or below 7% (decision 21: a 1,000-replication estimate wobbles by about ±0.7 points, so "at or below 5%" would fail a correct procedure about 40% of the time). |
-| M3 Planted effects | Run the **planted mock** (03 §6.4), where compliance rises by a known amount under deliberative procedures. | The pipeline recovers the planted P1 difference within its interval in at least 95% of 100 replications. Power curve published. |
+| M2 False-positive check | Run world B, `full` arm, 2,000 seeds once. Then, 1,000 times: draw 400 seeds, pair them at random, and run the full paired analysis (all 4 outcomes, two such pseudo-contrasts) as if each pair were two worlds. There is no true difference. | Uncorrected rejection rate within 3% to 7%; Holm family-wise rejection rate compatible with 5%: the upper bound of its exact 95% interval is at most 7% (decision 21). |
+| M3 Planted effects | Run the **planted mock** (03 §6.4), where compliance rises by a known amount under deliberative procedures. | The pipeline's 95% interval contains the planted P1 difference in at least 93% of 1,000 replications at 200 seeds per world (decisions 21 and 24). Power curve and coverage by number of seeds published. |
 | M4 Mechanical baseline | Null mock: worlds A, B, C × arms `none`, `full` × 200 seeds. Plus ablations (3.3) and single-shock arms. Plus a population-size check at 40 citizens, 50 seeds. | Report produced. Labelled "mechanical baseline, not findings about AI agents". |
 
 Freeze: when M0 to M3 pass, docs 01 to 06 and the engine version are tagged together.

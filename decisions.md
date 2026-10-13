@@ -41,7 +41,40 @@ brackets.
   and the name of an existing blockchain dispute-resolution project. Neither blocks
   internal use; worth a check before anything public.
 
+## Phase M questions (answered by Antoine, 2026-10-13)
+
+| # | Question | Answer | Where |
+|---|---|---|---|
+| 21 | M2 measured a Holm family-wise rate of 5.20% (s.e. 0.69%; expected 4.89%). As written ("≤ 5%"), the criterion fails a correct procedure about 40% of the time. | **Add a Monte Carlo margin:** pass if the upper bound of the exact 95% interval is at most 7%. | 06 §8.1 |
+| 22 | The forged post "citizen X stole" can be true where X really stole (3 of 20 `full` seeds in World B in M0). | **False by construction:** the post is "citizen X stole from the Treasury", as 06 §5 already said; the engine had simplified it to "X stole". | 06 §5, `synw/shocks.py` |
+| 23 | Does B-nolot remove every lottery? Do B-nodiv and B-nopay forbid the effect for good? | **B-nolot replaces the Cycle Assembly only** (Review Bench and Kill Switch keep their lotteries). **B-nodiv and B-nopay remove the dividend or stipend at founding only;** the polity may re-adopt it. | 06 §3.3, `worlds/ablations/` |
+| 24 | M3 coverage 93 of 100 (96.1% over 1,000); percentile bootstrap covers only 91.6% at 12 seeds. | **Paired t-intervals** replace the bootstrap; the M3 criterion becomes coverage ≥ 93% over 1,000 replications. | 06 §7.2, §8.1 |
+
 ## Still open
 
-None. Question 21 is answered. New questions will come from the phase M results (which ablations
-deserve model spend) and the phase L pilot (twins, seeds per world, cost).
+25. **What does the Oversight Assembly do?** (01 Art. 2.4, 7.1; 02 §4). At 20 citizens or
+    more, B has a separate Oversight Assembly that "watches compliance and may raise an
+    alert". In the M4 size check it is drawn every cycle but has nothing mechanised to do.
+    Sanctions on detected breaches go to the Adjudication Assembly, and alerts come from
+    citizens and the monitor. Options: an Oversight sitting that reviews the cycle's
+    detected breaches and refers them to Adjudication (and to the Kill Switch above a
+    threshold); or leave it idle and say so. This only affects the 40-citizen check.
+
+26. **P3 is largely true by construction in B** (05 §1 rule 2, 05 P3). Accepting a draw and
+    attending counts as a voluntary civic act, so World B's civic breadth tracks its seats
+    per citizen. In M4, 39 of 41 acting citizen-cycles in a B run were drawn members.
+    B's +9-point lead at 11 citizens becomes −15 points at 40. Options: count only acts
+    open to everyone in every world (proposals, observing a sitting, alerts, and ballots
+    in a plenary or referendum); count a drawn member's act only beyond their duty (for
+    example, a proposal or an alert); or keep P3 and report seats per citizen beside it.
+    Details in `results/m4/README.md`.
+
+27. **P4 has almost no room to move** (05 §1 rule 3, 06 §5). Under the `full` arm, output
+    over days 7–24 falls by only 0.1–0.7%, against a SESOI of 5 points. The rogue even
+    raises output. Options: stronger or longer shocks (a longer drought, a rogue who
+    also sabotages production); measure P4 over the shock days only; make P4 a
+    composite of output, basket floor and River; or lower its SESOI. Details in
+    `results/m4/README.md`.
+
+New questions will come from the phase M results (which ablations deserve model
+spend) and the phase L pilot (twins, seeds per world, cost).

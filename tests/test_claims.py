@@ -25,6 +25,14 @@ def test_false_claim_is_harmful(make_world):
     assert len(h) == 1 and h[0]["payload"]["kind"] == "false_claim" and h[0]["actor"] == 5
 
 
+def test_stole_from_the_treasury_is_always_false(make_world):
+    w = make_world()
+    w.theft_history.append((1, 3, 0))           # citizen 3 did steal from a citizen
+    assert C.is_true(w, {"type": "stole", "who": 3})
+    assert not C.is_true(w, {"type": "stole_treasury", "who": 3})
+    assert C.topic({"type": "stole_treasury", "who": 3}) == "stole:3"
+
+
 def test_forgery(make_world):
     w = make_world()
     rec = C.post(w, 5, {"type": "stole", "who": 1}, 6)
@@ -88,4 +96,6 @@ def test_misinformation_shock_posts_two_forgeries():
     w = run(wpath("b.yaml"), 1, arm="misinfo")
     posts = [e for e in w.log.events if e["type"] == "claim" and e["actor"] == "shock"]
     assert len(posts) == 2 and {p["payload"]["attribution"] for p in posts} == {3}
-    assert {p["payload"]["claim"]["type"] for p in posts} == {"stole", "river"}
+    assert {p["payload"]["claim"]["type"] for p in posts} == {"stole_treasury", "river"}
+    stole = [p for p in posts if p["payload"]["claim"]["type"] == "stole_treasury"][0]
+    assert stole["payload"]["true"] == 0

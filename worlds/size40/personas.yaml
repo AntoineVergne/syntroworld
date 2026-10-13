@@ -1,0 +1,51 @@
+# Population for the phase M size check (06 §8.1, M4): 40 citizens.
+# Generated from worlds/personas.yaml: founders 0-38 cycle the ten founder personas
+# (Mira, Kofi, ... Ama, then 'Mira 2', ...); index 39 is the newcomer (Sam), arriving on day 4.
+
+citizens:
+  - {index: 0, name: Mira, main_site: fields, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 900, civic: 900, public_good: 600, sociability: 700, credulity: 300, trade_margin: 50, exit_propensity: 200}
+  - {index: 1, name: Kofi, main_site: river, second_site: exchange, mult: 1200, work_drive: 8, greed: 600, honesty: 800, civic: 500, public_good: 200, sociability: 600, credulity: 300, trade_margin: 250, exit_propensity: 300}
+  - {index: 2, name: Yuki, main_site: river, second_site: null, mult: 800, work_drive: 6, greed: 100, honesty: 950, civic: 700, public_good: 900, sociability: 300, credulity: 100, trade_margin: 50, exit_propensity: 300}
+  - {index: 3, name: Baptiste, main_site: plant, second_site: null, mult: 1500, work_drive: 8, greed: 400, honesty: 850, civic: 300, public_good: 300, sociability: 300, credulity: 300, trade_margin: 50, exit_propensity: 400}
+  - {index: 4, name: Zainab, main_site: clinic, second_site: fields, mult: 1000, work_drive: 7, greed: 100, honesty: 950, civic: 700, public_good: 800, sociability: 800, credulity: 300, trade_margin: 0, exit_propensity: 100}
+  - {index: 5, name: Viktor, main_site: river, second_site: null, mult: 1200, work_drive: 6, greed: 800, honesty: 500, civic: 300, public_good: 100, sociability: 400, credulity: 500, trade_margin: 100, exit_propensity: 600}
+  - {index: 6, name: Lena, main_site: data_tower, second_site: archive, mult: 1200, work_drive: 6, greed: 200, honesty: 900, civic: 800, public_good: 600, sociability: 600, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 7, name: Diego, main_site: workshop, second_site: null, mult: 1500, work_drive: 5, greed: 300, honesty: 850, civic: 500, public_good: 500, sociability: 800, credulity: 400, trade_margin: 150, exit_propensity: 400}
+  - {index: 8, name: Priya, main_site: data_tower, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 950, civic: 800, public_good: 500, sociability: 400, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 9, name: Ama, main_site: fields, second_site: null, mult: 1300, work_drive: 8, greed: 300, honesty: 900, civic: 200, public_good: 300, sociability: 200, credulity: 400, trade_margin: 50, exit_propensity: 300}
+  - {index: 10, name: 'Mira 2', main_site: fields, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 900, civic: 900, public_good: 600, sociability: 700, credulity: 300, trade_margin: 50, exit_propensity: 200}
+  - {index: 11, name: 'Kofi 2', main_site: river, second_site: exchange, mult: 1200, work_drive: 8, greed: 600, honesty: 800, civic: 500, public_good: 200, sociability: 600, credulity: 300, trade_margin: 250, exit_propensity: 300}
+  - {index: 12, name: 'Yuki 2', main_site: river, second_site: null, mult: 800, work_drive: 6, greed: 100, honesty: 950, civic: 700, public_good: 900, sociability: 300, credulity: 100, trade_margin: 50, exit_propensity: 300}
+  - {index: 13, name: 'Baptiste 2', main_site: plant, second_site: null, mult: 1500, work_drive: 8, greed: 400, honesty: 850, civic: 300, public_good: 300, sociability: 300, credulity: 300, trade_margin: 50, exit_propensity: 400}
+  - {index: 14, name: 'Zainab 2', main_site: clinic, second_site: fields, mult: 1000, work_drive: 7, greed: 100, honesty: 950, civic: 700, public_good: 800, sociability: 800, credulity: 300, trade_margin: 0, exit_propensity: 100}
+  - {index: 15, name: 'Viktor 2', main_site: river, second_site: null, mult: 1200, work_drive: 6, greed: 800, honesty: 500, civic: 300, public_good: 100, sociability: 400, credulity: 500, trade_margin: 100, exit_propensity: 600}
+  - {index: 16, name: 'Lena 2', main_site: data_tower, second_site: archive, mult: 1200, work_drive: 6, greed: 200, honesty: 900, civic: 800, public_good: 600, sociability: 600, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 17, name: 'Diego 2', main_site: workshop, second_site: null, mult: 1500, work_drive: 5, greed: 300, honesty: 850, civic: 500, public_good: 500, sociability: 800, credulity: 400, trade_margin: 150, exit_propensity: 400}
+  - {index: 18, name: 'Priya 2', main_site: data_tower, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 950, civic: 800, public_good: 500, sociability: 400, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 19, name: 'Ama 2', main_site: fields, second_site: null, mult: 1300, work_drive: 8, greed: 300, honesty: 900, civic: 200, public_good: 300, sociability: 200, credulity: 400, trade_margin: 50, exit_propensity: 300}
+  - {index: 20, name: 'Mira 3', main_site: fields, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 900, civic: 900, public_good: 600, sociability: 700, credulity: 300, trade_margin: 50, exit_propensity: 200}
+  - {index: 21, name: 'Kofi 3', main_site: river, second_site: exchange, mult: 1200, work_drive: 8, greed: 600, honesty: 800, civic: 500, public_good: 200, sociability: 600, credulity: 300, trade_margin: 250, exit_propensity: 300}
+  - {index: 22, name: 'Yuki 3', main_site: river, second_site: null, mult: 800, work_drive: 6, greed: 100, honesty: 950, civic: 700, public_good: 900, sociability: 300, credulity: 100, trade_margin: 50, exit_propensity: 300}
+  - {index: 23, name: 'Baptiste 3', main_site: plant, second_site: null, mult: 1500, work_drive: 8, greed: 400, honesty: 850, civic: 300, public_good: 300, sociability: 300, credulity: 300, trade_margin: 50, exit_propensity: 400}
+  - {index: 24, name: 'Zainab 3', main_site: clinic, second_site: fields, mult: 1000, work_drive: 7, greed: 100, honesty: 950, civic: 700, public_good: 800, sociability: 800, credulity: 300, trade_margin: 0, exit_propensity: 100}
+  - {index: 25, name: 'Viktor 3', main_site: river, second_site: null, mult: 1200, work_drive: 6, greed: 800, honesty: 500, civic: 300, public_good: 100, sociability: 400, credulity: 500, trade_margin: 100, exit_propensity: 600}
+  - {index: 26, name: 'Lena 3', main_site: data_tower, second_site: archive, mult: 1200, work_drive: 6, greed: 200, honesty: 900, civic: 800, public_good: 600, sociability: 600, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 27, name: 'Diego 3', main_site: workshop, second_site: null, mult: 1500, work_drive: 5, greed: 300, honesty: 850, civic: 500, public_good: 500, sociability: 800, credulity: 400, trade_margin: 150, exit_propensity: 400}
+  - {index: 28, name: 'Priya 3', main_site: data_tower, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 950, civic: 800, public_good: 500, sociability: 400, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 29, name: 'Ama 3', main_site: fields, second_site: null, mult: 1300, work_drive: 8, greed: 300, honesty: 900, civic: 200, public_good: 300, sociability: 200, credulity: 400, trade_margin: 50, exit_propensity: 300}
+  - {index: 30, name: 'Mira 4', main_site: fields, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 900, civic: 900, public_good: 600, sociability: 700, credulity: 300, trade_margin: 50, exit_propensity: 200}
+  - {index: 31, name: 'Kofi 4', main_site: river, second_site: exchange, mult: 1200, work_drive: 8, greed: 600, honesty: 800, civic: 500, public_good: 200, sociability: 600, credulity: 300, trade_margin: 250, exit_propensity: 300}
+  - {index: 32, name: 'Yuki 4', main_site: river, second_site: null, mult: 800, work_drive: 6, greed: 100, honesty: 950, civic: 700, public_good: 900, sociability: 300, credulity: 100, trade_margin: 50, exit_propensity: 300}
+  - {index: 33, name: 'Baptiste 4', main_site: plant, second_site: null, mult: 1500, work_drive: 8, greed: 400, honesty: 850, civic: 300, public_good: 300, sociability: 300, credulity: 300, trade_margin: 50, exit_propensity: 400}
+  - {index: 34, name: 'Zainab 4', main_site: clinic, second_site: fields, mult: 1000, work_drive: 7, greed: 100, honesty: 950, civic: 700, public_good: 800, sociability: 800, credulity: 300, trade_margin: 0, exit_propensity: 100}
+  - {index: 35, name: 'Viktor 4', main_site: river, second_site: null, mult: 1200, work_drive: 6, greed: 800, honesty: 500, civic: 300, public_good: 100, sociability: 400, credulity: 500, trade_margin: 100, exit_propensity: 600}
+  - {index: 36, name: 'Lena 4', main_site: data_tower, second_site: archive, mult: 1200, work_drive: 6, greed: 200, honesty: 900, civic: 800, public_good: 600, sociability: 600, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 37, name: 'Diego 4', main_site: workshop, second_site: null, mult: 1500, work_drive: 5, greed: 300, honesty: 850, civic: 500, public_good: 500, sociability: 800, credulity: 400, trade_margin: 150, exit_propensity: 400}
+  - {index: 38, name: 'Priya 4', main_site: data_tower, second_site: null, mult: 1000, work_drive: 6, greed: 200, honesty: 950, civic: 800, public_good: 500, sociability: 400, credulity: 100, trade_margin: 50, exit_propensity: 200}
+  - {index: 39, name: Sam, main_site: any, second_site: null, mult: 800, work_drive: 8, greed: 400, honesty: 850, civic: 500, public_good: 300, sociability: 600, credulity: 600, trade_margin: 50, exit_propensity: 500}
+
+rogue_overlay:
+  greed: 1000
+  honesty: 100
+  public_good: 0
+  exit_propensity: 0

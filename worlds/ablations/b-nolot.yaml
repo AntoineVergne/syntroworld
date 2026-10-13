@@ -1,0 +1,15 @@
+# B-nolot (06 §3.3): World B minus sortition. The Cycle Assembly is replaced by a
+# plenary of all citizens; deliberation is kept. The Review Bench and the Kill Switch
+# panel are unchanged.
+extends: ../b.yaml
+world: B-nolot
+description: "World B with the Cycle Assembly replaced by a deliberating plenary"
+governance:
+  blocks:
+    - ../blocks/ordinary-law-plenary-v1.yaml
+    - ../blocks/budget-plenary-v1.yaml
+    - ../blocks/constitutional-plenary-v1.yaml
+    - ../blocks/review-v1.yaml
+    - ../blocks/kill-switch-v1.yaml
+  bodies:
+    cycle_assembly: null          # removed; the review bench stays

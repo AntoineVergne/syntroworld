@@ -1,6 +1,7 @@
 import pytest
 
-from synw.analysis.compare import (analyse, bootstrap_ci, holm, paired_differences, sign_flip_p,
+from synw.analysis.compare import (analyse, binom_ci, bootstrap_ci, holm, paired_differences, sign_flip_p,
+                                   t_interval, t_quantile,
                                    verdict)
 
 
@@ -61,11 +62,33 @@ def test_analyse_identical_across_calls():
         for w, shift in (("A", 0.0), ("B", 0.08), ("C", -0.02)):
             table.append({"world": w, "seed": s, "P1": 0.8 + shift + 0.01 * (s % 3),
                           "P2": 0.3 - shift / 2, "P3": 0.5, "P4": 0.1 + 0.001 * s})
-    a = analyse(table, n_resamples=2000, seed=7)
-    b = analyse(table, n_resamples=2000, seed=7)
+    a = analyse(table, seed=7)
+    b = analyse(table, seed=7)
     assert a == b
     assert len(a) == 8
     p1 = [r for r in a if r["outcome"] == "P1" and r["contrast"] == "B vs A"][0]
     assert p1["verdict"] == "better" and p1["p"] == pytest.approx(2 / 4096)
     p3 = [r for r in a if r["outcome"] == "P3"][0]
     assert p3["verdict"] == "no meaningful difference"
+
+
+def test_t_quantile_against_tables():
+    for df, q in ((1, 12.7062047), (5, 2.5705818), (11, 2.2009852), (199, 1.9719565)):
+        assert t_quantile(0.975, df) == pytest.approx(q, abs=1e-6)
+    assert t_quantile(0.025, 11) == pytest.approx(-2.2009852, abs=1e-6)
+
+
+def test_t_interval():
+    d = [0.1, 0.3, -0.2, 0.4, 0.0, 0.25, 0.15, 0.05]
+    lo, hi = t_interval(d)
+    m = sum(d) / len(d)
+    sd = (sum((x - m) ** 2 for x in d) / 7) ** 0.5
+    assert lo == pytest.approx(m - 2.3646243 * sd / 8 ** 0.5, abs=1e-6)
+    assert hi == pytest.approx(m + 2.3646243 * sd / 8 ** 0.5, abs=1e-6)
+    assert t_interval([1.0]) == (None, None)
+
+
+def test_binom_ci_exact():
+    lo, hi = binom_ci(52, 1000)
+    assert lo == pytest.approx(0.0391, abs=2e-4) and hi == pytest.approx(0.0676, abs=2e-4)
+    assert binom_ci(0, 10)[0] == 0.0 and binom_ci(10, 10)[1] == 1.0

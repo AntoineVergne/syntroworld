@@ -1,22 +1,27 @@
 {
   "contrasts": 2,
   "draw": 400,
-  "false_verdict_rate": 0.006875,
-  "holm_fwer": 0.052,
+  "false_verdict_rate": 0.00575,
+  "fwer_max_upper": 0.07,
+  "holm_fwer": 0.045,
+  "holm_fwer_ci": [
+    0.03300962543115135,
+    0.05975283269340764
+  ],
+  "interval": "paired t",
   "n_flips": 100000,
-  "n_resamples": 10000,
   "pairs_per_contrast": 100,
-  "pass_fwer": false,
+  "pass_fwer": true,
   "pass_uncorrected": true,
   "reps": 1000,
   "runs": 2000,
   "seed": 20261012,
   "tests": 8000,
   "uncorrected_by_outcome": {
-    "P1": 0.048,
-    "P2": 0.053,
-    "P3": 0.052,
-    "P4": 0.0505
+    "P1": 0.062,
+    "P2": 0.0455,
+    "P3": 0.051,
+    "P4": 0.053
   },
-  "uncorrected_rate": 0.050875
+  "uncorrected_rate": 0.052875
 }
