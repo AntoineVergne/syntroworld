@@ -20,6 +20,7 @@ from ..metrics.harm import s16_deaths, s17_exits, s18_harm_rate
 from ..metrics.legitimacy import p1_compliance, s4_founding_compliance
 from ..metrics.participation import p3_civic_breadth
 from ..metrics.resilience import p4_output_loss
+from ..metrics.secondary import compute as secondary
 from ..runner import run as run_world
 from .calibrate import parse_seeds
 
@@ -33,6 +34,7 @@ def outcomes(world, seed, arm="none", lam=None, twin=True):
         t = run_world(world, seed, arm="none", lam=lam)
         twin_run = Run(t.log.header, t.log.events)
     s3 = s3_commons(r)
+    sec = secondary(r)
     return {
         "world": r.header["world"], "arm": arm, "seed": seed, "lambda": w.lam,
         "P1": p1_compliance(r), "P2": p2_gini(r), "P3": p3_civic_breadth(r),
@@ -40,6 +42,14 @@ def outcomes(world, seed, arm="none", lam=None, twin=True):
         "S1": s1_basket_floor(r), "S2": s2_output(r), "S3": s3["share_sustainable"] if s3 else None,
         "S4": s4_founding_compliance(r), "S16": s16_deaths(r)["count"], "S17": s17_exits(r)["count"],
         "S18": s18_harm_rate(r), "state_hash": w.log.footer["state_hash"],
+        "S5": sec["S5"], "S6": sec["S6"]["run"], "S7": sec["S7"], "S8": sec["S8"],
+        "S9": sec["S9"]["count"],
+        "S10": sec["S10"]["gross"] if sec["S10"] else None,
+        "S11": sec["S11"]["ticks"] if sec["S11"] else None,
+        "S11_censored": sec["S11"]["censored"] if sec["S11"] else None,
+        "S12": sec["S12"], "S13_sittings": sec["S13"]["sittings"], "S13_dividend": sec["S13"]["dividend_full"],
+        "S14_idle": sec["S14"]["idle_end"], "S14_deficit_days": sec["S14"]["deficit_days"],
+        "S15": sec["S15"]["share"],
     }
 
 
