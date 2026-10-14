@@ -25,8 +25,7 @@ def ev(tick, t, actor, payload):
 
 def test_p3_counts_only_acts_open_to_all():
     day = 7 * T - 5
-    r = _log([ev(day, "attend", 0, {"bodies": ["cycle_assembly"]}),      # seat duty: not counted
-              ev(day, "ballot", 0, {"body": "cycle_assembly", "vote": "yes"}),
+    r = _log([ev(day, "ballot", 0, {"body": "cycle_assembly", "vote": "yes"}),   # member ballot: not counted
               ev(day, "attend", 1, {"bodies": ["plenary"]}),             # plenary: counted
               ev(day, "observe", 2, {"bodies": ["cycle_assembly"]}),     # observing: counted
               ev(day, "observe", 0, {"bodies": []}),                     # nothing open yet: not counted
@@ -35,12 +34,13 @@ def test_p3_counts_only_acts_open_to_all():
     assert p3_civic_breadth(r) == 3 / (4 * 6)     # 3 of 4 citizens act in 1 of 6 window cycles
 
 
-def test_b_members_alone_do_not_make_p3():
+def test_b_counts_observers_and_seats_but_no_plenary():
     w = run(wpath("b.yaml"), 2)
     r = Run(w.log.header, w.log.events)
     acts = voluntary_acts(r)
     assert acts and not any(t in ("attend", "ballot") for _, _, t in acts)   # B has no plenary
     assert any(t == "observe" for _, _, t in acts)                      # non-members observe
+    assert any(t == "seat" for _, _, t in acts)                         # members, once per cycle (31)
 
 
 def test_stronger_shocks_configured():

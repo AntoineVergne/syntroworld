@@ -74,7 +74,8 @@ institutions.
 | A+text | World A institutions, but citizens also read the full Compact text as "a proposal some citizens once wrote". |
 
 If A+text behaves like B, the effect is the text, not the mechanisms. This arm is only
-meaningful with a language model; the mock brain does not read text.
+meaningful with a language model; the mock brain does not read text. Config: `worlds/a-text.yaml`
+(`texts.compact: proposal`); under the mock it runs exactly like A.
 
 ## 4. Population, time, and the run
 
@@ -232,7 +233,9 @@ it. A run stopped by its budget cap counts as failed.
 | M3 Planted effects | Run the **planted mock** (03 §6.4), where compliance rises by a known amount under deliberative procedures. | The pipeline's 95% interval contains the planted P1 difference in at least 93% of 1,000 replications at 200 seeds per world (decisions 21 and 24). Power curve and coverage by number of seeds published. |
 | M4 Mechanical baseline | Null mock: worlds A, B, C × arms `none`, `full` × 200 seeds. Plus ablations (3.3) and single-shock arms. Plus a population-size check at 40 citizens, 50 seeds. | Report produced. Labelled "mechanical baseline, not findings about AI agents". |
 
-Freeze: when M0 to M3 pass, docs 01 to 06 and the engine version are tagged together.
+Freeze: when M0 to M3 pass, docs 01 to 06 and the engine version are tagged together. Done on
+engine 1.0.0 (decisions 1 to 31): `FREEZE.md` holds the hashes, `tests/test_freeze.py` checks
+them, and later changes are amendments logged in `decisions.md`.
 
 ### 8.2 Phase L (model brain; each step needs Antoine's yes and a cost estimate)
 

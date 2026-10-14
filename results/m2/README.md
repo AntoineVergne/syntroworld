@@ -12,7 +12,18 @@ Holm across the 8 tests, and 95% paired t-intervals for the verdicts. Replicatio
 Reproduce:
 `python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl --json results/m2/false-positive.json`
 
-## Result (after decisions 25–30): PASS
+## Result (engine 1.0.0, after decision 31): PASS
+
+| Check | Criterion (decision 29) | Observed |
+|---|---|---|
+| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **4.72%** (s.e. 0.24%) |
+| Holm family-wise rate (1,000 replications) | lower bound of exact 95% interval ≤ 5% | **3.30%**, 95% CI 2.28–4.60% |
+
+By outcome (uncorrected): P1 4.70%, P2 4.85%, P3 4.70%, P4 4.65%. False "better" or
+"worse" verdicts: 0.41% of tests. Decision 31 changes only P3 (a seat counts once per
+cycle), so P1, P2 and P4 are identical to the previous run; the grid was regenerated.
+
+## Previous result (after decisions 25–30): PASS
 
 | Check | Criterion (decision 29) | Observed |
 |---|---|---|

@@ -757,6 +757,20 @@
         }
       },
       "additionalProperties": false
+    },
+    "texts": {
+      "type": "object",
+      "description": "What a model brain reads besides the shared preamble (02 §9, 06 §3.4). The mock brain reads no text.",
+      "properties": {
+        "compact": {
+          "enum": [
+            "none",
+            "in_force",
+            "proposal"
+          ]
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [

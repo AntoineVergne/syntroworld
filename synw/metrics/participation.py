@@ -16,17 +16,26 @@ OPEN_BODY = "plenary"
 
 
 def voluntary_acts(run):
-    """[(citizen, tick, type)] of voluntary acts open to every citizen."""
+    """[(citizen, tick, type)] of counted civic acts (decisions 26 and 31)."""
     run = as_run(run)
     out = []
+    seated = set()                  # (citizen, cycle) already credited for a seat
     for t in ("proposal_registered", "alert"):
         out += [(e["actor"], e["tick"], t) for e in run.of(t) if isinstance(e["actor"], int)]
     for e in run.of("observe"):     # only while a sitting is actually open
         if isinstance(e["actor"], int) and e["payload"].get("bodies", [None]):
             out.append((e["actor"], e["tick"], "observe"))
     for e in run.of("attend"):
-        if isinstance(e["actor"], int) and OPEN_BODY in e["payload"].get("bodies", []):
+        if not isinstance(e["actor"], int):
+            continue
+        bodies = e["payload"].get("bodies", [])
+        if OPEN_BODY in bodies:
             out.append((e["actor"], e["tick"], "attend"))
+        elif bodies:
+            key = (e["actor"], run.cycle_of_day(run.day_of(e["tick"])))
+            if key not in seated:
+                seated.add(key)
+                out.append((e["actor"], e["tick"], "seat"))
     for e in run.of("ballot"):
         if isinstance(e["actor"], int) and e["payload"].get("body") == OPEN_BODY:
             out.append((e["actor"], e["tick"], "ballot"))

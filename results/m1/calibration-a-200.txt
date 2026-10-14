@@ -7,4 +7,5 @@ PASS  runs with a death or exit in 10%..50%; median departures <= 1: 35%; median
 PASS  runs with harm rate S18 > 0 >= 80%: 100%
 PASS  drought lowers output on its days by >= 10% vs twin (median): 48.2%
 PASS  full-arm output loss P4 (median) in 10%..20% (decision 27): 18.0%
-PASS  one run takes under 10 seconds (slowest): 1.01s
+PASS  no primary outcome at floor or ceiling (seeds at 0 or 1 <= 10% each): P1 0%, P2 0%, P3 0%, P4 0%
+PASS  one run takes under 10 seconds (slowest): 0.83s

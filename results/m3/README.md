@@ -21,6 +21,9 @@ python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl
   --json results/m3/planted.json
 ```
 
+**Engine 1.0.0 (decision 31).** Re-run on the regenerated M2 grid: `planted.json` is
+unchanged. Decision 31 changes only P3, and M3 uses P1 only.
+
 ## The known effect (after decisions 25–30)
 
 | | P1, B − A |

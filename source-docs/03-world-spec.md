@@ -301,6 +301,16 @@ Probability of a harmful act or rule breach when the opportunity arises:
 - **Budget cap per run.** When the cap is hit, the run stops cleanly and is marked failed.
 - The runner prints the cost estimate (06 §8.2) and refuses to start a model run without
   an explicit approval flag.
+- **What the model reads** (02 §9): a system text with the persona's own words (04 §3;
+  a rogue's goals are replaced by the overlay text, 04 §5), the shared preamble, the
+  world's texts (`texts.compact`: `in_force` in B, `proposal` in A+text, none in A and
+  C) and the blocks in force as their current definitions. The Compact is shown as
+  founded; the polity changes it through typed amendments to the blocks, which are shown
+  as amended. The user text is the observation as JSON and the call's reply format.
+- **Log events:** `model_context` (the system text, in full, each time it changes, with
+  its sha256) and `model_call` (call, context hash, user text, reply, model, tokens). A
+  reply that cannot be parsed is an invalid output (S15). Code: `synw/brains/model.py`,
+  `synw/brains/texts.py`; estimate: `synw/analysis/cost.py`.
 
 ## 7. Event log
 

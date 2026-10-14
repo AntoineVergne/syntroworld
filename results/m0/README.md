@@ -5,7 +5,7 @@ two passes run in separate process trees, with `PYTHONHASHSEED` 1 and 2.
 
 Reproduce: `python -m synw.analysis.determinism --seeds 1-20 --out results/m0`
 
-## Result: PASS
+## Result (engine 1.0.0, decisions 1 to 31): PASS
 
 | Check | Result |
 |---|---|

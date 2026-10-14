@@ -8,6 +8,7 @@ import time as _time
 from . import __version__
 from .brains import base as B
 from .brains.mock import MockBrain
+from .brains.model import Budget as ModelBudget, BudgetExceeded, ModelBrain
 from .config import config_hash, load, load_personas, public
 from .events import EventLog, canonical, state_hash
 from .governance import effects as E
@@ -31,8 +32,12 @@ MENU = ["set_tax", "set_dividend", "set_stipend", "allocate", "set_plant_mode", 
 HISTORY_DAYS = 3
 
 
+
+class ApprovalRequired(Exception):
+    """A live model run was started without Antoine's approval (03 §6.5, 06 §8.2)."""
+
 class World:
-    def __init__(self, cfg, seed, arm="none", log_path=None, lam=None, keep_events=True):
+    def __init__(self, cfg, seed, arm="none", log_path=None, lam=None, keep_events=True, brain=None):
         self.cfg = cfg
         self.seed = int(seed)
         self.arm = arm
@@ -42,9 +47,19 @@ class World:
         self.time = self.clock.at(1)
         brain_cfg = cfg.get("brain", {"type": "mock", "lambda": 0})
         self.lam = brain_cfg.get("lambda", 0) if lam is None else lam
+        # ``brain``: None for the mock; for phase L, {"type": "model", "transport": ...,
+        # "budget_tokens": N, "approved": bool} (03 §6.5). A live transport needs approval.
+        self.brain_spec = brain
+        if brain is not None and brain.get("type") == "model":
+            tr = brain["transport"]
+            if getattr(tr, "live", False) and not brain.get("approved"):
+                raise ApprovalRequired("a model run needs an explicit approval (03 §6.5, 06 §8.2)")
+            brain_header = {"type": "model", "model": tr.model, "budget_tokens": int(brain["budget_tokens"])}
+        else:
+            brain_header = {"type": "mock", "lambda": self.lam}
         header = {"engine": "synw", "version": __version__, "config_hash": config_hash(cfg),
                   "seed": self.seed, "arm": arm, "world": cfg.get("world", ""),
-                  "brain": {"type": "mock", "lambda": self.lam}, "config": public(cfg)}
+                  "brain": brain_header, "config": public(cfg)}
         self.log = EventLog(log_path, header, keep=keep_events)
         self.treasury = Treasury(cfg["start"]["treasury"], self.log, lambda: self.tick)
         self.personas = load_personas(cfg)
@@ -79,9 +94,15 @@ class World:
         self.detection_bonus = 0
         self.care_pool = 0
         self.basket_cost = E.basket_cost(cfg)
-        self.brains = {idx: MockBrain(c.persona, self.streams.get(f"brain/{idx}"), self.lam,
-                                      self.basket_cost)
-                       for idx, c in self.citizens.items()}
+        if brain_header["type"] == "model":
+            self.budget = ModelBudget(brain["budget_tokens"])
+            self.brains = {idx: ModelBrain(self, idx, brain["transport"], self.budget)
+                           for idx in self.citizens}
+        else:
+            self.budget = None
+            self.brains = {idx: MockBrain(c.persona, self.streams.get(f"brain/{idx}"), self.lam,
+                                          self.basket_cost)
+                           for idx, c in self.citizens.items()}
         self.governance = None
         self.rules = RuleRegistry(cfg, self.log, lambda: self.tick)
         self.governance = Governance(self)
@@ -350,10 +371,19 @@ class World:
             f.add("sell_out")
 
     # --- the loop --------------------------------------------------------------------------
-    def run(self):
-        for t in range(1, self.clock.ticks + 1):
-            self.step(t)
-        return self.finish()
+    def run(self, ticks=None):
+        """Run the season (or its first ``ticks`` ticks, e.g. one cycle for step L0).
+
+        A model run that passes its token budget stops cleanly: the footer is marked
+        failed (03 §6.5, 06 §7.5).
+        """
+        last = self.clock.ticks if ticks is None else min(int(ticks), self.clock.ticks)
+        try:
+            for t in range(1, last + 1):
+                self.step(t)
+        except BudgetExceeded as exc:
+            return self.finish({"status": "failed", "reason": "budget", "detail": str(exc)})
+        return self.finish({"status": "partial", "ticks": last} if last < self.clock.ticks else None)
 
     def step(self, t):
         self.tick = t
@@ -688,13 +718,17 @@ class World:
                 "rules": [r.to_json() for r in self.rules.rules],
                 "governance": self.governance.state() if self.governance else None}
 
-    def finish(self):
+    def finish(self, extra=None):
         h = state_hash(self.state())
-        self.log.close(h)
+        if self.budget is not None:
+            extra = dict(extra or {})
+            extra["tokens"] = {"input": self.budget.input_tokens, "output": self.budget.output_tokens,
+                               "calls": self.budget.calls}
+        self.log.close(h, extra)
         return h
 
 
-def run(world_path, seed, out=None, arm="none", lam=None, keep_events=True):
+def run(world_path, seed, out=None, arm="none", lam=None, keep_events=True, brain=None, ticks=None):
     """Run one season. Returns the World (with ``log.events`` kept in memory)."""
     cfg = load(world_path)
     path = None
@@ -702,9 +736,9 @@ def run(world_path, seed, out=None, arm="none", lam=None, keep_events=True):
         import os
         name = f"{cfg.get('world', 'world')}-{arm}-s{int(seed)}.jsonl"
         path = os.path.join(out, name)
-    w = World(cfg, seed, arm=arm, log_path=path, lam=lam, keep_events=keep_events)
+    w = World(cfg, seed, arm=arm, log_path=path, lam=lam, keep_events=keep_events, brain=brain)
     t0 = _time.perf_counter()
-    w.run()
+    w.run(ticks)
     w.elapsed = _time.perf_counter() - t0
     w.log_path = path
     return w

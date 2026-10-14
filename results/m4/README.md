@@ -24,7 +24,34 @@ python -m synw.analysis.baseline report --out results/m4
 
 **Pass condition: report produced, labelled.** Met.
 
-## Latest run (after decisions 28–30)
+## Latest run (engine 1.0.0, after decision 31)
+
+Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
+
+| | B vs A | B vs C |
+|---|---|---|
+| P1 compliance | +0.36 pts (better) | −0.63 pts (worse) |
+| P2 wealth Gini | −0.057 (better) | −0.103 (better) |
+| P3 civic breadth | **+19.9 pts (better)** | **+20.4 pts (better)** |
+| P4 output loss | +2.17 pts (worse) | +1.92 pts (worse) |
+
+Decision 31 changes only P3 and S8 (the engine and every other outcome are identical to
+the previous run).
+
+- **P3 is now mostly mechanical in B's favour.** A drawn member gets credit for the
+  cycle they serve. B draws a Cycle Assembly of 5 and a Review Bench of 3 every cycle, so up
+  to 8 of 11 citizens get a seat-cycle without choosing anything beyond accepting the draw. P3 is 79.8% in B, 59.9% in A and
+  59.4% in C. At 40 citizens B40 leads A40 by +12.2 points [11.1, 13.3]. This is the
+  baseline that phase L departures will be measured against (06 §9); a B advantage in
+  phase L means something only beyond these 20 points.
+- **The lottery is not what lifts P3.** B-nolot (a plenary instead of the Cycle Assembly)
+  has the same P3 as B (+0.6 points, interval includes zero): a plenary gives everyone
+  the same credit a seat does.
+- **S8 (participation equality):** B 0.249, A 0.300, C 0.297. Acts are spread more
+  evenly in B.
+- Everything else is as in the previous run below.
+
+## Previous run (after decisions 28–30)
 
 Primary contrasts, `full` arm, 200 paired seeds, Holm across 8 tests:
 

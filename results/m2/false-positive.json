@@ -1,12 +1,12 @@
 {
   "contrasts": 2,
   "draw": 400,
-  "false_verdict_rate": 0.004625,
+  "false_verdict_rate": 0.004125,
   "fwer_target": 0.05,
-  "holm_fwer": 0.035,
+  "holm_fwer": 0.033,
   "holm_fwer_ci": [
-    0.024497527894758793,
-    0.04834238161422172
+    0.02282238334946053,
+    0.0460339818170214
   ],
   "interval": "paired t",
   "n_flips": 100000,
@@ -20,8 +20,8 @@
   "uncorrected_by_outcome": {
     "P1": 0.047,
     "P2": 0.0485,
-    "P3": 0.056,
+    "P3": 0.047,
     "P4": 0.0465
   },
-  "uncorrected_rate": 0.0495
+  "uncorrected_rate": 0.04725
 }

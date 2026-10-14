@@ -57,6 +57,8 @@ brackets.
 | 29 | The M2 criterion of decision 21 ("upper bound ≤ 7%") fails a correct procedure 20–25% of the time. | **The 95% interval includes 5%** (lower bound ≤ 5%). This replaces decision 21's wording. | 06 §8.1 |
 | 30 | Observing every public sitting costs B 9% of work time (17% at 40 citizens). | **At most one observed sitting per cycle:** one roll, with probability `civic`, for the first public sitting of a body the citizen does not sit on. Drawn members keep their seat and may still observe the other body's sitting. | 05 P3, `synw/brains/mock.py` |
 
+| 31 | After decision 30, P3 mostly measures how often a world holds open plenaries: B40 trails A40 by 7 points, because a seat never counts. | **A seat counts once per cycle:** a member's first attended sitting of their own body in a cycle is one civic act; later sittings, and member ballots, are duties of the seat. Observing and plenary acts count as before. Asked 2026-10-14. | 05 P3, S8, `synw/metrics/participation.py` |
+
 ## Consequences worth knowing (phase M)
 
 - **Decisions 26 and 30:** every citizen now gets one observing chance per cycle in
@@ -65,6 +67,21 @@ brackets.
   8% less work at 11 citizens and 3% less at 40 (results/m4/README.md).
 - **Decisions 27 and 28:** with harsher shocks, more citizens die or leave before day 19,
   so the scheduled rogue is sometimes gone, and the next present citizen takes over.
+
+- **Decision 31:** a drawn member now gets P3 credit for the cycle they serve, as an A
+  citizen does for attending the plenary. P3 still cannot exceed one act per citizen and
+  cycle, so it measures breadth, not seats.
+
+## Freeze (06 §8.1)
+
+M0 to M3 pass on engine 1.0.0 with decisions 1 to 31 applied. Docs 01 to 06 and the
+engine are frozen together: `FREEZE.md` lists the sha256 of each frozen file, and
+`tests/test_freeze.py` fails if one changes without a logged amendment. Any later change
+is an amendment: a new row below, a new engine version and an updated `FREEZE.md`.
+
+| # | Date | Amendment | Files |
+|---|---|---|---|
+| (none yet) | | | |
 
 ## Still open
 

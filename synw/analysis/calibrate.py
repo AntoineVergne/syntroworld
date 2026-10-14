@@ -14,7 +14,9 @@ import sys
 from ..metrics import Run
 from ..metrics.economy import gini_by_day, output_by_day, river_ever_below, s1_basket_floor
 from ..metrics.harm import s16_deaths, s17_exits, s18_harm_rate
-from ..metrics.legitimacy import s4_founding_compliance
+from ..metrics.legitimacy import p1_compliance, s4_founding_compliance
+from ..metrics.economy import p2_gini
+from ..metrics.participation import p3_civic_breadth
 from ..metrics.resilience import p4_output_loss
 from ..runner import run as run_world
 from ..shocks import shock_config
@@ -58,6 +60,7 @@ def collect(world, seeds):
             "s18": s18_harm_rate(r),
             "drought_loss": drought_loss,
             "p4_full": p4_output_loss(rf, r),
+            "P1": p1_compliance(r), "P2": p2_gini(r), "P3": p3_civic_breadth(r),
             "seconds": max(t, td, tf),
         })
     return rows
@@ -81,6 +84,11 @@ def targets(rows):
     dl = _median([r["drought_loss"] for r in rows])
     p4 = _median([r["p4_full"] for r in rows])
     secs = max(r["seconds"] for r in rows) if rows else None
+    # 06 §8.1: no primary outcome sits at its floor or ceiling. Read as: for P1 to P3
+    # (none arm) and P4 (full arm), at most 10% of seeds at exactly 0 or 1.
+    keys = (("P1", "P1"), ("P2", "P2"), ("P3", "P3"), ("P4", "p4_full"))
+    at_bound = {name: share(lambda r, k=k: r[k] is not None and r[k] in (0, 1)) for name, k in keys}
+    worst = max(at_bound.values()) if rows else None
     ok = lambda v, lo=None, hi=None: v is not None and (lo is None or v >= lo) and (hi is None or v <= hi)
     return [
         ("median window Gini rise day 1 to day 24 >= 0.10", f"{gr:.3f}" if gr is not None else "NA", ok(gr, 0.10)),
@@ -92,6 +100,8 @@ def targets(rows):
         ("runs with harm rate S18 > 0 >= 80%", f"{harm:.0%}", ok(harm, 0.80)),
         ("drought lowers output on its days by >= 10% vs twin (median)", f"{dl:.1%}" if dl is not None else "NA", ok(dl, 0.10)),
         ("full-arm output loss P4 (median) in 10%..20% (decision 27)", f"{p4:.1%}" if p4 is not None else "NA", ok(p4, 0.10, 0.20)),
+        ("no primary outcome at floor or ceiling (seeds at 0 or 1 <= 10% each)",
+         ", ".join(f"{k} {v:.0%}" for k, v in at_bound.items()), ok(worst, None, 0.10)),
         ("one run takes under 10 seconds (slowest)", f"{secs:.2f}s" if secs is not None else "NA", ok(secs, None, 10.0)),
     ]
 

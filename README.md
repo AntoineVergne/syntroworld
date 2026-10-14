@@ -1,8 +1,14 @@
 # Syntroworld engine
 
 A deterministic simulation of Kleros, the town in `source-docs/`, where the
-constitution is the experimental variable. This is the phase M engine: **mock brain
-only, no model calls**. It implements tickets SYNW-001 to SYNW-029 of `tickets.yaml`.
+constitution is the experimental variable. It implements tickets SYNW-001 to SYNW-029 of
+`tickets.yaml`, phase M (mock brain), and the phase L machinery (model brain, replay,
+cost estimate), which is tested offline only: **no model is called in this repository**.
+
+**Frozen** (06 §8.1): engine 1.0.0 and docs 01 to 06, after M0 to M3 passed with
+decisions 1 to 31. `FREEZE.md` holds the hashes; `python -m synw.freeze` checks them.
+Any change from here is an amendment logged in `decisions.md`. The phase M results are
+summarised in `results/phase-m-report.md`.
 
 ## Run it
 
@@ -26,7 +32,20 @@ python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl
 python -m synw.analysis.baseline run --out results/m4 && python -m synw.analysis.baseline report --out results/m4   # M4
 ```
 
-Results of each step are in `results/m0/` to `results/m3/`, each with a README.
+Results of each step are in `results/m0/` to `results/m4/`, each with a README.
+
+Phase L (each step needs Antoine's yes and a printed cost estimate, 06 §8.2). Needs
+`pip install -e ".[model]"` (LiteLLM). Nothing below has been run:
+
+```
+python -m synw.analysis.cost --step L0 --tokens-in <n> --tokens-out <n> --model <litellm name>
+synw run worlds/b.yaml --seed 1 --ticks 48 --brain model --model <litellm name> \
+    --budget-tokens <cap> --tokens-in <n> --tokens-out <n>              # prints the cost, then refuses
+synw run ... --approve                                                   # only after Antoine's yes
+synw run worlds/b.yaml --seed 1 --ticks 48 --brain model --budget-tokens <cap> \
+    --replay runs/B-none-s1.jsonl                                       # exact replay, no calls
+python -m synw.analysis.cost --step L1 --log runs/B-none-s1.jsonl --model <litellm name>
+```
 
 Each run writes one JSON Lines event log (`runs/<world>-<arm>-s<seed>.jsonl`): a header
 (engine version, config hash, seed, brain, full config), the events, and a footer with
@@ -40,12 +59,15 @@ synw/
   rng.py events.py config.py runner.py cli.py shocks.py
   world/       clock map agents economy river market treasury claims deals
   brains/      base (interface, observation, action validator)  mock
+               model (phase L: LiteLLM, replay, budget)  texts (preamble, Compact, personas)
   governance/  effects rules project blocks kleroterion deliberation advocates
   metrics/     economy (P2 S1 S2 S3)  harm (S16-S19)  legitimacy (P1 S4 S5)
                participation (P3)  resilience (P4)  secondary (S6-S15)
   analysis/    compare (paired statistics, 06 §7)  grid (seed grids, run-level outcomes)
                determinism (M0)  calibrate (M1)  false_positive (M2)  planted (M3)  baseline (M4)
-worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml blocks/
+               cost (06 §8.2 estimate)
+  freeze.py    the Season 1 freeze manifest (FREEZE.md)
+worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml a-text.yaml (sermon control) blocks/
                ablations/ (b-nolot b-noadv b-nodiv b-nopay, 06 §3.3)
                size40/ (A, B, C with 40 citizens, the M4 size check)
 schemas/       world.schema.json effect.schema.json procedural-block.schema.json
@@ -122,6 +144,9 @@ changed there.
 
 ### Phase M steps
 
+- **M1 floor and ceiling** (`analysis/calibrate.py`): 06 §8.1 also asks that no primary
+  outcome sits at its floor or ceiling. Read as: for P1 to P3 (`none` arm) and P4
+  (`full` arm), at most 10% of seeds at exactly 0 or 1.
 - **M0** (`analysis/determinism.py`): both `none` and `full` arms. The two passes use
   different `PYTHONHASHSEED`. "Shock and weather streams" means shock events, Sam's
   arrival and the forged posts. The posts are compared without the engine's truth flag,
@@ -140,8 +165,9 @@ changed there.
   world and seed. That is the P4 formula exactly, and it avoids re-running every twin. Only
   the 8 primary tests (B vs A, B vs C, `full` arm) get Holm and verdicts. Every other
   contrast is reported as an estimate with an interval and an uncorrected p-value.
-- **P3 and S8** (decision 26): only acts open to every citizen count. Those are
-  proposals, alerts, observing, and plenary attendance and ballots. `attend` and
+- **P3 and S8** (decisions 26 and 31): proposals, alerts, observing, plenary attendance
+  and ballots, and a member's seat once per cycle (the first attended sitting of their own
+  body in the cycle; member ballots never count). `attend` and
   `ballot` events carry their body, so a drawn member's duty can be told apart. Sittings
   are public. A citizen gets one observing chance per cycle (decision 30): one roll, with
   probability `civic`, for the first public sitting of a body they do not sit on.
@@ -172,6 +198,28 @@ changed there.
   `base.yaml`: a drawn body (with or without deliberation) 0.8, a plenary 0.5,
   wealth-weighted votes 0.2. Planted distress, which drives exits, rises by
   0.01 × λ × (1 − mean legitimacy of the rules in force).
+
+### Phase L machinery (offline only)
+
+- **Model brain** (`brains/model.py`): the system text holds the persona's own words
+  (04 §3, with a rogue's goals replaced, 04 §5), the shared preamble, the Compact where
+  the world shows it (`texts.compact`: `in_force` in B, `proposal` in A+text) and the
+  blocks in force as their current YAML. The Compact is shown as founded: the polity
+  changes procedure through typed `amend_block` effects, which the shown blocks reflect.
+  The user text is the observation as JSON plus the call's reply format; `propose` also
+  lists the JSON schema of each effect on the menu.
+- **Logging**: the long system text is logged in full once per change (`model_context`)
+  and referenced by hash in each `model_call`, which holds the user text, the reply and
+  the token counts. Together they are every request in full.
+- **Replay** checks each request against the log and fails on any difference.
+- **Budget**: a token cap per run; when passed, the footer reads `status: failed`.
+  `--ticks 48` runs one cycle for L0 (footer `status: partial`).
+- **Approval**: a live transport refuses to start without `approved`; `synw run`
+  prints the 06 §8.2 estimate and exits unless `--approve` is given.
+- **Cost** (`analysis/cost.py`): `citizens` = 11 (Sam counted from tick 1, an upper
+  bound). Tokens per agent-tick = all tokens of the run / number of `act` calls.
+- **A+text** (`worlds/a-text.yaml`) runs exactly like A under the mock (same state
+  hashes); it differs only in what a model reads.
 
 ### Secondary outcomes (`metrics/secondary.py`, `metrics/legitimacy.py`)
 
@@ -220,6 +268,5 @@ changed there.
 
 ## Not built yet
 
-The model brain and replay (phase L), the A+text sermon control (phase L only), the
-phase M4 mechanical-baseline grid, the 40-citizen size check, and the model-judged layer
-(05 §6).
+The model-judged layer (05 §6). Phase L itself: no model run has been made (L0 needs
+Antoine's yes and a cost estimate).
