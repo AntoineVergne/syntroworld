@@ -133,6 +133,11 @@ class Governance:
             return fmap["deliberation_sortition"]
         return fmap["plenary"]
 
+    def oversight_body(self):
+        """The Oversight Assembly (20+ citizens, decision 25), or None."""
+        o = self.g.get("oversight")
+        return o["body"] if o and o["body"] in self.bodies else None
+
     def adjudication_body(self):
         """The drawn body that decides sanctions (B: the Review Bench; 20+ citizens: the
         Adjudication Assembly). None when sanctions go through the plenary (A, C)."""
@@ -186,7 +191,7 @@ class Governance:
         self.log.emit(self.w.tick, "speech", idx, {"proposal": item["id"], "phase": phase, **sp})
         return sp
 
-    def ballot(self, idx, item, weight):
+    def ballot(self, idx, item, weight, body=None):
         obs = self.w.observe(idx)
         raw = self.w.brains[idx].ballot(obs, self.proposal_view(item))
         b, err = validate_ballot(raw)
@@ -194,7 +199,7 @@ class Governance:
             self.log.emit(self.w.tick, "invalid_output", idx, {"call": "ballot", "reason": err})
         self.log.emit(self.w.tick, "ballot", idx, {"proposal": item["id"], "vote": b["vote"],
                                                    "reason": b["reason"], "weight": weight,
-                                                   "round": item.get("round", 1)})
+                                                   "round": item.get("round", 1), "body": body})
         return b
 
     # --- the Register of Proposals ---------------------------------------------------------
@@ -381,7 +386,9 @@ class Governance:
     # --- duties ------------------------------------------------------------------------------
     def _pending_for_body(self, body):
         bids = {bid for bid in self.order if body_name(self.blocks[bid]) == body}
-        if body == self.adjudication_body() and self._bench_candidates():
+        if body == self.oversight_body() and self._bench_candidates():
+            return True
+        if body == self.adjudication_body() and not self.oversight_body() and self._bench_candidates():
             return True
         return any(p["status"] == "admissible" and p["block"] in bids for p in self.register)
 
@@ -406,9 +413,23 @@ class Governance:
             elif idx in members:
                 role = "member"
             else:
-                continue
+                role = "observer"       # sittings are public (01 Art. 2.6); anyone may observe
             out.append({"kind": "sitting", "id": s["id"], "body": s["body"], "role": role,
                         "start": s["start"], "end": s["end"], "location": "assembly_hall"})
+        return out
+
+    def roles_now(self, idx):
+        """Bodies of the sittings open now, split by the citizen's role in them."""
+        t = self.w.tick
+        out = {"member": [], "observer": []}
+        for s in self.sittings:
+            if s["state"] != "open" or not (s["start"] <= t <= s["end"]):
+                continue
+            members = s["members"]
+            if members is None or idx in members:
+                out["member"].append(s["body"])
+            else:
+                out["observer"].append(s["body"])
         return out
 
     # --- sittings -----------------------------------------------------------------------------
@@ -459,7 +480,9 @@ class Governance:
         self.sitting_counts[s["body"]] = self.sitting_counts.get(s["body"], 0) + 1
         if s["body"] == self.main_body() and self.g.get("concentration_trigger"):
             self._concentration_item()
-        if s["kind"] == "regular":
+        if s["kind"] == "regular" and s["body"] == self.oversight_body():
+            s["items"] += self._oversight_items(s)
+        elif s["kind"] == "regular":
             for p in self._agenda(s):
                 p["status"] = "on_agenda"
                 s["items"].append(self._item(p))
@@ -595,7 +618,7 @@ class Governance:
         votes = {}
         for i in sorted(voters):
             wt = s["wealth"].get(i, 0) if weights_kind == "wealth" else 1
-            b = self.ballot(i, item, wt)
+            b = self.ballot(i, item, wt, s["body"])
             tallies[b["vote"]] += wt
             counts[b["vote"]] += 1
             votes[i] = b["vote"]
@@ -657,6 +680,9 @@ class Governance:
         self.log.emit(t, "publication", "archive", {"proposal": item["id"], "effect": eff,
                                                     "block": item["block"]})
         typ = eff["type"]
+        if item.get("referral"):
+            self._refer(item, t)
+            return
         if typ == "amend_block":
             self.pending_amendments.append(({"id": item["id"], "effect": eff}, eff["block"]))
             return
@@ -751,7 +777,7 @@ class Governance:
 
     def _bench_items(self):
         w = self.w
-        if self.adjudication_body() not in self.bodies:
+        if self.adjudication_body() not in self.bodies or self.oversight_body():
             return
         fine = min(2 * w.sawa(), E.bounds(w.cfg, "restitution")[1])
         for tk, act, agent, payload in self._bench_candidates()[:self.agenda_cfg["cap"]]:
@@ -763,15 +789,54 @@ class Governance:
                                                     "to": "treasury", "amount": amt},
                                    sanction=True, mandatory=True, reason=f"breach:{act}")
 
+    def _oversight_items(self, s):
+        """Decision 25: Oversight reviews the cycle's detected breaches. Each becomes an item
+        "refer a sanction to Adjudication"; adopted items are referred in ``enact``."""
+        w = self.w
+        blk = self.g["oversight"]["block"]
+        fine = min(2 * w.sawa(), E.bounds(w.cfg, "restitution")[1])
+        items = []
+        for tk, act, agent, payload in self._bench_candidates()[:self.agenda_cfg["cap"]]:
+            self.adjudicated.add((tk, act, agent))
+            amt = min(fine, max(0, w.citizens[agent].credits))
+            if amt <= 0:
+                continue
+            pid = f"P{self._pid}"
+            self._pid += 1
+            eff = {"type": "restitution", "from": agent, "to": "treasury", "amount": amt}
+            p = {"id": pid, "author": s["body"], "effect": eff, "tick": w.tick, "cycle": w.time.cycle,
+                 "status": "on_agenda", "block": blk, "sanction": True, "mandatory": True, "urgent": False}
+            self.log.emit(w.tick, "proposal_registered", s["body"],
+                          {"id": pid, "effect": eff, "admissible": 1, "reason": None, "block": blk,
+                           "sanction": 1, "mandatory": 1, "urgent": 0, "origin": f"oversight:{act}"})
+            item = self._item(p)
+            item["referral"] = {"agent": agent, "act": act}
+            items.append(item)
+        return items
+
+    def _refer(self, item, t):
+        w = self.w
+        agent = item["referral"]["agent"]
+        ref = self.register_proposal(self.oversight_body(), dict(item["effect"]), sanction=True,
+                                     mandatory=True, reason=f"referral:{item['id']}")
+        horizon = t - w.clock.ticks_per_cycle
+        n = sum(1 for tk, _a, ag, _p in self.detected if ag == agent and tk > horizon)
+        threshold = self.g["oversight"].get("alert_threshold", 3)
+        self.log.emit(t, "referral", self.oversight_body(), {"proposal": item["id"], "to": ref["id"],
+                                                             "agent": agent, "detected_in_cycle": n})
+        if n >= threshold and self.g.get("kill_switch"):
+            self.log.emit(t, "verified_alert", self.oversight_body(), {"target": agent, "detected": n})
+            self.convene_kill_switch(agent, "oversight")
+
     def _concentration_item(self):
         w = self.w
-        from ..metrics.economy import gini
+        from ..metrics.economy import gini_milli
         wealth = [max(0, w.citizens[i].wealth(w.cfg["prices_ref"])) for i in w.active_ids()]
         total = sum(wealth)
         if total <= 0:
             return
         top = max(wealth) * 1000 // total
-        g = gini(wealth)
+        g = gini_milli(wealth)              # per-mille, like the 0.40 trigger (01 Annex)
         if top > 300 or g > 400:
             eff = {"type": "set_tax", "base": "income", "rate": 100}
             self.log.emit(w.tick, "concentration_trigger", "treasury", {"top_share": top, "gini": g})

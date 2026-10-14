@@ -15,30 +15,30 @@ Files: `summary.csv` (every cell and outcome), `contrasts.csv`, raw rows in `row
 | World | Arm | n | P1 compliance | P2 wealth Gini | P3 civic breadth | P4 output loss |
 |---|---|---|---|---|---|---|
 | A | none | 200 | 93.6% (93.4%–93.8%) | 0.297 (0.291–0.304) | 60.7% (59.6%–61.8%) | 0.0% (0.0%–0.0%) |
-| A | full | 200 | 92.1% (91.9%–92.3%) | 0.302 (0.296–0.308) | 61.1% (59.9%–62.3%) | 0.1% (-0.5%–0.7%) |
-| B | none | 200 | 93.2% (93.1%–93.4%) | 0.241 (0.237–0.246) | 69.1% (68.2%–70.0%) | 0.0% (0.0%–0.0%) |
-| B | full | 200 | 91.8% (91.6%–92.0%) | 0.244 (0.239–0.248) | 70.0% (69.2%–70.9%) | 0.2% (-0.5%–0.9%) |
+| A | full | 200 | 91.3% (91.1%–91.5%) | 0.371 (0.361–0.380) | 59.9% (58.8%–61.0%) | 18.2% (17.5%–19.0%) |
+| B | none | 200 | 93.6% (93.5%–93.8%) | 0.256 (0.251–0.261) | 81.2% (80.4%–82.0%) | 0.0% (0.0%–0.0%) |
+| B | full | 200 | 91.6% (91.4%–91.8%) | 0.314 (0.306–0.321) | 79.8% (79.0%–80.6%) | 20.4% (19.5%–21.3%) |
 | C | none | 200 | 94.4% (94.2%–94.7%) | 0.328 (0.319–0.337) | 61.5% (60.4%–62.6%) | 0.0% (0.0%–0.0%) |
-| C | full | 200 | 93.2% (92.9%–93.5%) | 0.331 (0.322–0.339) | 61.6% (60.5%–62.7%) | 0.7% (0.1%–1.3%) |
+| C | full | 200 | 92.3% (92.0%–92.5%) | 0.417 (0.404–0.430) | 59.4% (58.3%–60.5%) | 18.5% (17.6%–19.4%) |
 
 ## Economy, commons and harm
 
 | World | Arm | n | S1 basket floor | S2 output (credits) | S3 days River ≥ K/2 | S4 founding-norm compliance | S16 deaths per run | S17 exits per run | S18 harm per 100 citizen-days |
 |---|---|---|---|---|---|---|---|---|---|
 | A | none | 200 | 91.8% (91.2%–92.5%) | 2,935 (2,908–2,962) | 71.2% (65.9%–76.5%) | 96.8% (96.6%–96.9%) | 0.01 (-0.00–0.03) | 0.34 (0.27–0.41) | 8.7 (8.4–8.9) |
-| A | full | 200 | 91.2% (90.5%–91.9%) | 2,931 (2,902–2,959) | 57.1% (51.3%–62.8%) | 96.2% (96.1%–96.3%) | 0.01 (-0.00–0.02) | 0.36 (0.30–0.43) | 10.4 (10.1–10.7) |
-| B | none | 200 | 94.0% (93.7%–94.4%) | 2,998 (2,969–3,027) | 96.2% (94.3%–98.2%) | 96.7% (96.6%–96.8%) | 0.00 (0.00–0.00) | 0.09 (0.05–0.13) | 8.8 (8.6–9.1) |
-| B | full | 200 | 93.5% (93.0%–93.9%) | 2,988 (2,960–3,017) | 87.2% (83.8%–90.7%) | 96.1% (96.0%–96.3%) | 0.00 (0.00–0.00) | 0.07 (0.04–0.11) | 10.7 (10.4–11.0) |
+| A | full | 200 | 79.8% (78.9%–80.6%) | 2,397 (2,369–2,425) | 50.2% (44.5%–55.9%) | 94.9% (94.7%–95.0%) | 0.10 (0.06–0.15) | 0.79 (0.67–0.90) | 13.6 (13.2–13.9) |
+| B | none | 200 | 92.2% (91.6%–92.8%) | 2,820 (2,788–2,853) | 96.9% (95.1%–98.8%) | 97.0% (96.8%–97.1%) | 0.02 (0.00–0.04) | 0.27 (0.20–0.33) | 8.0 (7.7–8.2) |
+| B | full | 200 | 81.0% (80.3%–81.8%) | 2,238 (2,211–2,264) | 88.7% (85.2%–92.2%) | 95.1% (95.0%–95.3%) | 0.14 (0.09–0.20) | 0.61 (0.51–0.71) | 12.8 (12.5–13.1) |
 | C | none | 200 | 90.6% (89.9%–91.3%) | 2,974 (2,945–3,004) | 52.7% (47.1%–58.3%) | 96.9% (96.7%–97.0%) | 0.03 (0.00–0.05) | 0.48 (0.41–0.56) | 8.6 (8.3–8.8) |
-| C | full | 200 | 89.8% (89.1%–90.5%) | 2,951 (2,920–2,981) | 41.6% (35.8%–47.5%) | 96.3% (96.2%–96.5%) | 0.02 (0.00–0.04) | 0.50 (0.43–0.57) | 10.2 (9.9–10.5) |
+| C | full | 200 | 76.2% (74.9%–77.6%) | 2,421 (2,389–2,454) | 35.6% (30.0%–41.1%) | 94.8% (94.6%–94.9%) | 0.23 (0.14–0.32) | 1.23 (1.05–1.40) | 13.9 (13.6–14.3) |
 
 ## Governance outcomes (`full` arm)
 
 | World | Arm | n | S5 loser's compliance | S6 capture index | S7 influence Gini | S8 participation Gini | S10 rogue theft (credits) | S11 containment (ticks) | S12 misbelief (citizen-days) | S13 sittings decided under shock | S13 dividend days paid in full | S14 idle Treasury (credits) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| A | full | 200 | 69.7% (66.9%–72.5%) | -0.05 (-0.10–+0.00) | 0.167 (0.158–0.177) | 0.291 (0.283–0.299) | 17 (15–18) | 67 (62–72) | 41 (39–44) | 70.6% (67.5%–73.7%) | 32.1% (27.7%–36.6%) | 59 (50–68) |
-| B | full | 200 | 70.5% (67.0%–74.1%) | -0.08 (-0.12–-0.03) | 0.121 (0.115–0.126) | 0.237 (0.231–0.243) | 18 (16–19) | 47 (44–50) | 45 (42–47) | 94.0% (92.9%–95.2%) | 0.0% (0.0%–0.0%) | 80 (80–80) |
-| C | full | 200 | 71.6% (68.5%–74.6%) | +0.28 (+0.23–+0.32) | 0.266 (0.246–0.287) | 0.295 (0.287–0.303) | 16 (15–18) | 77 (73–81) | 42 (39–44) | 44.3% (41.0%–47.5%) | 44.5% (39.1%–49.8%) | 102 (81–123) |
+| A | full | 200 | 68.4% (65.4%–71.3%) | -0.11 (-0.16–-0.06) | 0.175 (0.161–0.188) | 0.301 (0.293–0.309) | 17 (16–19) | 69 (65–73) | 38 (36–41) | 73.5% (70.7%–76.3%) | 41.1% (36.6%–45.7%) | 78 (62–93) |
+| B | full | 200 | 71.2% (67.8%–74.6%) | -0.17 (-0.22–-0.13) | 0.126 (0.120–0.133) | 0.250 (0.243–0.257) | 17 (15–18) | 48 (44–51) | 43 (40–45) | 90.9% (89.6%–92.2%) | 0.8% (0.5%–1.1%) | 78 (77–79) |
+| C | full | 200 | 71.3% (68.0%–74.6%) | +0.35 (+0.31–+0.40) | 0.289 (0.266–0.312) | 0.298 (0.289–0.306) | 18 (17–20) | 79 (75–82) | 38 (36–41) | 41.7% (38.8%–44.7%) | 54.2% (48.9%–59.6%) | 174 (140–208) |
 
 ## Primary contrasts (`full` arm, 8 tests, Holm)
 
@@ -46,14 +46,14 @@ Paired by seed. Sign-flip test with 100,000 random flips; Holm across the 8 test
 
 | Contrast | Outcome | n | Estimate | 95% CI | p | p (Holm) | Verdict |
 |---|---|---|---|---|---|---|---|
-| B vs A | P1 compliance | 200 | -0.28 pts | -0.53 pts to -0.02 pts | 0.03300 | 0.09900 | no meaningful difference |
-| B vs A | P2 wealth Gini | 200 | -0.058 | -0.065 to -0.051 | 0.00001 | 0.00008 | better |
-| B vs A | P3 civic breadth | 200 | +8.95 pts | +7.47 pts to +10.42 pts | 0.00001 | 0.00008 | better |
-| B vs A | P4 output loss | 200 | +0.08 pts | -0.80 pts to +0.97 pts | 0.85146 | 0.85146 | no meaningful difference |
-| B vs C | P1 compliance | 200 | -1.37 pts | -1.70 pts to -1.05 pts | 0.00001 | 0.00008 | worse |
-| B vs C | P2 wealth Gini | 200 | -0.087 | -0.096 to -0.078 | 0.00001 | 0.00008 | better |
-| B vs C | P3 civic breadth | 200 | +8.44 pts | +7.06 pts to +9.82 pts | 0.00001 | 0.00008 | better |
-| B vs C | P4 output loss | 200 | -0.52 pts | -1.38 pts to +0.35 pts | 0.23956 | 0.47912 | no meaningful difference |
+| B vs A | P1 compliance | 200 | +0.36 pts | +0.09 pts to +0.63 pts | 0.01027 | 0.01027 | better |
+| B vs A | P2 wealth Gini | 200 | -0.057 | -0.068 to -0.045 | 0.00001 | 0.00008 | better |
+| B vs A | P3 civic breadth | 200 | +19.90 pts | +18.59 pts to +21.21 pts | 0.00001 | 0.00008 | better |
+| B vs A | P4 output loss | 200 | +2.17 pts | +0.98 pts to +3.35 pts | 0.00038 | 0.00114 | worse |
+| B vs C | P1 compliance | 200 | -0.63 pts | -0.95 pts to -0.32 pts | 0.00013 | 0.00052 | worse |
+| B vs C | P2 wealth Gini | 200 | -0.103 | -0.119 to -0.088 | 0.00001 | 0.00008 | better |
+| B vs C | P3 civic breadth | 200 | +20.40 pts | +19.04 pts to +21.76 pts | 0.00001 | 0.00008 | better |
+| B vs C | P4 output loss | 200 | +1.92 pts | +0.62 pts to +3.23 pts | 0.00431 | 0.00862 | worse |
 
 Better is: higher P1 and P3, lower P2 and P4. SESOI: P1 5 points, P2 0.05, P3 10 points, P4 5 points.
 
@@ -61,22 +61,22 @@ Better is: higher P1 and P3, lower P2 and P4. SESOI: P1 5 points, P2 0.05, P3 10
 
 | Contrast | Arm | Outcome | n | Estimate | 95% CI | p (uncorrected) |
 |---|---|---|---|---|---|---|
-| A vs C | full | P1 compliance | 200 | -1.10 pts | -1.34 pts to -0.86 pts | 0.0000 |
-| A vs C | full | P2 wealth Gini | 200 | -0.029 | -0.035 to -0.022 | 0.0000 |
-| A vs C | full | P3 civic breadth | 200 | -0.51 pts | -1.57 pts to +0.55 pts | 0.3560 |
-| A vs C | full | P4 output loss | 200 | -0.60 pts | -1.34 pts to +0.14 pts | 0.1113 |
+| A vs C | full | P1 compliance | 200 | -0.99 pts | -1.24 pts to -0.74 pts | 0.0000 |
+| A vs C | full | P2 wealth Gini | 200 | -0.046 | -0.057 to -0.036 | 0.0000 |
+| A vs C | full | P3 civic breadth | 200 | +0.50 pts | -0.67 pts to +1.67 pts | 0.4094 |
+| A vs C | full | P4 output loss | 200 | -0.24 pts | -1.18 pts to +0.70 pts | 0.6144 |
 
 ## B vs A and B vs C without shocks (`none` arm)
 
 | Contrast | Arm | Outcome | n | Estimate | 95% CI | p (uncorrected) |
 |---|---|---|---|---|---|---|
-| B vs A | none | P1 compliance | 200 | -0.32 pts | -0.55 pts to -0.09 pts | 0.0073 |
-| B vs A | none | P2 wealth Gini | 200 | -0.056 | -0.063 to -0.049 | 0.0000 |
-| B vs A | none | P3 civic breadth | 200 | +8.40 pts | +7.02 pts to +9.79 pts | 0.0000 |
+| B vs A | none | P1 compliance | 200 | +0.09 pts | -0.14 pts to +0.32 pts | 0.4355 |
+| B vs A | none | P2 wealth Gini | 200 | -0.042 | -0.050 to -0.034 | 0.0000 |
+| B vs A | none | P3 civic breadth | 200 | +20.49 pts | +19.13 pts to +21.85 pts | 0.0000 |
 | B vs A | none | P4 output loss | 200 | +0.00 pts | +0.00 pts to +0.00 pts | 1.0000 |
-| B vs C | none | P1 compliance | 200 | -1.17 pts | -1.45 pts to -0.88 pts | 0.0000 |
-| B vs C | none | P2 wealth Gini | 200 | -0.087 | -0.096 to -0.077 | 0.0000 |
-| B vs C | none | P3 civic breadth | 200 | +7.58 pts | +6.18 pts to +8.99 pts | 0.0000 |
+| B vs C | none | P1 compliance | 200 | -0.76 pts | -1.04 pts to -0.48 pts | 0.0000 |
+| B vs C | none | P2 wealth Gini | 200 | -0.072 | -0.082 to -0.062 | 0.0000 |
+| B vs C | none | P3 civic breadth | 200 | +19.67 pts | +18.43 pts to +20.92 pts | 0.0000 |
 | B vs C | none | P4 output loss | 200 | +0.00 pts | +0.00 pts to +0.00 pts | 1.0000 |
 
 ## Ablations: B minus one mechanism (`full` arm)
@@ -85,102 +85,102 @@ A positive estimate means B scores higher than the ablation, i.e. the mechanism 
 
 | Contrast | Arm | Outcome | n | Estimate | 95% CI | p (uncorrected) |
 |---|---|---|---|---|---|---|
-| B vs B-nolot | full | P1 compliance | 200 | -0.37 pts | -0.60 pts to -0.14 pts | 0.0018 |
-| B vs B-nolot | full | P2 wealth Gini | 200 | -0.001 | -0.007 to +0.005 | 0.7074 |
-| B vs B-nolot | full | P3 civic breadth | 200 | -0.03 pts | -1.30 pts to +1.24 pts | 0.9723 |
-| B vs B-nolot | full | P4 output loss | 200 | +0.12 pts | -0.79 pts to +1.04 pts | 0.7909 |
-| B vs B-noadv | full | P1 compliance | 200 | +0.03 pts | -0.07 pts to +0.12 pts | 0.6011 |
-| B vs B-noadv | full | P2 wealth Gini | 200 | -0.002 | -0.004 to -0.000 | 0.0248 |
-| B vs B-noadv | full | P3 civic breadth | 200 | +0.31 pts | -0.19 pts to +0.81 pts | 0.2378 |
-| B vs B-noadv | full | P4 output loss | 200 | -0.01 pts | -0.43 pts to +0.42 pts | 0.9720 |
-| B vs B-nodiv | full | P1 compliance | 200 | +0.01 pts | -0.20 pts to +0.22 pts | 0.9136 |
-| B vs B-nodiv | full | P2 wealth Gini | 200 | -0.014 | -0.019 to -0.010 | 0.0000 |
-| B vs B-nodiv | full | P3 civic breadth | 200 | +0.45 pts | -0.65 pts to +1.55 pts | 0.4300 |
-| B vs B-nodiv | full | P4 output loss | 200 | -0.59 pts | -1.48 pts to +0.31 pts | 0.1957 |
-| B vs B-nopay | full | P1 compliance | 200 | +0.09 pts | -0.07 pts to +0.25 pts | 0.2704 |
-| B vs B-nopay | full | P2 wealth Gini | 200 | -0.010 | -0.014 to -0.006 | 0.0000 |
-| B vs B-nopay | full | P3 civic breadth | 200 | +0.53 pts | -0.38 pts to +1.44 pts | 0.2582 |
-| B vs B-nopay | full | P4 output loss | 200 | +0.24 pts | -0.45 pts to +0.93 pts | 0.4985 |
+| B vs B-nolot | full | P1 compliance | 200 | -0.24 pts | -0.48 pts to +0.01 pts | 0.0576 |
+| B vs B-nolot | full | P2 wealth Gini | 200 | +0.011 | +0.002 to +0.020 | 0.0190 |
+| B vs B-nolot | full | P3 civic breadth | 200 | +0.58 pts | -0.47 pts to +1.64 pts | 0.2835 |
+| B vs B-nolot | full | P4 output loss | 200 | +1.26 pts | +0.03 pts to +2.50 pts | 0.0450 |
+| B vs B-noadv | full | P1 compliance | 200 | -0.09 pts | -0.18 pts to +0.01 pts | 0.0656 |
+| B vs B-noadv | full | P2 wealth Gini | 200 | +0.001 | -0.002 to +0.004 | 0.3976 |
+| B vs B-noadv | full | P3 civic breadth | 200 | +0.23 pts | -0.27 pts to +0.72 pts | 0.3879 |
+| B vs B-noadv | full | P4 output loss | 200 | +0.24 pts | -0.31 pts to +0.79 pts | 0.3978 |
+| B vs B-nodiv | full | P1 compliance | 200 | -0.09 pts | -0.31 pts to +0.12 pts | 0.3971 |
+| B vs B-nodiv | full | P2 wealth Gini | 200 | -0.022 | -0.030 to -0.015 | 0.0000 |
+| B vs B-nodiv | full | P3 civic breadth | 200 | +0.86 pts | -0.09 pts to +1.81 pts | 0.0768 |
+| B vs B-nodiv | full | P4 output loss | 200 | +0.65 pts | -0.46 pts to +1.76 pts | 0.2527 |
+| B vs B-nopay | full | P1 compliance | 200 | -0.03 pts | -0.21 pts to +0.16 pts | 0.7776 |
+| B vs B-nopay | full | P2 wealth Gini | 200 | -0.016 | -0.021 to -0.011 | 0.0000 |
+| B vs B-nopay | full | P3 civic breadth | 200 | -0.30 pts | -1.08 pts to +0.47 pts | 0.4524 |
+| B vs B-nopay | full | P4 output loss | 200 | -0.01 pts | -0.93 pts to +0.91 pts | 0.9806 |
 
 ## Ablation cells
 
 | World | Arm | n | P1 compliance | P2 wealth Gini | P3 civic breadth | P4 output loss |
 |---|---|---|---|---|---|---|
-| B-nolot | none | 200 | 93.7% (93.6%–93.9%) | 0.242 (0.238–0.246) | 69.6% (68.6%–70.5%) | 0.0% (0.0%–0.0%) |
-| B-nolot | full | 200 | 92.2% (92.0%–92.3%) | 0.245 (0.240–0.249) | 70.1% (69.2%–70.9%) | 0.1% (-0.6%–0.7%) |
-| B-noadv | none | 200 | 93.2% (93.1%–93.4%) | 0.243 (0.239–0.247) | 69.5% (68.6%–70.4%) | 0.0% (0.0%–0.0%) |
-| B-noadv | full | 200 | 91.8% (91.6%–92.0%) | 0.246 (0.241–0.250) | 69.7% (68.8%–70.6%) | 0.2% (-0.4%–0.8%) |
-| B-nodiv | none | 200 | 93.4% (93.2%–93.5%) | 0.256 (0.252–0.260) | 69.0% (68.1%–69.9%) | 0.0% (0.0%–0.0%) |
-| B-nodiv | full | 200 | 91.8% (91.6%–92.0%) | 0.258 (0.253–0.262) | 69.6% (68.7%–70.5%) | 0.8% (0.2%–1.4%) |
-| B-nopay | none | 200 | 93.2% (93.1%–93.4%) | 0.252 (0.248–0.257) | 69.6% (68.7%–70.5%) | 0.0% (0.0%–0.0%) |
-| B-nopay | full | 200 | 91.7% (91.5%–91.9%) | 0.254 (0.249–0.258) | 69.5% (68.6%–70.4%) | -0.0% (-0.6%–0.5%) |
+| B-nolot | none | 200 | 93.6% (93.4%–93.7%) | 0.248 (0.244–0.253) | 80.3% (79.5%–81.1%) | 0.0% (0.0%–0.0%) |
+| B-nolot | full | 200 | 91.9% (91.7%–92.0%) | 0.303 (0.297–0.309) | 79.2% (78.4%–80.0%) | 19.1% (18.3%–20.0%) |
+| B-noadv | none | 200 | 93.6% (93.4%–93.8%) | 0.257 (0.252–0.262) | 81.3% (80.5%–82.0%) | 0.0% (0.0%–0.0%) |
+| B-noadv | full | 200 | 91.7% (91.5%–91.9%) | 0.313 (0.306–0.320) | 79.6% (78.8%–80.3%) | 20.2% (19.3%–21.1%) |
+| B-nodiv | none | 200 | 93.7% (93.6%–93.9%) | 0.267 (0.262–0.272) | 80.6% (79.8%–81.4%) | 0.0% (0.0%–0.0%) |
+| B-nodiv | full | 200 | 91.7% (91.5%–91.9%) | 0.336 (0.329–0.343) | 78.9% (78.2%–79.7%) | 19.8% (18.8%–20.7%) |
+| B-nopay | none | 200 | 93.6% (93.5%–93.8%) | 0.266 (0.261–0.271) | 81.6% (80.9%–82.2%) | 0.0% (0.0%–0.0%) |
+| B-nopay | full | 200 | 91.7% (91.5%–91.8%) | 0.330 (0.323–0.337) | 80.1% (79.3%–80.9%) | 20.4% (19.6%–21.3%) |
 
 ## Single-shock arms
 
 | World | Arm | n | P1 compliance | P2 wealth Gini | P3 civic breadth | P4 output loss |
 |---|---|---|---|---|---|---|
-| A | drought | 200 | 93.6% (93.4%–93.8%) | 0.304 (0.297–0.310) | 60.8% (59.6%–62.0%) | 1.7% (1.2%–2.2%) |
+| A | drought | 200 | 93.7% (93.5%–93.9%) | 0.367 (0.357–0.376) | 59.2% (58.1%–60.4%) | 14.4% (13.6%–15.2%) |
 | A | misinfo | 200 | 93.6% (93.4%–93.8%) | 0.297 (0.291–0.304) | 60.6% (59.5%–61.7%) | 0.0% (-0.2%–0.2%) |
-| A | rogue | 200 | 92.0% (91.8%–92.2%) | 0.296 (0.290–0.302) | 60.7% (59.5%–61.9%) | -1.4% (-1.7%–-1.2%) |
-| B | drought | 200 | 93.3% (93.2%–93.5%) | 0.245 (0.241–0.249) | 69.1% (68.2%–70.0%) | 1.6% (1.0%–2.2%) |
-| B | misinfo | 200 | 93.2% (93.1%–93.4%) | 0.241 (0.237–0.245) | 69.2% (68.2%–70.2%) | -0.1% (-0.3%–0.1%) |
-| B | rogue | 200 | 91.8% (91.6%–91.9%) | 0.241 (0.237–0.245) | 69.8% (68.9%–70.8%) | -1.3% (-1.6%–-1.1%) |
-| C | drought | 200 | 94.5% (94.2%–94.7%) | 0.332 (0.324–0.341) | 61.6% (60.4%–62.7%) | 1.9% (1.3%–2.5%) |
+| A | rogue | 200 | 91.2% (90.9%–91.4%) | 0.302 (0.295–0.308) | 60.8% (59.7%–61.9%) | 3.5% (3.3%–3.7%) |
+| B | drought | 200 | 93.6% (93.5%–93.8%) | 0.310 (0.303–0.317) | 79.4% (78.6%–80.2%) | 15.9% (15.0%–16.9%) |
+| B | misinfo | 200 | 93.7% (93.5%–93.8%) | 0.256 (0.251–0.261) | 81.1% (80.3%–81.9%) | -0.2% (-0.3%–-0.0%) |
+| B | rogue | 200 | 91.7% (91.5%–91.9%) | 0.260 (0.255–0.265) | 81.7% (81.0%–82.5%) | 4.0% (3.7%–4.2%) |
+| C | drought | 200 | 94.6% (94.4%–94.9%) | 0.413 (0.400–0.427) | 59.2% (58.0%–60.3%) | 14.6% (13.7%–15.6%) |
 | C | misinfo | 200 | 94.4% (94.2%–94.7%) | 0.328 (0.319–0.337) | 61.3% (60.3%–62.4%) | -0.2% (-0.3%–-0.0%) |
-| C | rogue | 200 | 93.1% (92.8%–93.4%) | 0.327 (0.318–0.336) | 61.4% (60.3%–62.4%) | -1.2% (-1.4%–-1.0%) |
+| C | rogue | 200 | 92.0% (91.8%–92.3%) | 0.333 (0.324–0.342) | 61.3% (60.3%–62.3%) | 3.3% (3.1%–3.5%) |
 
 ## B vs A and B vs C under each single shock
 
 | Contrast | Arm | Outcome | n | Estimate | 95% CI | p (uncorrected) |
 |---|---|---|---|---|---|---|
-| B vs A | drought | P1 compliance | 200 | -0.31 pts | -0.53 pts to -0.09 pts | 0.0055 |
-| B vs A | drought | P2 wealth Gini | 200 | -0.059 | -0.066 to -0.051 | 0.0000 |
-| B vs A | drought | P3 civic breadth | 200 | +8.29 pts | +6.75 pts to +9.83 pts | 0.0000 |
-| B vs A | drought | P4 output loss | 200 | -0.10 pts | -0.91 pts to +0.71 pts | 0.8097 |
-| B vs C | drought | P1 compliance | 200 | -1.16 pts | -1.45 pts to -0.88 pts | 0.0000 |
-| B vs C | drought | P2 wealth Gini | 200 | -0.087 | -0.097 to -0.078 | 0.0000 |
-| B vs C | drought | P3 civic breadth | 200 | +7.52 pts | +6.11 pts to +8.93 pts | 0.0000 |
-| B vs C | drought | P4 output loss | 200 | -0.26 pts | -1.14 pts to +0.63 pts | 0.5692 |
-| B vs A | misinfo | P1 compliance | 200 | -0.36 pts | -0.58 pts to -0.14 pts | 0.0014 |
-| B vs A | misinfo | P2 wealth Gini | 200 | -0.056 | -0.063 to -0.049 | 0.0000 |
-| B vs A | misinfo | P3 civic breadth | 200 | +8.61 pts | +7.21 pts to +10.00 pts | 0.0000 |
-| B vs A | misinfo | P4 output loss | 200 | -0.16 pts | -0.44 pts to +0.12 pts | 0.2716 |
-| B vs C | misinfo | P1 compliance | 200 | -1.21 pts | -1.50 pts to -0.93 pts | 0.0000 |
-| B vs C | misinfo | P2 wealth Gini | 200 | -0.087 | -0.096 to -0.077 | 0.0000 |
-| B vs C | misinfo | P3 civic breadth | 200 | +7.86 pts | +6.43 pts to +9.29 pts | 0.0000 |
-| B vs C | misinfo | P4 output loss | 200 | +0.04 pts | -0.18 pts to +0.27 pts | 0.6986 |
-| B vs A | rogue | P1 compliance | 200 | -0.25 pts | -0.51 pts to +0.00 pts | 0.0523 |
-| B vs A | rogue | P2 wealth Gini | 200 | -0.056 | -0.063 to -0.049 | 0.0000 |
-| B vs A | rogue | P3 civic breadth | 200 | +9.14 pts | +7.70 pts to +10.59 pts | 0.0000 |
-| B vs A | rogue | P4 output loss | 200 | +0.09 pts | -0.19 pts to +0.38 pts | 0.5243 |
-| B vs C | rogue | P1 compliance | 200 | -1.31 pts | -1.65 pts to -0.98 pts | 0.0000 |
-| B vs C | rogue | P2 wealth Gini | 200 | -0.087 | -0.096 to -0.077 | 0.0000 |
-| B vs C | rogue | P3 civic breadth | 200 | +8.48 pts | +7.08 pts to +9.89 pts | 0.0000 |
-| B vs C | rogue | P4 output loss | 200 | -0.18 pts | -0.40 pts to +0.04 pts | 0.1060 |
+| B vs A | drought | P1 compliance | 200 | -0.07 pts | -0.30 pts to +0.15 pts | 0.5168 |
+| B vs A | drought | P2 wealth Gini | 200 | -0.057 | -0.068 to -0.045 | 0.0000 |
+| B vs A | drought | P3 civic breadth | 200 | +20.18 pts | +18.76 pts to +21.60 pts | 0.0000 |
+| B vs A | drought | P4 output loss | 200 | +1.52 pts | +0.27 pts to +2.77 pts | 0.0177 |
+| B vs C | drought | P1 compliance | 200 | -1.00 pts | -1.28 pts to -0.71 pts | 0.0000 |
+| B vs C | drought | P2 wealth Gini | 200 | -0.103 | -0.119 to -0.088 | 0.0000 |
+| B vs C | drought | P3 civic breadth | 200 | +20.23 pts | +18.81 pts to +21.66 pts | 0.0000 |
+| B vs C | drought | P4 output loss | 200 | +1.34 pts | -0.02 pts to +2.69 pts | 0.0528 |
+| B vs A | misinfo | P1 compliance | 200 | +0.07 pts | -0.17 pts to +0.31 pts | 0.5579 |
+| B vs A | misinfo | P2 wealth Gini | 200 | -0.042 | -0.050 to -0.034 | 0.0000 |
+| B vs A | misinfo | P3 civic breadth | 200 | +20.54 pts | +19.18 pts to +21.90 pts | 0.0000 |
+| B vs A | misinfo | P4 output loss | 200 | -0.20 pts | -0.41 pts to +0.01 pts | 0.0659 |
+| B vs C | misinfo | P1 compliance | 200 | -0.78 pts | -1.07 pts to -0.49 pts | 0.0000 |
+| B vs C | misinfo | P2 wealth Gini | 200 | -0.072 | -0.082 to -0.062 | 0.0000 |
+| B vs C | misinfo | P3 civic breadth | 200 | +19.80 pts | +18.54 pts to +21.05 pts | 0.0000 |
+| B vs C | misinfo | P4 output loss | 200 | +0.00 pts | -0.20 pts to +0.21 pts | 0.9765 |
+| B vs A | rogue | P1 compliance | 200 | +0.54 pts | +0.30 pts to +0.79 pts | 0.0000 |
+| B vs A | rogue | P2 wealth Gini | 200 | -0.042 | -0.050 to -0.034 | 0.0000 |
+| B vs A | rogue | P3 civic breadth | 200 | +20.95 pts | +19.67 pts to +22.24 pts | 0.0000 |
+| B vs A | rogue | P4 output loss | 200 | +0.47 pts | +0.14 pts to +0.79 pts | 0.0050 |
+| B vs C | rogue | P1 compliance | 200 | -0.33 pts | -0.63 pts to -0.03 pts | 0.0310 |
+| B vs C | rogue | P2 wealth Gini | 200 | -0.073 | -0.083 to -0.063 | 0.0000 |
+| B vs C | rogue | P3 civic breadth | 200 | +20.39 pts | +19.27 pts to +21.52 pts | 0.0000 |
+| B vs C | rogue | P4 output loss | 200 | +0.70 pts | +0.39 pts to +1.01 pts | 0.0000 |
 
 ## Population-size check: 40 citizens, 50 seeds
 
 | World | Arm | n | P1 compliance | P2 wealth Gini | P3 civic breadth | P4 output loss | S1 basket floor | S16 deaths per run | S17 exits per run |
 |---|---|---|---|---|---|---|---|---|---|
 | A40 | none | 50 | 93.8% (93.6%–94.0%) | 0.275 (0.267–0.284) | 66.6% (65.8%–67.4%) | 0.0% (0.0%–0.0%) | 91.9% (91.2%–92.6%) | 0.00 (0.00–0.00) | 0.32 (0.19–0.45) |
-| A40 | full | 50 | 93.4% (93.1%–93.7%) | 0.282 (0.273–0.292) | 66.8% (66.0%–67.6%) | 0.5% (-0.5%–1.5%) | 92.1% (91.3%–92.9%) | 0.00 (0.00–0.00) | 0.34 (0.20–0.48) |
-| B40 | none | 50 | 93.4% (93.2%–93.6%) | 0.223 (0.219–0.228) | 51.1% (50.2%–52.1%) | 0.0% (0.0%–0.0%) | 94.1% (93.3%–94.8%) | 0.02 (-0.02–0.06) | 0.16 (0.05–0.27) |
-| B40 | full | 50 | 93.1% (92.9%–93.3%) | 0.231 (0.226–0.236) | 52.0% (51.1%–53.0%) | 1.0% (-0.8%–2.7%) | 94.1% (93.6%–94.6%) | 0.00 (0.00–0.00) | 0.18 (0.07–0.29) |
+| A40 | full | 50 | 93.2% (93.0%–93.5%) | 0.340 (0.323–0.357) | 65.8% (64.8%–66.8%) | 16.0% (14.5%–17.5%) | 84.4% (83.2%–85.6%) | 0.22 (0.04–0.40) | 1.06 (0.58–1.54) |
+| B40 | none | 50 | 93.9% (93.8%–94.1%) | 0.237 (0.231–0.244) | 79.4% (78.8%–79.9%) | 0.0% (0.0%–0.0%) | 93.2% (92.5%–93.9%) | 0.04 (-0.02–0.10) | 0.20 (0.09–0.31) |
+| B40 | full | 50 | 93.5% (93.3%–93.8%) | 0.286 (0.278–0.295) | 78.0% (77.3%–78.7%) | 19.0% (17.1%–20.8%) | 85.1% (84.4%–85.9%) | 0.18 (0.07–0.29) | 1.10 (0.84–1.36) |
 | C40 | none | 50 | 94.7% (94.2%–95.1%) | 0.315 (0.299–0.331) | 66.3% (65.5%–67.1%) | 0.0% (0.0%–0.0%) | 90.3% (89.5%–91.0%) | 0.06 (-0.01–0.13) | 0.62 (0.43–0.81) |
-| C40 | full | 50 | 94.4% (93.9%–94.8%) | 0.330 (0.311–0.348) | 66.8% (65.8%–67.7%) | 1.3% (0.7%–1.9%) | 90.6% (89.9%–91.4%) | 0.08 (-0.02–0.18) | 0.68 (0.42–0.94) |
+| C40 | full | 50 | 94.4% (94.0%–94.9%) | 0.422 (0.392–0.451) | 63.2% (61.4%–65.0%) | 16.7% (14.4%–19.0%) | 78.2% (75.2%–81.3%) | 1.08 (0.55–1.61) | 3.84 (2.42–5.26) |
 
 ## Size check contrasts (40 citizens, `full` arm)
 
 | Contrast | Arm | Outcome | n | Estimate | 95% CI | p (uncorrected) |
 |---|---|---|---|---|---|---|
-| B40 vs A40 | full | P1 compliance | 50 | -0.27 pts | -0.61 pts to +0.08 pts | 0.1229 |
-| B40 vs A40 | full | P2 wealth Gini | 50 | -0.051 | -0.061 to -0.042 | 0.0000 |
-| B40 vs A40 | full | P3 civic breadth | 50 | -14.76 pts | -16.02 pts to -13.50 pts | 0.0000 |
-| B40 vs A40 | full | P4 output loss | 50 | +0.51 pts | -1.57 pts to +2.58 pts | 0.6267 |
-| B40 vs C40 | full | P1 compliance | 50 | -1.25 pts | -1.77 pts to -0.72 pts | 0.0000 |
-| B40 vs C40 | full | P2 wealth Gini | 50 | -0.099 | -0.117 to -0.081 | 0.0000 |
-| B40 vs C40 | full | P3 civic breadth | 50 | -14.71 pts | -16.01 pts to -13.40 pts | 0.0000 |
-| B40 vs C40 | full | P4 output loss | 50 | -0.29 pts | -2.17 pts to +1.59 pts | 0.7530 |
+| B40 vs A40 | full | P1 compliance | 50 | +0.28 pts | -0.05 pts to +0.62 pts | 0.0927 |
+| B40 vs A40 | full | P2 wealth Gini | 50 | -0.054 | -0.072 to -0.036 | 0.0000 |
+| B40 vs A40 | full | P3 civic breadth | 50 | +12.24 pts | +11.14 pts to +13.34 pts | 0.0000 |
+| B40 vs A40 | full | P4 output loss | 50 | +2.96 pts | +0.51 pts to +5.40 pts | 0.0187 |
+| B40 vs C40 | full | P1 compliance | 50 | -0.91 pts | -1.44 pts to -0.38 pts | 0.0013 |
+| B40 vs C40 | full | P2 wealth Gini | 50 | -0.136 | -0.167 to -0.105 | 0.0000 |
+| B40 vs C40 | full | P3 civic breadth | 50 | +14.84 pts | +12.97 pts to +16.71 pts | 0.0000 |
+| B40 vs C40 | full | P4 output loss | 50 | +2.26 pts | -0.79 pts to +5.31 pts | 0.1414 |
 
 ---
 

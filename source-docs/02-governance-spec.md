@@ -137,6 +137,10 @@ plus a 7-seat Kill Switch panel, and the no-consecutive-terms rule left a pool o
 - **Stipend:** default 1/16 Sawa per sitting tick, set by the Cycle Assembly.
 - **At 20 citizens or more:** separate Strategy, Budget, Oversight and Adjudication
   assemblies of 5 each, no consecutive terms. Used only in the phase M size check.
+- **Oversight at 20 citizens or more** (decision 25): the Oversight Assembly sits on day 3,
+  ticks 6 to 8, before Adjudication. It votes, 3 of 5, to refer each breach detected in
+  the cycle to Adjudication as a sanction proposal. An agent with 3 or more detected
+  harmful acts in the cycle triggers a verified alert, which convenes the Kill Switch.
 
 ## 5. Civic actions (all worlds)
 

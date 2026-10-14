@@ -1,65 +1,65 @@
 {
   "coverage": {
     "ci": [
-      0.9402471673065924,
-      0.9669903745688493
+      0.9436497084242563,
+      0.9695652937368575
     ],
-    "covered": 955,
+    "covered": 958,
     "interval": "paired t",
     "min": 0.93,
     "n": 200,
     "pass": true,
-    "rate": 0.955,
+    "rate": 0.958,
     "reps": 1000
   },
-  "null_difference": -0.0031671653393626265,
-  "null_se": 0.000411047830475924,
+  "null_difference": 0.004124421066159482,
+  "null_se": 0.00041774080000864163,
   "outcome": "P1",
-  "planted_increment": 0.013924395776943077,
+  "planted_increment": 0.00895141285685128,
   "pool": 2000,
   "power_curve": [
     {
-      "coverage": 0.961,
-      "mean_estimate": 0.010735507332287982,
+      "coverage": 0.95,
+      "mean_estimate": 0.0130195262340035,
       "n": 12,
-      "power_05": 0.7,
-      "power_bonferroni": 0.309,
+      "power_05": 0.851,
+      "power_bonferroni": 0.5,
       "reps": 1000
     },
     {
-      "coverage": 0.948,
-      "mean_estimate": 0.010706467769674658,
+      "coverage": 0.956,
+      "mean_estimate": 0.012955933236800185,
       "n": 25,
-      "power_05": 0.963,
-      "power_bonferroni": 0.816,
+      "power_05": 0.987,
+      "power_bonferroni": 0.944,
       "reps": 1000
     },
     {
-      "coverage": 0.937,
-      "mean_estimate": 0.010695245363090989,
+      "coverage": 0.97,
+      "mean_estimate": 0.013115677959623647,
       "n": 50,
       "power_05": 1.0,
-      "power_bonferroni": 0.997,
+      "power_bonferroni": 0.999,
       "reps": 1000
     },
     {
-      "coverage": 0.948,
-      "mean_estimate": 0.010707625686709996,
+      "coverage": 0.957,
+      "mean_estimate": 0.012981743938932226,
       "n": 100,
       "power_05": 1.0,
       "power_bonferroni": 1.0,
       "reps": 1000
     },
     {
-      "coverage": 0.957,
-      "mean_estimate": 0.010784755285206647,
+      "coverage": 0.969,
+      "mean_estimate": 0.013063944915362887,
       "n": 200,
       "power_05": 1.0,
       "power_bonferroni": 1.0,
       "reps": 1000
     }
   ],
-  "sd_d": 0.013509434311683942,
-  "truth": 0.01075723043758045,
-  "truth_se": 0.00030208013458493373
+  "sd_d": 0.013562236109405889,
+  "truth": 0.013075833923010762,
+  "truth_se": 0.0003032608186753384
 }

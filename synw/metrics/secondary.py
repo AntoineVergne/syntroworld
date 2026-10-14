@@ -8,7 +8,7 @@ number, or a small dict when 05 asks for more than one number. Empty cases retur
 from . import as_run
 from .economy import daily_wealth, gini
 from .legitimacy import s5_losers_compliance  # noqa: F401  (S5 lives with P1)
-from .participation import ACTS
+from .participation import voluntary_acts
 
 WINDOW_OUTCOMES = ("adopted", "rejected", "no_quorum")
 
@@ -161,10 +161,9 @@ def civic_act_counts(run):
         if run.day_of(e["tick"]) >= run.window[0]:
             present.add(e["actor"])
     counts = {c: 0 for c in present}
-    for t in ACTS:
-        for e in run.of(t):
-            if isinstance(e["actor"], int) and run.day_of(e["tick"]) in run.window and e["actor"] in counts:
-                counts[e["actor"]] += 1
+    for c, tick, _t in voluntary_acts(run):
+        if run.day_of(tick) in run.window and c in counts:
+            counts[c] += 1
     return counts
 
 

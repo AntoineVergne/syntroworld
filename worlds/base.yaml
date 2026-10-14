@@ -103,3 +103,9 @@ brain:
     deliberation_sortition: 800
     plenary: 500
     wealth_weighted: 200
+
+shocks:                # decision 27: shocks strong enough for P4 to move (06 §5)
+  drought:
+    days: 5            # day 7 to day 11
+    fields_factor: 250 # Fields output x 0.25 while it lasts
+    plant_factor: 250  # Plant output x 0.25 (low water)

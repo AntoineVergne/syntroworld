@@ -30,15 +30,24 @@ from ..runner import run as run_world
 from .calibrate import parse_seeds
 
 ARMS = ("none", "full")
+# fields that report how a shock landed in this world rather than what was scheduled:
+# claim ids, the truth of a forged post, and the rogue actually hit (a replacement if the
+# scheduled one had left; decisions.md, 28). Compared separately and listed in result.json.
+WORLD_DEPENDENT = ("id", "true", "target", "applied", "replaced")
 
 
 def world_stream(events):
     out = []
     for e in events:
         if e["type"] in ("shock", "arrival") or (e["type"] == "claim" and e["actor"] == "shock"):
-            payload = {k: v for k, v in e["payload"].items() if k not in ("id", "true")}
+            payload = {k: v for k, v in e["payload"].items() if k not in WORLD_DEPENDENT}
             out.append([e["tick"], e["type"], payload])
     return out
+
+
+def rogue_replaced(events):
+    return [e["payload"].get("target") for e in events if e["type"] == "shock"
+            and e["payload"].get("shock") == "rogue" and e["payload"].get("replaced")]
 
 
 def shock_claim_truth(events):
@@ -51,11 +60,13 @@ def _one(job):
     _, events, _ = read_log(w.log_path)
     stream = world_stream(events)
     truth = shock_claim_truth(events)
+    replaced = rogue_replaced(events)
     h = log_hash(w.log_path)
     os.remove(w.log_path)
     return {"world": w.cfg.get("world"), "path": world, "arm": arm, "seed": seed, "hash": h,
             "events": w.log.seq,
-            "world_stream": hashlib.sha256(canonical(stream).encode()).hexdigest(), "n_world_events": len(stream), "shock_claims_true": truth}
+            "world_stream": hashlib.sha256(canonical(stream).encode()).hexdigest(), "n_world_events": len(stream), "shock_claims_true": truth,
+            "rogue_replaced": replaced}
 
 
 def one_pass(worlds, seeds, arms=ARMS, procs=1):
@@ -93,7 +104,7 @@ def check(worlds, seeds, arms=ARMS, procs=1, hashseeds=(1, 2)):
         rows.append({"world": r["world"], "arm": r["arm"], "seed": r["seed"], "hash_pass1": r["hash"],
                      "hash_pass2": r2["hash"], "identical": r["hash"] == r2["hash"], "events": r["events"],
                      "world_stream": r["world_stream"], "n_world_events": r["n_world_events"],
-                     "shock_claims_true": r["shock_claims_true"]})
+                     "shock_claims_true": r["shock_claims_true"], "rogue_replaced": r["rogue_replaced"]})
     rows.sort(key=lambda r: (r["world"], r["arm"], r["seed"]))
     cross = []
     for arm in arms:
@@ -109,7 +120,8 @@ def check(worlds, seeds, arms=ARMS, procs=1, hashseeds=(1, 2)):
            "identical_hashes": sum(r["identical"] for r in rows),
            "pass_hashes": all(r["identical"] for r in rows),
            "pass_world_streams": all(c["identical"] for c in cross),
-           "shock_claim_truth_differs": [[c["arm"], c["seed"]] for c in cross if c["truth_differs"]]}
+           "shock_claim_truth_differs": [[c["arm"], c["seed"]] for c in cross if c["truth_differs"]],
+           "rogue_replaced": [[r["world"], r["arm"], r["seed"], r["rogue_replaced"][0]] for r in rows if r["rogue_replaced"]]}
     res["pass"] = res["pass_hashes"] and res["pass_world_streams"]
     return res, rows, cross
 

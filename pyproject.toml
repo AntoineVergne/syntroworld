@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "synw"
-version = "0.1.0"
+version = "1.0.0"
 description = "Syntroworld engine: a deterministic town simulation where the constitution is the experimental variable"
 requires-python = ">=3.11"
 dependencies = ["PyYAML>=6", "jsonschema>=4"]
@@ -12,6 +12,7 @@ dependencies = ["PyYAML>=6", "jsonschema>=4"]
 [project.optional-dependencies]
 test = ["pytest>=7", "numpy>=1.24"]
 analysis = ["numpy>=1.24"]   # phase M error-rate and power checks only
+model = ["litellm"]          # phase L model brain (03 §6.5); never needed for the mock
 
 [project.scripts]
 synw = "synw.cli:main"

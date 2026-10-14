@@ -4,6 +4,7 @@ world: B
 description: "Founding Compact: sortition assemblies, procedural blocks, River and Unborn Advocates, basket-indexed dividend"
 personas: personas.yaml
 brain: {type: mock, lambda: 0}
+texts: {compact: in_force}   # 02 §9: B citizens read the Compact (model brain only)
 governance:
   blocks:
     - blocks/ordinary-law-v1.yaml

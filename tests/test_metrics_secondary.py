@@ -91,7 +91,8 @@ def test_s8_includes_citizens_with_no_acts():
     L = Log()
     days(L, {0: 1, 1: 1, 2: 1, 3: 1})
     for _ in range(4):
-        L.add(8 * T, "ballot", 0, {"proposal": "P1", "vote": "yes"})
+        L.add(8 * T, "proposal_registered", 0, {"id": "P1"})
+    L.add(8 * T, "ballot", 1, {"proposal": "P1", "vote": "yes", "body": "cycle_assembly"})   # a seat's duty
     assert s8_participation_equality(L.run()) == pytest.approx(0.75)
 
 

@@ -1,9 +1,11 @@
-calibration: worlds/a.yaml, null mock, seeds 1-200 (200 runs, arms none + drought)
+calibration: worlds/a.yaml, null mock, seeds 1-200 (200 seeds, arms none + drought + full)
 PASS  median window Gini rise day 1 to day 24 >= 0.10: 0.229
 PASS  runs with River below K/2 at some point in 30%..70%: 45%
 PASS  basket floor S1 (median) in 70%..95%: 92.9%
 PASS  founding-norm compliance S4 (median) in 85%..98%: 96.7%
 PASS  runs with a death or exit in 10%..50%; median departures <= 1: 35%; median 0.0
 PASS  runs with harm rate S18 > 0 >= 80%: 100%
-PASS  drought lowers output days 7-8 by >= 10% vs twin (median): 12.9%
-PASS  one run takes under 10 seconds (slowest): 0.82s
+PASS  drought lowers output on its days by >= 10% vs twin (median): 48.2%
+PASS  full-arm output loss P4 (median) in 10%..20% (decision 27): 18.0%
+PASS  no primary outcome at floor or ceiling (seeds at 0 or 1 <= 10% each): P1 0%, P2 0%, P3 0%, P4 0%
+PASS  one run takes under 10 seconds (slowest): 0.83s

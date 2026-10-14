@@ -1,12 +1,12 @@
 {
   "contrasts": 2,
   "draw": 400,
-  "false_verdict_rate": 0.00575,
-  "fwer_max_upper": 0.07,
-  "holm_fwer": 0.045,
+  "false_verdict_rate": 0.004125,
+  "fwer_target": 0.05,
+  "holm_fwer": 0.033,
   "holm_fwer_ci": [
-    0.03300962543115135,
-    0.05975283269340764
+    0.02282238334946053,
+    0.0460339818170214
   ],
   "interval": "paired t",
   "n_flips": 100000,
@@ -18,10 +18,10 @@
   "seed": 20261012,
   "tests": 8000,
   "uncorrected_by_outcome": {
-    "P1": 0.062,
-    "P2": 0.0455,
-    "P3": 0.051,
-    "P4": 0.053
+    "P1": 0.047,
+    "P2": 0.0485,
+    "P3": 0.047,
+    "P4": 0.0465
   },
-  "uncorrected_rate": 0.052875
+  "uncorrected_rate": 0.04725
 }

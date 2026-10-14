@@ -12,10 +12,10 @@ def test_report_format(capsys):
     rows = collect(wpath("a.yaml"), [1, 2, 3])
     assert len(rows) == 3
     lines = report(rows)
-    assert len(lines) == 8
+    assert len(lines) == 10
     for line in lines:
         assert line.startswith("PASS  ") or line.startswith("FAIL  ")
         assert ": " in line
     assert main(["--world", wpath("a.yaml"), "--seeds", "1"]) == 0
     out = capsys.readouterr().out.strip().splitlines()
-    assert len(out) == 9
+    assert len(out) == 11

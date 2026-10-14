@@ -21,46 +21,46 @@ python -m synw.analysis.planted --planted-b results/m3/grid-b-full-planted.jsonl
   --json results/m3/planted.json
 ```
 
-## The known effect
+**Engine 1.0.0 (decision 31).** Re-run on the regenerated M2 grid: `planted.json` is
+unchanged. Decision 31 changes only P3, and M3 uses P1 only.
+
+## The known effect (after decisions 25–30)
 
 | | P1, B − A |
 |---|---|
-| Null mock (mechanical difference) | −0.32 points (s.e. 0.04) |
-| Planted mock (the truth for this check) | **+1.08 points** (s.e. 0.03) |
-| Increment from the plant | **+1.39 points** |
-
-The truth is the mean paired difference over the whole pool of 2,000 seeds. The
-planted effect is smaller than the P1 SESOI of 5 points.
+| Null mock (mechanical difference) | +0.41 points (s.e. 0.04) |
+| Planted mock (the truth for this check) | **+1.31 points** (s.e. 0.03) |
+| Increment from the plant | **+0.90 points** |
 
 ## Result: PASS
 
 | Check | Criterion (decisions 21, 24) | Observed |
 |---|---|---|
-| 95% t-interval contains the truth, n = 200 | ≥ 93% of 1,000 replications | **955 of 1,000 = 95.5%** (95% CI 94.0–96.7%) |
-
-Power curve and coverage (1,000 replications each, paired t-intervals):
+| 95% t-interval contains the truth, n = 200 | ≥ 93% of 1,000 replications | **958 of 1,000 = 95.8%** (95% CI 94.4–97.0%) |
 
 | Seeds n | Power, α = 0.05 | Power, α = 0.05/8 (Holm lower bound) | Interval coverage | Mean estimate |
 |---|---|---|---|---|
-| 12 | 70.0% | 30.9% | **96.1%** | +1.07 |
-| 25 | 96.3% | 81.6% | 94.8% | +1.07 |
-| 50 | 100% | 99.7% | 93.7% | +1.07 |
-| 100 | 100% | 100% | 94.8% | +1.07 |
-| 200 | 100% | 100% | 95.7% | +1.08 |
+| 12 | 85.1% | 50.0% | 95.0% | +1.30 |
+| 25 | 98.7% | 94.4% | 95.6% | +1.30 |
+| 50 | 100% | 99.9% | 97.0% | +1.31 |
+| 100 | 100% | 100% | 95.7% | +1.30 |
+| 200 | 100% | 100% | 96.9% | +1.31 |
 
-## Reading
-
-- **The estimate recovers the plant** without bias at every n: +1.07 to +1.08 points
-  against a truth of +1.08.
-- **Small n is fixed.** With paired t-intervals, coverage stays near 95% down to 12 seeds
-  (96.1%), where the percentile bootstrap gave 91.6%. The tests themselves are exact and
-  were never affected.
-- **Power.** A planted effect of about 1 point on P1 needs about 25 seeds per world to be
-  found under Holm with reasonable power. At the floor of 12 it is found less than a
-  third of the time.
+- **No bias:** the estimate recovers the truth at every n.
+- **Coverage holds down to 12 seeds.**
+- **Power:** a difference of about 1.3 points is found under Holm half the time at 12
+  seeds and reliably from about 25.
 
 ## History
 
+**Third run (decisions 25–27):** truth +1.29 points (null +0.51, plant +0.78); coverage
+96.4% at n = 200. Pass.
+
+
+**Second run (decisions 21, 22, 24):** truth +1.08 points (null −0.32, plant +1.39);
+coverage 95.5% at n = 200 and 96.1% at n = 12. Pass.
+
+**First run:**
 The first M3 run (before decisions 21, 22 and 24) used percentile bootstrap intervals and
 the criterion "at least 95 of 100 replications". It gave 93 of 100 (96.1% over 1,000)
 at n = 200, and 91.6% coverage at n = 12. Those results led to decisions 21 and 24. The

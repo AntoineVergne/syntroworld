@@ -12,15 +12,61 @@ Holm across the 8 tests, and 95% paired t-intervals for the verdicts. Replicatio
 Reproduce:
 `python -m synw.analysis.false_positive --grid results/m2/grid-b-full-2000.jsonl --json results/m2/false-positive.json`
 
-## Result: PASS
+## Result (engine 1.0.0, after decision 31): PASS
+
+| Check | Criterion (decision 29) | Observed |
+|---|---|---|
+| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **4.72%** (s.e. 0.24%) |
+| Holm family-wise rate (1,000 replications) | lower bound of exact 95% interval ≤ 5% | **3.30%**, 95% CI 2.28–4.60% |
+
+By outcome (uncorrected): P1 4.70%, P2 4.85%, P3 4.70%, P4 4.65%. False "better" or
+"worse" verdicts: 0.41% of tests. Decision 31 changes only P3 (a seat counts once per
+cycle), so P1, P2 and P4 are identical to the previous run; the grid was regenerated.
+
+## Previous result (after decisions 25–30): PASS
+
+| Check | Criterion (decision 29) | Observed |
+|---|---|---|
+| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **4.95%** (s.e. 0.24%) |
+| Holm family-wise rate (1,000 replications) | lower bound of exact 95% interval ≤ 5% | **3.50%**, 95% CI 2.45–4.83% |
+
+By outcome (uncorrected): P1 4.70%, P2 4.85%, P3 5.60%, P4 4.65%. False "better" or
+"worse" verdicts: 0.46% of tests.
+
+**Reading.** The whole interval lies *below* 5%, so the procedure is conservative: it
+makes fewer false discoveries than its nominal rate. That is the safe direction, and it
+is expected. Holm guarantees at most 5% under any dependence, and gives about 4.89% for
+8 independent tests. Here the four outcomes are correlated within a contrast, which
+lowers the family-wise rate. Decision 29 is worded "the interval includes 5% (lower
+bound ≤ 5%)". Taken literally, this interval does not include 5%. The operative test,
+lower bound ≤ 5%, is met, and only a rate *above* 5% would be a problem.
+
+## Previous result (after decisions 25–27): FAIL under decision 21
 
 | Check | Criterion (decision 21) | Observed |
 |---|---|---|
-| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **5.29%** (s.e. 0.24%) |
-| Holm family-wise rate (1,000 replications) | upper bound of exact 95% interval ≤ 7% | **4.50%**, 95% CI 3.30–5.98% |
+| Uncorrected rejection rate (8,000 tests) | 3% to 7% | **4.78%** (s.e. 0.24%), pass |
+| Holm family-wise rate (1,000 replications) | upper bound of exact 95% interval ≤ 7% | **5.80%**, 95% CI 4.43–7.43%: **fail** |
 
-By outcome (uncorrected): P1 6.20%, P2 4.55%, P3 5.10%, P4 5.30%. False "better" or
-"worse" verdicts: 0.57% of tests.
+By outcome (uncorrected): P1 4.95%, P2 4.90%, P3 4.00%, P4 5.25%. False "better" or
+"worse" verdicts: 0.76% of tests.
+
+**Why this is not evidence of a broken test.** Holm controls the family-wise rate at or
+below 5% under any dependence between tests, and every per-outcome rate is at or near
+5%. The observed 5.80% (58 of 1,000) is within noise. If the true rate is 4.89% (Holm
+on 8 independent tests), 58 or more happens about 11% of the time.
+
+**The criterion is poorly calibrated, and the fault is mine.** I proposed "upper bound
+≤ 7%" when decision 21 was taken. At 1,000 replications it fails whenever 55 or more
+replications reject, which a correct procedure does 20–25% of the time. A
+well-calibrated version is "the 95% interval includes 5%" (that is, the lower bound is
+at most 5%). It fails a correct procedure about 2.5% of the time, and this run passes
+it (lower bound 4.43%). I did not change the agreed criterion or re-run with another
+seed. See decisions.md, question 29.
+
+## Previous run (after decisions 21, 22 and 24)
+
+Uncorrected 5.29%; Holm 4.50% (95% CI 3.30–5.98%): pass.
 
 ## Notes
 

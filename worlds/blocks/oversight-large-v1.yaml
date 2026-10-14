@@ -1,0 +1,19 @@
+# Large-town World B (02 §4, 20+ citizens; decision 25): the Oversight Assembly reviews the
+# cycle's detected breaches and votes to refer each one to the Adjudication Assembly as a
+# sanction proposal. An agent with 3 or more detected harmful acts in the cycle also
+# triggers a verified alert, which convenes the Kill Switch (01 Art. 7.1).
+id: oversight-large-v1
+decision_class: adjudication
+body: oversight_assembly
+steps:
+  - type: examination
+    criteria: [within_legal_range]
+  - type: vote
+    location: assembly_hall
+    weights: one_member_one_vote
+    rule: {type: threshold, "yes": 3, of: 5}
+    quorum: {count: 3}
+  - type: publication
+narrative:
+  accountability: S11
+fairness_level: 800

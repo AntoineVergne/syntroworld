@@ -1,0 +1,7 @@
+# A+text, the sermon control (06 §3.4; decision 6): World A's institutions, but citizens
+# also read the full Compact text as "a proposal some citizens once wrote". Only a model
+# brain reads text, so under the mock brain this world runs exactly like A.
+extends: a.yaml
+world: A+text
+description: "World A institutions; citizens also read the Compact as an old proposal (sermon control)"
+texts: {compact: proposal}
