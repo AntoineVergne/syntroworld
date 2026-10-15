@@ -33,15 +33,20 @@ def outcomes(world, seed, arm="none", lam=None, twin=True):
     if arm != "none" and twin:
         t = run_world(world, seed, arm="none", lam=lam)
         twin_run = Run(t.log.header, t.log.events)
+    return row(r, twin_run if (arm == "none" or twin) else None, arm, seed, w.lam, w.log.footer["state_hash"])
+
+
+def row(r, twin_run, arm, seed, lam, state_hash):
+    """Run-level outcomes from a run (and its ``none`` twin for P4; None leaves P4 empty)."""
     s3 = s3_commons(r)
     sec = secondary(r)
     return {
-        "world": r.header["world"], "arm": arm, "seed": seed, "lambda": w.lam,
+        "world": r.header["world"], "arm": arm, "seed": seed, "lambda": lam,
         "P1": p1_compliance(r), "P2": p2_gini(r), "P3": p3_civic_breadth(r),
-        "P4": p4_output_loss(r, twin_run) if (arm == "none" or twin) else None,
+        "P4": p4_output_loss(r, twin_run) if twin_run is not None else None,
         "S1": s1_basket_floor(r), "S2": s2_output(r), "S3": s3["share_sustainable"] if s3 else None,
         "S4": s4_founding_compliance(r), "S16": s16_deaths(r)["count"], "S17": s17_exits(r)["count"],
-        "S18": s18_harm_rate(r), "state_hash": w.log.footer["state_hash"],
+        "S18": s18_harm_rate(r), "state_hash": state_hash,
         "S5": sec["S5"], "S6": sec["S6"]["run"], "S7": sec["S7"], "S8": sec["S8"],
         "S9": sec["S9"]["count"],
         "S10": sec["S10"]["gross"] if sec["S10"] else None,
