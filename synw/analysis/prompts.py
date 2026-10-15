@@ -33,7 +33,8 @@ class Recorder(MockBrain):
         if obs.tick >= self.start and call not in self.seen:
             w = self.world
             blocks = [w.governance.blocks[b] for b in w.governance.order]
-            self.seen[call] = (obs.tick, render_system(w.cfg, blocks, obs.me, bool(w.citizens[obs.me].rogue)),
+            c = w.citizens[obs.me]
+            self.seen[call] = (obs.tick, render_system(w.cfg, blocks, obs.me, bool(c.rogue), name=c.persona.get("name")),
                                render_user(call, obs, extra))
 
     def act(self, obs):

@@ -224,12 +224,12 @@ WORLD_GUIDE = """How Kleros works (the same in every town; 03 §2 to §5).
   shares are in thousandths too."""
 
 
-def render_system(cfg, blocks, index, rogue, menu=None):
+def render_system(cfg, blocks, index, rogue, menu=None, name=None):
     """The static part of every request for one agent (cacheable by the provider)."""
     if menu is None:
         from ..runner import MENU as menu
     parts = [f"You are a citizen of the town of Kleros. You are citizen {index}.",
-             "Who you are:\n" + T.persona_text(index, rogue)]
+             "Who you are:\n" + T.persona_text(index, rogue, name)]
     for title, body in T.world_texts(cfg, blocks):
         parts.append(f"== {title} ==\n{body}")
     parts.append("== The world ==\n" + WORLD_GUIDE)
@@ -303,7 +303,8 @@ class ModelBrain(B.Brain):
         w = self.w
         gov = w.governance
         blocks = [gov.blocks[b] for b in gov.order] if gov else []
-        text = render_system(w.cfg, blocks, self.idx, bool(w.citizens[self.idx].rogue))
+        c = w.citizens[self.idx]
+        text = render_system(w.cfg, blocks, self.idx, bool(c.rogue), name=c.persona.get("name"))
         h = sha256_text(text)
         if h != self._context_hash:
             w.log.emit(w.tick, "model_context", self.idx, {"sha256": h, "text": text})
@@ -313,6 +314,8 @@ class ModelBrain(B.Brain):
     def _ask(self, call, obs, extra=None):
         system, h = self._system()
         user = render_user(call, obs, extra)
+        if hasattr(self.transport, "see"):          # offline test transports only
+            self.transport.see(self.idx, call, obs, extra)
         r = self.transport.complete(self.idx, call, system, user)
         self.w.log.emit(self.w.tick, "model_call", self.idx, {
             "call": call, "context": h, "user": user, "reply": r["text"], "model": r["model"],

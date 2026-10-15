@@ -27,12 +27,13 @@ Engine version: `1.0.0`
 | `synw/analysis/false_positive.py` | `8616980dc3c36ee5e52c32af51d3395864c5cf5d12e0d02330483e5556b762c0` |
 | `synw/analysis/grid.py` | `645de82775ac07b1757f21213324126157583197523a7bb2bba7a13848438ea1` |
 | `synw/analysis/planted.py` | `fc94c815501bf19357c97f026f1f04aba85560a7122c859c1011cde536335c20` |
-| `synw/analysis/prompts.py` | `4c5741c07cbf15ba145c5810b4baec98b6e01eceb3627063bf25b4196ccda10d` |
+| `synw/analysis/prompts.py` | `5b44e4595608c3314e3d58d44cd66b5065046afb43fc03de0a6beb6dd694a9e9` |
 | `synw/brains/__init__.py` | `49041aca42e44bdc6c3cffa259e46aa680511bcfd9af54f657f4a21050ce8fed` |
 | `synw/brains/base.py` | `43ec2f510fe050e761beebb8bf5ead89e9299f4b16d4651e6d0147c5b301b213` |
+| `synw/brains/chaos.py` | `4f04d2fa970498d0ff7bf36e6ceee640ab003d725cd909d92f01f260f16528dd` |
 | `synw/brains/mock.py` | `9bd881b1061f9817c71e00c8e446116cab46da06ab0582d09debd38728c681a5` |
-| `synw/brains/model.py` | `91f09326e8d5380ae3830ab9524891629c653bf1a3cab97adec0398ee424b3fe` |
-| `synw/brains/texts.py` | `ba9d3a5feb7cbe4eda5dd1089e30c74d30f3b198425747844e07dc6cf0da1da7` |
+| `synw/brains/model.py` | `5e1944df37cda06d3b010d93065cf512168537fd5b7dd6d7e41ff5196205bc3b` |
+| `synw/brains/texts.py` | `d0706ca0bbd2875c7ef1f5f41b28908e85d15b45fedafcc58515866c481fa991` |
 | `synw/cli.py` | `12751e0926a7d4ccdae3d844f14aa13e77c51c2f26925c500737cd2034d9439c` |
 | `synw/config.py` | `ad26701e2f901a7b32bd961e0ae110e85b1df1ab5a6900aa1195d31b4072b52f` |
 | `synw/events.py` | `ee2bf19c13b08e35c80367234edaaabf6885a779b7a68bfb69e996876940c480` |
