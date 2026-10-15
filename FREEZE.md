@@ -21,6 +21,7 @@ Engine version: `1.0.0`
 | `synw/analysis/__init__.py` | `47d4d402408468d99baf7ad384226ab81ae410ee5762474e0f6ae87a1018f2e7` |
 | `synw/analysis/baseline.py` | `3fbeef1e26b7bd904a1f051142dfb681323f91d585e605d40093156f43997aeb` |
 | `synw/analysis/calibrate.py` | `bb89c418b2f76dd6cc9a7342e0c8248f84a7bcee558c0989b775029e803341d8` |
+| `synw/analysis/campaign.py` | `f74006cc09669c01f7b765eb01e98604574b46acd5ad90e7df8f49256bf8694e` |
 | `synw/analysis/compare.py` | `dffa26c48ee9964ccf7bce10ae4d7f0421f8aebfc328ec5ba52548a269aed01b` |
 | `synw/analysis/cost.py` | `fcc59676dd6508bd9d7e5e775ca78ea2acbccc27c91774cb0383867b9d5341e5` |
 | `synw/analysis/determinism.py` | `13e8ef5829c8c0efcf53a228b02fa23fc27391a6f09ecd8791fca46da2ca4adc` |
