@@ -67,7 +67,18 @@ def persona_texts():
     return out
 
 
-def persona_text(index, rogue=False):
+def persona_text(index, rogue=False, name=None):
+    """The persona's text (04 §3). ``name`` finds it by name, for larger populations
+    whose citizens reuse a founder's persona ("Kofi 2" reads Kofi's text, renamed)."""
+    if name is not None:
+        base = name.split(" ")[0]
+        idx = next((i for i, t in persona_texts().items() if t.startswith(f"**{i}. {base},")), None)
+        if idx is None:
+            raise KeyError(f"no persona text for {name!r}")
+        text = persona_texts()[idx].replace(f"**{idx}. {base},", f"**{index}. {name},", 1)
+        if rogue:
+            text = re.sub(r"Goals: .*?(?=\*Tension|$)", f"Goals: {ROGUE_GOALS} ", text)
+        return text.strip()
     text = persona_texts()[index]
     if rogue:
         text = re.sub(r"Goals: .*?(?=\*Tension|$)", f"Goals: {ROGUE_GOALS} ", text)

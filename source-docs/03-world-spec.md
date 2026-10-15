@@ -301,12 +301,16 @@ Probability of a harmful act or rule breach when the opportunity arises:
 - **Budget cap per run.** When the cap is hit, the run stops cleanly and is marked failed.
 - The runner prints the cost estimate (06 §8.2) and refuses to start a model run without
   an explicit approval flag.
-- **What the model reads** (02 §9): a system text with the persona's own words (04 §3;
-  a rogue's goals are replaced by the overlay text, 04 §5), the shared preamble, the
+- **What the model reads** (02 §9). The system text, static for a citizen until the
+  rules in force or the rogue overlay change, holds: the persona's own words (04 §3; a
+  rogue's goals are replaced by the overlay text, 04 §5); the shared preamble; the
   world's texts (`texts.compact`: `in_force` in B, `proposal` in A+text, none in A and
-  C) and the blocks in force as their current definitions. The Compact is shown as
-  founded; the polity changes it through typed amendments to the blocks, which are shown
-  as amended. The user text is the observation as JSON and the call's reply format.
+  C) and the blocks in force as their current definitions; a world guide (map, clock,
+  basket, work, trade, harm, units) that is word for word the same in every world; the
+  action list; and every reply and effect format. The user text holds the call name,
+  the observation as JSON (without the world's name) and the call's details. The
+  Compact is shown as founded; the polity changes it through typed amendments to the
+  blocks, which are shown as amended. Review pack: `results/l0-prompts/`.
 - **Log events:** `model_context` (the system text, in full, each time it changes, with
   its sha256) and `model_call` (call, context hash, user text, reply, model, tokens). A
   reply that cannot be parsed is an invalid output (S15). Code: `synw/brains/model.py`,

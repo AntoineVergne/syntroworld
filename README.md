@@ -1,7 +1,9 @@
-# Syntroworld engine
+# Syntropolis-Simtropolis engine
 
-A deterministic simulation of Kleros, the town in `source-docs/`, where the
-constitution is the experimental variable. It implements tickets SYNW-001 to SYNW-029 of
+Syntropolis-Simtropolis is a town simulation in the spirit of SimCity and The Sims, part
+of the Syntropolis universe. It is a deterministic simulation of Kleros, the town in
+`source-docs/`, where the constitution is the experimental variable. (Earlier name:
+Syntroworld. The Python package and command keep the short name `synw`.) It implements tickets SYNW-001 to SYNW-029 of
 `tickets.yaml`, phase M (mock brain), and the phase L machinery (model brain, replay,
 cost estimate), which is tested offline only: **no model is called in this repository**.
 
@@ -34,17 +36,14 @@ python -m synw.analysis.baseline run --out results/m4 && python -m synw.analysis
 
 Results of each step are in `results/m0/` to `results/m4/`, each with a README.
 
-Phase L (each step needs Antoine's yes and a printed cost estimate, 06 §8.2). Needs
-`pip install -e ".[model]"` (LiteLLM). Nothing below has been run:
+Phase L: see `PHASE-L-RUNBOOK.md`. Each step needs Antoine's yes and a printed cost
+estimate (06 §8.2); no model has been called yet. Offline checks of the phase L code:
 
 ```
-python -m synw.analysis.cost --step L0 --tokens-in <n> --tokens-out <n> --model <litellm name>
-synw run worlds/b.yaml --seed 1 --ticks 48 --brain model --model <litellm name> \
-    --budget-tokens <cap> --tokens-in <n> --tokens-out <n>              # prints the cost, then refuses
-synw run ... --approve                                                   # only after Antoine's yes
-synw run worlds/b.yaml --seed 1 --ticks 48 --brain model --budget-tokens <cap> \
-    --replay runs/B-none-s1.jsonl                                       # exact replay, no calls
-python -m synw.analysis.cost --step L1 --log runs/B-none-s1.jsonl --model <litellm name>
+python -m synw.analysis.prompts --out results/l0-prompts       # what a model citizen reads
+python results/stress/run_chaos.py                             # engine under bad model replies
+python -m synw.analysis.phase_l --campaign <dir> [--pilot]     # analysis (dry run: results/l-dry-run/)
+python -m synw.analysis.persona_check [--campaign <dir>]       # persona vs behaviour (04 §1)
 ```
 
 Each run writes one JSON Lines event log (`runs/<world>-<arm>-s<seed>.jsonl`): a header
@@ -60,12 +59,14 @@ synw/
   world/       clock map agents economy river market treasury claims deals
   brains/      base (interface, observation, action validator)  mock
                model (phase L: LiteLLM, replay, budget)  texts (preamble, Compact, personas)
+               chaos (hostile offline "model" for stress tests)
   governance/  effects rules project blocks kleroterion deliberation advocates
   metrics/     economy (P2 S1 S2 S3)  harm (S16-S19)  legitimacy (P1 S4 S5)
                participation (P3)  resilience (P4)  secondary (S6-S15)
   analysis/    compare (paired statistics, 06 §7)  grid (seed grids, run-level outcomes)
                determinism (M0)  calibrate (M1)  false_positive (M2)  planted (M3)  baseline (M4)
-               cost (06 §8.2 estimate)
+               cost (06 §8.2 estimate)  campaign (phase L runs)  phase_l (analysis)
+               prompts (review pack)  persona_check (04 §1 rule 3)
   freeze.py    the Season 1 freeze manifest (FREEZE.md)
 worlds/        base.yaml personas.yaml a.yaml b.yaml c.yaml a-text.yaml (sermon control) blocks/
                ablations/ (b-nolot b-noadv b-nodiv b-nopay, 06 §3.3)

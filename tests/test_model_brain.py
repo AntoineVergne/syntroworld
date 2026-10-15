@@ -107,3 +107,39 @@ def test_cost_formula_and_measurement(tmp_path):
     assert m["agent_ticks"] == 480 and m["tokens_in"] > 1000 and m["invalid_rate"] == 0
     work = run(wpath("b.yaml"), 1, out=str(tmp_path / "w"), brain=model(stub()), ticks=48)
     assert cost.measure(work.log_path)["invalid_rate"] > 0.5     # "work" away from a work site
+
+
+def _system(world, seed=1, ticks=100, idx=3):
+    from synw.brains.model import render_system, render_user
+    from synw.config import load
+    from synw.runner import World
+    w = World(load(wpath(world)), seed, arm="full")
+    for t in range(1, ticks + 1):
+        w.step(t)
+    blocks = [w.governance.blocks[b] for b in w.governance.order]
+    return render_system(w.cfg, blocks, idx, False), render_user("act", w.observe(idx))
+
+
+def test_no_world_label_reaches_the_model():
+    for world in ("a.yaml", "b.yaml", "c.yaml", "a-text.yaml"):
+        system, user = _system(world, ticks=30)
+        assert '"world"' not in user
+        for label in ("World A", "World B", "World C", "A+text", "sermon"):
+            assert label not in system and label not in user
+
+
+def test_only_the_texts_section_differs_between_worlds():
+    import re
+    def strip(s):
+        s = re.sub(r"== (Shared preamble|Block |The Founding Compact|A proposal).*?(?=\n== )", "", s, flags=re.S)
+        return re.sub(r"\n{2,}", "\n\n", s)
+    a, _ = _system("a.yaml", ticks=30)
+    c, _ = _system("c.yaml", ticks=30)
+    b, _ = _system("b.yaml", ticks=30)
+    assert strip(a) == strip(c) == strip(b)
+
+
+def test_system_text_is_static_between_ticks():
+    s1, u1 = _system("b.yaml", ticks=20)
+    s2, u2 = _system("b.yaml", ticks=21)
+    assert s1 == s2 and u1 != u2

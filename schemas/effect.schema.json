@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://syntroworld/schemas/effect.schema.json",
+  "$id": "https://syntropolis-simtropolis/schemas/effect.schema.json",
   "title": "Typed decision effect (02 \u00a73.1). Amounts in milli-credits, rates in per-mille. Upper bounds that depend on the world (one basket) are checked in code.",
   "oneOf": [
     {

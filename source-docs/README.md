@@ -1,11 +1,12 @@
-# Syntroworld
+# Syntropolis-Simtropolis
 
 **An open laboratory for societies of AI agents, where the constitution is the
 experimental variable.**
 
-Syntroworld is a product inside the Syntropolis universe. It simulates a small town,
+Syntropolis-Simtropolis (earlier: Syntroworld) is a simulation in the spirit of SimCity and
+The Sims, inside the Syntropolis universe. It simulates a small town,
 Kleros, where agents live, work, trade and govern themselves. Earlier agent-society
-experiments watched what governance *emerges*. Syntroworld makes the institutions the
+experiments watched what governance *emerges*. Syntropolis-Simtropolis makes the institutions the
 *treatment*: identical starting populations run in parallel worlds under different
 constitutions, and we measure which one produces more legitimacy, equality, participation
 and resilience.
