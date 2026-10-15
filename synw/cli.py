@@ -9,7 +9,7 @@ from .shocks import ARMS
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="synw", description="Syntroworld engine")
+    ap = argparse.ArgumentParser(prog="synw", description="Syntropolis-Simtropolis engine")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run", help="run one season and write its event log")
     r.add_argument("world", help="world config, e.g. worlds/a.yaml")

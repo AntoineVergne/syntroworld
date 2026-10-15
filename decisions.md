@@ -81,7 +81,7 @@ is an amendment: a new row below, a new engine version and an updated `FREEZE.md
 
 | # | Date | Amendment | Files |
 |---|---|---|---|
-| (none yet) | | | |
+| 1 | 2026-10-15 | **Name: Syntropolis-Simtropolis** (Antoine; replaces "Syntroworld" from decision 19). A simulation in the spirit of SimCity and The Sims, in the Syntropolis universe. Names and schema ids only: no behaviour change, engine version stays 1.0.0, all results stand. The package and command stay `synw`; the GitHub repository keeps its name until Antoine renames it. | README, source-docs/README.md, pyproject.toml, `synw/__init__.py`, `synw/cli.py`, `schemas/*.json`, FREEZE.md |
 
 ## Still open
 

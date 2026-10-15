@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://syntroworld/schemas/world.schema.json",
-  "title": "Syntroworld world config (resolved)",
+  "$id": "https://syntropolis-simtropolis/schemas/world.schema.json",
+  "title": "Syntropolis-Simtropolis world config (resolved)",
   "type": "object",
   "properties": {
     "extends": {

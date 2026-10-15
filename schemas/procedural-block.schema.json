@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://syntroworld/schemas/procedural-block.schema.json",
+  "$id": "https://syntropolis-simtropolis/schemas/procedural-block.schema.json",
   "title": "Procedural block (02 \u00a71). Every parameter is a number or an enum; shares are per-mille.",
   "type": "object",
   "properties": {

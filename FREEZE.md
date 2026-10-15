@@ -8,16 +8,16 @@ Engine version: `1.0.0`
 
 | File | sha256 |
 |---|---|
-| `schemas/effect.schema.json` | `72ea12c9e8f70151833d1a7c59e14adf44bd8b15940b4f04b2155ae8b910eebc` |
-| `schemas/procedural-block.schema.json` | `8b7390a324f03eee34e4ee82b2afadffb303fe899dede9e7ce5a519c9d50c341` |
-| `schemas/world.schema.json` | `619fc5e7fc264bc6f0520bd07599701f2133e1b6f49681b8147728b3218bd3dd` |
+| `schemas/effect.schema.json` | `a6a97994094419d5f618e57b777328ff66b2d3d581c47921d28acd471c044680` |
+| `schemas/procedural-block.schema.json` | `bfcdaaa59ce53eb2cae3e9b6bb164b835091181a0de56210e3a629fca6fc92c0` |
+| `schemas/world.schema.json` | `3dad8088cb22cb712729b5a89a1b2cc1819142a253797fd08fa54483721bce40` |
 | `source-docs/01-constitution.md` | `204a97bed00874801bc2caca32570ca84b46af458df059dbd34eac98d8ccdf54` |
 | `source-docs/02-governance-spec.md` | `4060b3f3b95a41e5e5c7cc5c72999b9e900a7c862413c54447b109f6f8296c49` |
 | `source-docs/03-world-spec.md` | `519178dba09bf611e86139b612545049a418e0262dfc78c136f608ff68c108a7` |
 | `source-docs/04-agents.md` | `1d807e1351f5811f9d9881099fa268f304b21ecf4ff9dd5edf963f238a1c09d8` |
 | `source-docs/05-metrics.md` | `e3d6b460c23b8afa883fada126f34438de4dfe9884b78b5dfcf01eebf0369028` |
 | `source-docs/06-experiment-design.md` | `426ec17d9cb619fed0b9e5fa29bf3ae7e99d4a63d3f0740d0e0a2f42b3385886` |
-| `synw/__init__.py` | `217364ac8059a6c48e610c81b9dc6b94d35efd6fff0df9d31110cc3b33026289` |
+| `synw/__init__.py` | `daabcebe33257a5426d1e503c63218e1c64b4fb885c593741ae763048dbfdd76` |
 | `synw/analysis/__init__.py` | `47d4d402408468d99baf7ad384226ab81ae410ee5762474e0f6ae87a1018f2e7` |
 | `synw/analysis/baseline.py` | `3fbeef1e26b7bd904a1f051142dfb681323f91d585e605d40093156f43997aeb` |
 | `synw/analysis/calibrate.py` | `bb89c418b2f76dd6cc9a7342e0c8248f84a7bcee558c0989b775029e803341d8` |
@@ -32,7 +32,7 @@ Engine version: `1.0.0`
 | `synw/brains/mock.py` | `9bd881b1061f9817c71e00c8e446116cab46da06ab0582d09debd38728c681a5` |
 | `synw/brains/model.py` | `abe4c6613bfec44c6f80a43d5c20b5504055a2fd5e54d0404f99063fa4a94980` |
 | `synw/brains/texts.py` | `ba9d3a5feb7cbe4eda5dd1089e30c74d30f3b198425747844e07dc6cf0da1da7` |
-| `synw/cli.py` | `c0beb46c2f3077f4d4b110962e0f19157c4a9c145ed2e55c0f833f2dfedfd998` |
+| `synw/cli.py` | `12751e0926a7d4ccdae3d844f14aa13e77c51c2f26925c500737cd2034d9439c` |
 | `synw/config.py` | `ad26701e2f901a7b32bd961e0ae110e85b1df1ab5a6900aa1195d31b4072b52f` |
 | `synw/events.py` | `ee2bf19c13b08e35c80367234edaaabf6885a779b7a68bfb69e996876940c480` |
 | `synw/freeze.py` | `b4db8a4c2c774435830bc29fc61c47709b6ce9b510416f150b096eef59d6db2f` |

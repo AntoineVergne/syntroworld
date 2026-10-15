@@ -1,7 +1,9 @@
-# Syntroworld engine
+# Syntropolis-Simtropolis engine
 
-A deterministic simulation of Kleros, the town in `source-docs/`, where the
-constitution is the experimental variable. It implements tickets SYNW-001 to SYNW-029 of
+Syntropolis-Simtropolis is a town simulation in the spirit of SimCity and The Sims, part
+of the Syntropolis universe. It is a deterministic simulation of Kleros, the town in
+`source-docs/`, where the constitution is the experimental variable. (Earlier name:
+Syntroworld. The Python package and command keep the short name `synw`.) It implements tickets SYNW-001 to SYNW-029 of
 `tickets.yaml`, phase M (mock brain), and the phase L machinery (model brain, replay,
 cost estimate), which is tested offline only: **no model is called in this repository**.
 
