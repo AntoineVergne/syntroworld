@@ -13,7 +13,7 @@ Engine version: `1.0.0`
 | `schemas/world.schema.json` | `3dad8088cb22cb712729b5a89a1b2cc1819142a253797fd08fa54483721bce40` |
 | `source-docs/01-constitution.md` | `204a97bed00874801bc2caca32570ca84b46af458df059dbd34eac98d8ccdf54` |
 | `source-docs/02-governance-spec.md` | `4060b3f3b95a41e5e5c7cc5c72999b9e900a7c862413c54447b109f6f8296c49` |
-| `source-docs/03-world-spec.md` | `519178dba09bf611e86139b612545049a418e0262dfc78c136f608ff68c108a7` |
+| `source-docs/03-world-spec.md` | `607438c3da8a1b5b7eaa4a8b8f07172c025d4e9b31a75272aa056371dee37737` |
 | `source-docs/04-agents.md` | `1d807e1351f5811f9d9881099fa268f304b21ecf4ff9dd5edf963f238a1c09d8` |
 | `source-docs/05-metrics.md` | `e3d6b460c23b8afa883fada126f34438de4dfe9884b78b5dfcf01eebf0369028` |
 | `source-docs/06-experiment-design.md` | `426ec17d9cb619fed0b9e5fa29bf3ae7e99d4a63d3f0740d0e0a2f42b3385886` |
@@ -27,10 +27,11 @@ Engine version: `1.0.0`
 | `synw/analysis/false_positive.py` | `8616980dc3c36ee5e52c32af51d3395864c5cf5d12e0d02330483e5556b762c0` |
 | `synw/analysis/grid.py` | `645de82775ac07b1757f21213324126157583197523a7bb2bba7a13848438ea1` |
 | `synw/analysis/planted.py` | `fc94c815501bf19357c97f026f1f04aba85560a7122c859c1011cde536335c20` |
+| `synw/analysis/prompts.py` | `4c5741c07cbf15ba145c5810b4baec98b6e01eceb3627063bf25b4196ccda10d` |
 | `synw/brains/__init__.py` | `49041aca42e44bdc6c3cffa259e46aa680511bcfd9af54f657f4a21050ce8fed` |
 | `synw/brains/base.py` | `43ec2f510fe050e761beebb8bf5ead89e9299f4b16d4651e6d0147c5b301b213` |
 | `synw/brains/mock.py` | `9bd881b1061f9817c71e00c8e446116cab46da06ab0582d09debd38728c681a5` |
-| `synw/brains/model.py` | `abe4c6613bfec44c6f80a43d5c20b5504055a2fd5e54d0404f99063fa4a94980` |
+| `synw/brains/model.py` | `91f09326e8d5380ae3830ab9524891629c653bf1a3cab97adec0398ee424b3fe` |
 | `synw/brains/texts.py` | `ba9d3a5feb7cbe4eda5dd1089e30c74d30f3b198425747844e07dc6cf0da1da7` |
 | `synw/cli.py` | `12751e0926a7d4ccdae3d844f14aa13e77c51c2f26925c500737cd2034d9439c` |
 | `synw/config.py` | `ad26701e2f901a7b32bd961e0ae110e85b1df1ab5a6900aa1195d31b4072b52f` |
